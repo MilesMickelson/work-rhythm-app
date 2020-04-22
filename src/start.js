@@ -1,11 +1,10 @@
-const electron = require('electron');
-const app = electron.app;
-const path = require('path');
-const isDev = require('electron-is-dev');
-require('electron-reload');
-const BrowserWindow = electron.BrowserWindow;
+const electron = require('electron')
+const app = electron.app
+const path = require('path')
+const isDev = require('electron-is-dev')
+const BrowserWindow = electron.BrowserWindow
 
-let mainWindow;
+let mainWindow
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -25,7 +24,7 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-};
+}
 
 app.on('ready', createWindow)
 
@@ -39,4 +38,4 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
-});
+})
