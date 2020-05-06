@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './index.scss';
+import VisionPane from './visionpane';
+import NavBar from './navbar';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <NavBar />
+    <VisionPane />
   </React.StrictMode>,
   document.getElementById('root')
 );

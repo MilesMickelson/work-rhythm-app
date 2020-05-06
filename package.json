@@ -88,6 +88,7 @@
     "electron-builder": "^22.5.1",
     "electron-chromedriver": "^8.0.0",
     "electron-packager": "^14.2.1",
+    "sass": "^1.26.5",
     "spectron": "^10.0.1"
   }
 }

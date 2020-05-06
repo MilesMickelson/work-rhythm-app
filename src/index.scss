@@ -1,0 +1,317 @@
+/*#region Global Styling*/
+
+//-----SCAFFOLDING-----
+
+.main-container {
+	width: 100%;
+}
+
+@mixin row-center {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin col-center {
+  display: flex;
+	flex-flow: column wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.clearfix-wrap::after {
+	content: "";
+  clear: both;
+  display: inline-block;
+	vertical-align: top;
+	width: 100%;
+}
+
+//-----COLORS-----
+
+$black: #000000;
+$black-5: #0d0d0d;
+$black-10: #1a1a1a;
+$black-15: #262626;
+$black-20: #333333;
+$black-25: #404040;
+$white: #ffffff;
+$white-5: #f2f2f2;
+$white-10: #e6e6e6;
+$white-15: #d9d9d9;
+$white-20: #cccccc;
+$white-25: #bfbfbf;
+$red50: #ff0000;
+$red45: #e60000;
+$red40: #cc0000;
+$red35: #b30000;
+$red30: #990000;
+$red25: #800000;
+$red20: #660000;
+$red15: #4d0000;
+$red10: #330000;
+$red5: #1a0000;
+
+//-----FONTS-----
+
+$header-font: Apple Chancery, URW Chancery L, Snell Roundhand, Cursive;
+$primary-font: Verdana, Arial, Times, Courier, Georgia;
+
+@mixin header {
+	color: $black-5;
+	font-family: $primary-font;
+}
+
+@mixin primary {
+	color: $black-5;
+	font-family: $primary-font;
+}
+
+//-----ANIMATIONS-----
+
+//-----STYLING-----
+
+@mixin cursor {
+	cursor: crosshair;
+}
+
+.visible {
+	display: normal;
+}
+
+.inVisible {
+	display: none;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.center-wrap {
+	text-align: center;
+}
+
+/*#endregion Global Styling*/
+
+/*#region HTML Tag Styling*/
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+	background-color: $white-5;
+  background-size: 1150px 100%;
+  -webkit-background-size: 1150px 100%;
+  -moz-background-size: 1150px 100%;
+  -o-background-size: 1150px 100%;
+  background-repeat: no-repeat;
+	background-position: center center;
+  background-attachment: fixed;
+}
+
+//Header Wraps
+header {
+  display: visible;
+}
+
+//Main Title 
+h1 {
+	@include header;
+	font-size: calc(3rem + 3vmin);
+	margin-block-start: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	margin: 0;
+}
+
+//Sub Title
+h2 {
+  @include header;
+	font-size: calc(1.75rem + 2.5vmin);
+	margin-block-start: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
+	margin: 0;
+}
+
+//Page Title
+h3 {
+	@include header;
+	text-align: center;
+	font-size: calc(1.75rem + 2vmin);
+	text-decoration: underline;
+	margin: 25px 0 15px 0;
+}
+
+//Section Header
+h4 {
+  @include header;
+	font-size: calc(1.5rem + 1vmin);
+	text-decoration: underline;
+	text-align: center;
+	margin: 20px 0 0 0;
+}
+
+//Small Section Header
+h5 {
+  @include header;
+	font-size: calc(1.25rem + 1vmin);
+	text-decoration: underline;
+  text-align: center;
+	margin: 10px 0 0 0;
+}
+
+//Very Small Section Header
+h6 {
+  @include header;
+	font-size: calc(1rem + 1vmin);
+	text-decoration: underline;
+  text-align: center;
+	margin: 5px 0 0 0;
+}
+
+p {
+	@include primary;
+	font-size: calc(.9rem + .7vmin);
+	font-weight: regular;
+	text-align: left;
+	text-indent: 1.25em;
+	word-break: break-word;
+	display: visible;
+  margin: 5px 3% 15px;
+	margin-block-start: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0;
+	margin-inline-end: 0;
+}
+
+ol {
+  list-style-type: decimal;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+	display: visible;
+	@include primary;
+	list-style-type: arrows;
+  padding: 0;
+  padding-left: 40px;
+	margin: 0 0 0 30px;
+}
+
+li {
+  display: list-item;
+	margin-top: 10px;
+}
+
+em {
+	@include primary;
+	font-style: normal;
+}
+
+label {
+	@include primary;
+}
+
+a {
+	@include primary;
+	font-size: calc(.9rem + .7vmin);
+  text-decoration: underline;
+}
+
+a:hover {
+	@include cursor;
+}
+
+details {
+  display: block;
+}
+
+summary {
+	font-size: calc(1.5rem + 1vmin);
+	text-decoration: underline;
+	margin: 15px 0 0 0;
+}
+
+/*#endregion HTML Tag Styling*/
+
+/*#region NavBar*/
+
+#nav-wrap {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.nav-button {
+	height: calc(5px + 4vh);
+	min-height: 50px;
+	width: calc(150px + 5vh);
+	min-width: 150px;
+	max-width: 225px;
+	vertical-align: middle;
+	color: $red20;
+	background-color: $white-20;
+	border: 1px solid $red15;
+	border-radius: 15px;
+	font: calc(1rem + 1vmin) $primary-font;
+}
+
+/*#endregion NavBar*/
+
+/*#region VisionPane*/
+
+#visButtons-wrap {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+#space-holder {
+	height: 500px;
+	width: 500px;
+}
+
+.vis-button {
+	height: calc(5px + 4vh);
+	min-height: 50px;
+	width: calc(100px + 5vh);
+	min-width: 100px;
+	max-width: 175px;
+	vertical-align: middle;
+	color: $red20;
+	background-color: $white-20;
+	border: 1px solid $red15;
+	border-radius: 15px;
+	font: calc(1rem + 1vmin) $primary-font;
+}
+
+/*#endregion VisionPane*/
+
+/*#region AppSettings*/
+
+/*#endregion AppSettings*/
+
+/*#region PosturePane*/
+
+/*#endregion PosturePane*/
+
+/*#region ToDo'sPane*/
+
+/*#endregion ToDo'sPane*/
+
+/*#region AboutPane*/
+
+/*#endregion AboutPane*/
+
+/*#region Other2*/
+
+/*#endregion Other2*/
