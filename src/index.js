@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import VisionPane from './visionpane';
+import VisionTimer from './visiontimer';
 import NavBar from './navbar';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
     <NavBar />
-    <VisionPane />
+    <VisionTimer />
   </React.StrictMode>,
   document.getElementById('root')
 );
