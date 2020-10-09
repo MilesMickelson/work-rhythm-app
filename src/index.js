@@ -1,19 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+  HashRouter as Router,
+  Route
+} from 'react-router-dom';
 import './index.scss';
+import TaskList from './taskList';
+import StandTimer from './standTimer';
 import VisionTimer from './visiontimer';
+import Settings from './settings';
 import NavBar from './navbar';
 import * as serviceWorker from './serviceWorker';
+
+// setConfig({
+//   showReactDomPatchNotification: false
+// });
 
 ReactDOM.render(
   <React.StrictMode>
     <NavBar />
-    <VisionTimer />
+    <Router>
+      <Route exact path='/' component={ TaskList } />
+      <Route exact path='/StandTimer' component={ StandTimer } />
+      <Route exact path='/VisionTimer' component={ VisionTimer } />
+      <Route exact path='/Settings' component={ Settings } />
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();

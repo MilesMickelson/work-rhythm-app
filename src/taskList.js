@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const VisionTimer = () => {
+const TaskList = () => {
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
@@ -38,11 +38,11 @@ const VisionTimer = () => {
           { seconds }
         </div>
         <div id='col-right-control'>
-          <button type='submit' className='vis-button' title='DND Button3'>90 Minutes</button>
+          <button type='submit' className='vis-button' title='DND Button1'>30 Minutes</button>
         </div>
       </div>
     </main>
   );
 };
 
-export default VisionTimer;
+export default TaskList;
