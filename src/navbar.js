@@ -1,5 +1,10 @@
 import React from 'react';
 
+const chair = require('./images/chair.png');
+const eye = require('./images/eye.png');
+const list = require('./images/list.png');
+const settings = require('./images/settings.png');
+
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
@@ -11,38 +16,18 @@ export default class NavBar extends React.Component {
     return (
       <div className='main-container'>
         <nav id='nav-wrap' aria-label='primary'>
-          <button type='submit' className='nav-button' title='Tasks Pane'>
-            <a
-              href='#/'
-              rel='noopener noreferrer'
-            >
-              Tasks
-            </a>
-          </button>
-          <button type='submit' className='nav-button' title='Posture Pane'>
-            <a
-              href='#/StandTimer'
-              rel='noopener noreferrer'
-            >
-              Posture
-            </a>
-          </button>
-          <button type='submit' className='nav-button' title='Vision Pane'>
-            <a
-              href='#/VisionTimer'
-              rel='noopener noreferrer'
-            >
-              Vision
-            </a>
-          </button>
-          <button type='submit' className='nav-button' title='Settings Pane'>
-            <a
-              href='#/Settings'
-              rel='noopener noreferrer'
-            >
-              Settings
-            </a>
-          </button>
+          <a href='#/' rel='noopener noreferrer'>
+            <img src={ list } className='nav-icon' alt='' />
+          </a>
+          <a href='#/VisionTimer' rel='noopener noreferrer'>
+            <img src={ eye } className='nav-icon' alt='' />
+          </a>
+          <a href='#/StandTimer' rel='noopener noreferrer'>
+            <img src={ chair } className='nav-icon' alt='' />
+          </a>
+          <a href='#/Settings' rel='noopener noreferrer'>
+            <img src={ settings } className='nav-icon' alt='' />
+          </a>
         </nav>
       </div>
     );

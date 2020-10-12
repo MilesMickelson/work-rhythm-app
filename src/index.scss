@@ -77,6 +77,8 @@ $red20: #660000;
 $red15: #4d0000;
 $red10: #330000;
 $red5: #1a0000;
+$aqua: #66ccff;
+$purple:#6600ff;
 
 //-----FONTS-----
 
@@ -126,10 +128,9 @@ $primary-font: Verdana, Arial, Times, Courier, Georgia;
 }
 
 html {
-  scroll-behavior: smooth;
   height: 100vh;
-  margin: 0;
-	background: radial-gradient($red35, $red5) no-repeat center center fixed; 
+	margin: 0;
+	background: linear-gradient(to bottom right, $aqua 0%, $purple 100%) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -272,21 +273,22 @@ summary {
 	flex-flow: row wrap;
 	justify-content: space-evenly;
 	align-items: center;
+	margin-top: 15px;
 }
 
-.nav-button {
-	height: calc(5px + 4vh);
-	min-height: 50px;
-	width: calc(150px + 5vh);
-	min-width: 150px;
-	max-width: 225px;
-	vertical-align: middle;
-	color: $white-10;
-	background-color: transparent;
-	border: 1px solid $white-25;
-	border-radius: 15px;
-	font: calc(1rem + 1vmin) $primary-font;
-}
+// .nav-button {
+// 	height: calc(5px + 4vh);
+// 	min-height: 50px;
+// 	width: calc(150px + 5vh);
+// 	min-width: 150px;
+// 	max-width: 225px;
+// 	vertical-align: middle;
+// 	color: $white-10;
+// 	background-color: transparent;
+// 	border: 1px solid $white-25;
+// 	border-radius: 15px;
+// 	font: calc(1rem + 1vmin) $primary-font;
+// }
 
 /*#endregion NavBar*/
 

@@ -38,6 +38,8 @@ const VisionTimer = () => {
           { seconds }
         </div>
         <div id='col-right-control'>
+          <button type='submit' className='vis-button' title='DND Button1'>30 Minutes</button>
+          <button type='submit' className='vis-button' title='DND Button2'>60 Minutes</button>
           <button type='submit' className='vis-button' title='DND Button3'>90 Minutes</button>
         </div>
       </div>

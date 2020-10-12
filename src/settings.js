@@ -1,45 +1,47 @@
 import React, { useState, useEffect } from 'react';
 
 const Settings = () => {
-  const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-
-  function toggle() {
-    setIsActive(! isActive);
-  }
-
-  function reset() {
-    setSeconds(0);
-    setIsActive(false);
-  }
-
-  useEffect(() => {
-    let interval = null;
-    if (isActive) {
-      interval = setInterval(() => {
-        setSeconds(seconds => seconds + 1);
-      }, 1000);
-    } else if (! isActive && seconds !== 0) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isActive, seconds]);
 
   return (
     <main className='main-container'>
-      <div id='timer-wrap'>
-        <div id='col-left-control'>
-          <button type='submit' onClick={ toggle } className='vis-button' title='Play Button'>
-            {isActive ? 'Pause' : 'Start'}
-          </button>
-          <button type='submit' onClick={ reset } className='vis-button' title='Reset Button'>Reset</button>
+      <form>
+        <div className='radio'>
+          <label htmlFor='openApp-switch'>
+            <input type='radio' value='openApp' checked={ true } className='radioSetting' id='openApp-switch' />
+            Start Work Rhythm on Login
+          </label>
         </div>
-        <div id='vision-timer'>
-          { seconds }
+        <div className='radio'>
+          <label htmlFor='startVision-switch'>
+            <input type='radio' value='start-vision' checked={ true } className='radioSetting' id='startVision-switch' />
+            Start vision break interval on Login
+          </label>
         </div>
-        <div id='col-right-control'>
+        <div className='radio'>
+          <label htmlFor='globalDns-switch'>
+            <input type='radio' value='openApp' checked={ false } className='radioSetting' id='globalDns-switch' />
+            Turn off all timers and notifications
+          </label>
         </div>
-      </div>
+        <div className='radio'>
+          <label htmlFor='showVision-switch'>
+            <input type='radio' value='show-task' checked={ true } className='radioSetting' id='showVision-switch' />
+            Show vision break time remaining in toolbar
+          </label>
+        </div>
+        <div className='radio'>
+          <label htmlFor='showTask-switch'>
+            <input type='radio' value='show-taskName' checked={ true } className='radioSetting' id='showTask-switch' />
+            Show current task name in toolbar
+          </label>
+        </div>
+        <div className='radio'>
+          <label htmlFor='taskTime-switch'>
+            <input type='radio' value='show-taskTime' checked={ true } className='radioSetting' id='taskTime-switch' />
+            Show current task time in toolbar
+          </label>
+        </div>
+      </form>
     </main>
   );
 };
