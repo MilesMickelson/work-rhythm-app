@@ -27,20 +27,7 @@ const TaskList = () => {
 
   return (
     <main className='main-container'>
-      <div id='timer-wrap'>
-        <div id='col-left-control'>
-          <button type='submit' onClick={ toggle } className='vis-button' title='Play Button'>
-            {isActive ? 'Pause' : 'Start'}
-          </button>
-          <button type='submit' onClick={ reset } className='vis-button' title='Reset Button'>Reset</button>
-        </div>
-        <div id='vision-timer'>
-          { seconds }
-        </div>
-        <div id='col-right-control'>
-          <button type='submit' className='vis-button' title='DND Button1'>30 Minutes</button>
-        </div>
-      </div>
+      <div>Hello</div>
     </main>
   );
 };
