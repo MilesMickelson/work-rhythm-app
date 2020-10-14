@@ -43,7 +43,6 @@ import * as serviceWorker from './serviceWorker';
 //     debounce: 500
 //   })
 
-
 ReactDOM.render(
   <React.StrictMode>
     <NavBar />

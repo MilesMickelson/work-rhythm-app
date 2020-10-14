@@ -15,7 +15,7 @@ export default class NavBar extends React.Component {
   render() {
     return (
       <div className='main-container'>
-        <nav id='nav-wrap' aria-label='primary'>
+        <nav className='viewPane-wrap' aria-label='primary'>
           <a href='#/' rel='noopener noreferrer'>
             <img src={ list } className='nav-icon' alt='' />
           </a>
