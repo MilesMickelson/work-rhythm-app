@@ -21,28 +21,6 @@
 	align-items: center;
 }
 
-.col-1 {width: 8.33%;}
-.col-2 {width: 16.66%;}
-.col-3 {width: 25%;}
-.col-4 {width: 33.33%;}
-.col-5 {width: 41.66%;}
-.col-6 {width: 50%;}
-.col-7 {width: 58.33%;}
-.col-8 {width: 66.66%;}
-.col-9 {width: 75%;}
-.col-10 {width: 83.33%;}
-.col-11 {width: 91.66%;}
-.col-12 {width: 100%;}
-
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-[class*="col-"] {
-  float: left;
-}
 
 .clearfix-wrap::after {
 	content: "";
@@ -76,7 +54,7 @@ $red15: #4d0000;
 $red10: #330000;
 $red5: #1a0000;
 $aqua: #66ccff;
-$purple:#6600ff;
+$purple:#6600cc;
 
 //-----FONTS-----
 $header-font: Apple Chancery, URW Chancery L, Snell Roundhand, Cursive;
@@ -113,10 +91,6 @@ $primary-font: Verdana, Arial, Times, Courier, Georgia;
 
 .center-wrap {
 	text-align: center;
-}
-
-.em-label {
-	margin: 15px auto 5px 0;
 }
 
 .divider {
@@ -172,9 +146,7 @@ h2 {
 //Page Title
 h3 {
 	@include header-font;
-	text-align: center;
 	font-size: calc(1.75rem + 2vmin);
-	text-decoration: underline;
 	margin: 25px 0 15px 0;
 }
 
@@ -183,8 +155,7 @@ h4 {
   @include header-font;
 	font-size: calc(1.5rem + 1vmin);
 	text-decoration: underline;
-	text-align: center;
-	margin: 20px 0 0 0;
+	margin: 15px 0 0 0;
 }
 
 //Small Section Header
@@ -192,7 +163,6 @@ h5 {
   @include header-font;
 	font-size: calc(1.25rem + 1vmin);
 	text-decoration: underline;
-  text-align: center;
 	margin: 10px 0 0 0;
 }
 
