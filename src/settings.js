@@ -8,15 +8,16 @@ import { indigo } from '@material-ui/core/colors';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import theme from './theme';
 
 const SettingSwitch = withStyles({
   switchBase: {
-    color: indigo[200],
+    color: theme.palette.secondary.light,
     '&$checked': {
-      color: indigo[400],
+      color: theme.palette.secondary.dark,
     },
     '&$checked + $track': {
-      backgroundColor: indigo[400],
+      backgroundColor: theme.palette.secondary.dark,
     },
   },
   checked: {},
@@ -32,10 +33,17 @@ const Settings = () => {
   const [state, setState] = React.useState({
     startOnLogin: true,
     startVisLogin: true,
-    darkTheme: false,
     showVisTime: true,
     showTaskName: true,
     showTaskTime: true,
+    soundVisionStart: false,
+    soundVisionEnd: true,
+    soundTaskStart: false,
+    soundTaskEnd: true,
+    soundPostureStart: true,
+    taskTimerInactive: true,
+    visionTimerInactive: true,
+    postureTimerInactive: true,
     globalDnd: false,
     todoDnd: false,
     visionDnd: false,
@@ -63,10 +71,6 @@ const Settings = () => {
           />
           <h4 className='em-label'>Display</h4>
           <FormControlLabel
-            control={ <SettingSwitch checked={ state.darkTheme } onChange={ handleChange } name='darkTheme' id='darkTheme' /> }
-            label='Dark theme'
-          />
-          <FormControlLabel
             control={ <SettingSwitch checked={ state.showVisTime } onChange={ handleChange } name='showVisTime' id='showVisTime' /> }
             label='Show vision break time remaining in toolbar'
           />
@@ -77,6 +81,48 @@ const Settings = () => {
           <FormControlLabel
             control={ <SettingSwitch checked={ state.showTaskTime } onChange={ handleChange } name='showTaskTime' id='showTaskTime' /> }
             label='Show current task time in toolbar'
+          />
+          <h4 className='em-label'>Sound</h4>
+          <FormControlLabel
+            control={ <SettingSwitch checked={ state.soundVisionStart } onChange={ handleChange } name='soundVisionStart' id='soundVisionStart' /> }
+            label='Play sound on vision break start'
+            className={ classes.label }
+          />
+          <FormControlLabel
+            control={ <SettingSwitch checked={ state.soundVisionEnd } onChange={ handleChange } name='soundVisionEnd' id='soundVisionEnd' /> }
+            label='Play sound on vision break end'
+            className={ classes.label }
+          />
+          <FormControlLabel
+            control={ <SettingSwitch checked={ state.soundTaskStart } onChange={ handleChange } name='soundTaskStart' id='soundTaskStart' /> }
+            label='Play sound on To-Do item timer start'
+            className={ classes.label }
+          />
+          <FormControlLabel
+            control={ <SettingSwitch checked={ state.soundTaskEnd } onChange={ handleChange } name='soundTaskEnd' id='soundTaskEnd' /> }
+            label='Play sound on To-Do item timer end'
+            className={ classes.label }
+          />
+          <FormControlLabel
+            control={ <SettingSwitch checked={ state.soundPostureStart } onChange={ handleChange } name='soundPostureStart' id='soundPostureStart' /> }
+            label='Play sound on start of posture change interval'
+            className={ classes.label }
+          />
+          <h4 className='em-label'>Notifications</h4>
+          <FormControlLabel
+            control={ <SettingSwitch checked={ state.taskTimerInactive } onChange={ handleChange } name='taskTimerInactive' id='taskTimerInactive' /> }
+            label='Remind me if a To-Do item is not activated after 5 minutes'
+            className={ classes.label }
+          />
+          <FormControlLabel
+            control={ <SettingSwitch checked={ state.visionTimerInactive } onChange={ handleChange } name='visionTimerInactive' id='visionTimerInactive' /> }
+            label='Remind me if my vision break timer is not set after 5 minutes'
+            className={ classes.label }
+          />
+          <FormControlLabel
+            control={ <SettingSwitch checked={ state.postureTimerInactive } onChange={ handleChange } name='postureTimerInactive' id='postureTimerInactive' /> }
+            label='Remind me if my posture change timer is not set after 5 minutes'
+            className={ classes.label }
           />
           <h4 className='underline'>Do Not Disturb</h4>
           <FormControlLabel
