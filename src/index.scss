@@ -32,41 +32,50 @@
 
 //-----COLORS-----
 $black: #000000;
-$black-5: #0d0d0d;
-$black-10: #1a1a1a;
-$black-15: #262626;
-$black-20: #333333;
-$black-25: #404040;
+$black2: #0d0d0d;
+$black3: #1a1a1a;
+$black4: #262626;
+$black5: #333333;
+$black6: #404040;
 $white: #ffffff;
-$white-5: #f2f2f2;
-$white-10: #e6e6e6;
-$white-15: #d9d9d9;
-$white-20: #cccccc;
-$white-25: #bfbfbf;
-$red50: #ff0000;
-$red45: #e60000;
-$red40: #cc0000;
-$red35: #b30000;
-$red30: #990000;
-$red25: #800000;
-$red20: #660000;
-$red15: #4d0000;
-$red10: #330000;
-$red5: #1a0000;
-$aqua: #66ccff;
-$purple:#6600cc;
+$white2: #f2f2f2;
+$white3: #e6e6e6;
+$white4: #d9d9d9;
+$white5: #cccccc;
+$white6: #bfbfbf;
+$aqua1: #66ccff;
+$aqua2: #66c2fc;
+$aqua3: #66b8fa;
+$aqua4: #66adf7;
+$aqua5: #66a3f5;
+$aqua6: #6699f2;
+$aqua7: #668ff0;
+$aqua8: #6685ed;
+$aqua9: #667aeb;
+$aqua10: #6670e8;
+$aqpurple: #6666e6;
+$purple10: #665ce3;
+$purple9: #6652e0;
+$purple8: #6647de;
+$purple7: #663ddb;
+$purple6: #6633d9;
+$purple5: #6629d6;
+$purple4: #661fd4;
+$purple3: #6614d1;
+$purple2: #660acf;
+$purple1: #6600cc;
 
 //-----FONTS-----
 $header-font: Apple Chancery, URW Chancery L, Snell Roundhand, Cursive;
 $primary-font: Verdana, Arial, Times, Courier, Georgia;
 
 @mixin header-font {
-	color: $black-5;
+	color: $black2;
 	font-family: $header-font;
 }
 
 @mixin primary-font {
-	color: $white-10;
+	color: $white3;
 	font-family: $primary-font;
 }
 
@@ -97,7 +106,6 @@ $primary-font: Verdana, Arial, Times, Courier, Georgia;
 	width: 100%;
 }
 
-
 /*#endregion Global Styling*/
 
 /*#region HTML Tag Styling*/
@@ -106,15 +114,15 @@ $primary-font: Verdana, Arial, Times, Courier, Georgia;
 	box-sizing: border-box;
 }
 
-html {
-  height: 100vh;
-	margin: 0;
-	background: linear-gradient(to bottom right, $aqua 0%, $purple 100%) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
+// html {
+//   height: 100vh;
+// 	margin: 0;
+// 	background: linear-gradient(130deg, #e6e6e6 0%, #66ccff 100%) no-repeat center center fixed;
+//   -webkit-background-size: cover;
+//   -moz-background-size: cover;
+//   -o-background-size: cover;
+// 	background-size: cover;
+// }
 
 //Header Wraps
 header {
@@ -243,13 +251,17 @@ summary {
 
 /*#region NavBar*/
 
-// #nav-wrap {
-// 	display: flex;
-// 	flex-flow: row wrap;
-// 	justify-content: space-evenly;
-// 	align-items: center;
-// 	margin-top: 15px;
-// }
+.navBar-wrap {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 100%;
+	max-width: 960px;
+	min-width: 400px;
+	margin: 0px auto;
+	padding: 1% 0;
+}
 
 // .nav-button {
 // 	height: calc(5px + 4vh);
@@ -269,20 +281,9 @@ summary {
 
 /*#region ToDo'sPane*/
 
-.viewPane-wrap {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-evenly;
-	align-items: center;
-	width: 100%;
-	max-width: 700px;
-	min-width: 400px;
-	margin: 5px auto;
-}
-
 .taskItem {
 	width: 100%;
-	border: 1px solid $white-25;
+	border: 1px solid $white5;
 	border-radius: 5px;
 	background: transparent;
 	margin: 15px auto;
@@ -307,9 +308,9 @@ summary {
 
 .vis-button {
 	width: 100%;
-	color: $white-10;
+	color: $white2;
 	background-color: transparent;
-	border: 1px solid $white-25;
+	border: 1px solid $white5;
 	border-radius: 15px;
 	font: calc(1rem + 1vmin) $primary-font;
 }
@@ -319,9 +320,9 @@ summary {
 	width: 300px;
 	vertical-align: middle;
 	text-align: center;
-	color: $white-10;
+	color: $white2;
 	background-color: transparent;
-	border: 3px solid $white-25;
+	border: 3px solid $white5;
 	border-radius: 50%;
 }
 
