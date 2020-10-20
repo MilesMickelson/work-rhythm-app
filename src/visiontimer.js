@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  fragmentContainer: {
+    height: '100%',
+    width: '100%',
+    maxWidth: '960px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+}));
+
 const VisionTimer = () => {
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
@@ -25,8 +37,9 @@ const VisionTimer = () => {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
+  const classes = useStyles();
   return (
-    <>
+    <div className={ classes.fragmentContainer }>
       <div id='timer-wrap'>
         <div id='col-left-control'>
           <button type='submit' onClick={ toggle } className='vis-button' title='Play Button'>
@@ -43,7 +56,7 @@ const VisionTimer = () => {
           <button type='submit' className='vis-button' title='DND Button3'>90 Minutes</button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

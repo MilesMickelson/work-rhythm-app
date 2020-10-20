@@ -26,7 +26,6 @@ const SettingSwitch = withStyles({
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  label: {},
 }));
 
 const Settings = () => {

@@ -50,7 +50,7 @@ import NavBar from './navbar';
 
 export default function App() {
   const useStyles = makeStyles(() => ({
-    container: {
+    appContainer: {
       background: 'linear-gradient(130deg, #26a0da 0%, #314755 100%)',
       height: '100%',
       maxWidth: '100%',
@@ -60,7 +60,7 @@ export default function App() {
   const classes = useStyles();
   return (
     <ThemeProvider theme={ theme }>
-      <Container className={ classes.container } disableGutters='true'>
+      <Container className={ classes.appContainer } disableGutters='true'>
         <CssBaseline />
         <NavBar />
         <Router>
