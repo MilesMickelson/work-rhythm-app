@@ -2,6 +2,30 @@ import React, { useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+// import { useIdleTimer } from 'react-idle-timer';
+// useEffect(() => {
+//   const handleOnIdle = event => {
+//     console.log('user is idle', event)
+//     console.log('last active', getLastActiveTime())
+//   }
+
+//   const handleOnActive = event => {
+//     console.log('user is active', event)
+//     console.log('time remaining', getRemainingTime())
+//   }
+
+//   const handleOnAction = (e) => {
+//     console.log('user did something', e)
+//   }
+
+//   const { getRemainingTime, getLastActiveTime } = useIdleTimer({
+//     timeout: 1000 * 60 * 15,
+//     onIdle: handleOnIdle,
+//     onActive: handleOnActive,
+//     onAction: handleOnAction,
+//     debounce: 500
+//   });
+
 const useStyles = makeStyles((theme) => ({
   fragmentContainer: {
     height: '100%',
@@ -12,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const VisionTimer = () => {
+const Vision = () => {
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
@@ -60,4 +84,4 @@ const VisionTimer = () => {
   );
 };
 
-export default VisionTimer;
+export default Vision;

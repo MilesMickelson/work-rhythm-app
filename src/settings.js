@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {
   makeStyles,
   withStyles,
 } from '@material-ui/core/styles';
-import { indigo } from '@material-ui/core/colors';
 import Switch from '@material-ui/core/Switch';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';

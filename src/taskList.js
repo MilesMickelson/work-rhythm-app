@@ -9,9 +9,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import AlarmIcon from '@material-ui/icons/Alarm';
+// import IconButton from '@material-ui/core/IconButton';
+// import DeleteIcon from '@material-ui/icons/Delete';
+// import AlarmIcon from '@material-ui/icons/Alarm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '960px',
     marginLeft: 'auto',
     marginRight: 'auto',
+    marginTop: '15px',
   },
 }));
 
@@ -87,36 +88,36 @@ const rows = [
   { id: 1, priority: 'Urgent', toDoItem: 'Write more code', dateAdded: '10-19', dateDue: '10-25', taskTimeRemaining: '6d-12h-35m' },
 ];
 
-export default function TaskList() {
+export default function Workflow() {
   const classes = useStyles();
   return (
     <>
       <div className={ classes.fragmentContainer }>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={ <ExpandMoreIcon /> }
-          aria-label='Expand'
-          aria-controls='additional-actions1-content'
-          id='additional-actions1-header'
-        >
-          <FormControlLabel
-            aria-label='Acknowledge'
-            onClick={ (event) => event.stopPropagation() }
-            onFocus={ (event) => event.stopPropagation() }
-            control={ <Checkbox /> }
-            label='I acknowledge that I should stop the click event propagation'
-          />
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography color='textSecondary'>
-            The click event of the nested action will propagate up and expand the accordion unless
-            you explicitly stop it.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <div style={ { height: 820, width: '100%' } }>
-        <DataGrid rows={ rows } columns={ columns } pageSize={ 10 } checkboxSelection />
-      </div>
+        <Accordion>
+          <AccordionSummary
+            expandIcon={ <ExpandMoreIcon /> }
+            aria-label='Expand'
+            aria-controls='additional-actions1-content'
+            id='additional-actions1-header'
+          >
+            <FormControlLabel
+              aria-label='Acknowledge'
+              onClick={ (event) => event.stopPropagation() }
+              onFocus={ (event) => event.stopPropagation() }
+              control={ <Checkbox /> }
+              label='I acknowledge that I should stop the click event propagation'
+            />
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography color='textSecondary'>
+              The click event of the nested action will propagate up and expand the accordion unless
+              you explicitly stop it.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <div style={ { height: 820, width: '100%' } }>
+          <DataGrid rows={ rows } columns={ columns } pageSize={ 10 } checkboxSelection />
+        </div>
       </div>
     </>
   );

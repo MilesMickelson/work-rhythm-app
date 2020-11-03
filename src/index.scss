@@ -53,8 +53,8 @@ $aqua7: #668ff0;
 $aqua8: #6685ed;
 $aqua9: #667aeb;
 $aqua10: #6670e8;
-$aqpurple: #6666e6;
-$purple10: #665ce3;
+$aqua11: #6666e6;
+$purple0: #665ce3;
 $purple9: #6652e0;
 $purple8: #6647de;
 $purple7: #663ddb;
@@ -64,6 +64,12 @@ $purple4: #661fd4;
 $purple3: #6614d1;
 $purple2: #660acf;
 $purple1: #6600cc;
+
+$primaryLight: #E5F3F9;
+$primaryDark: #3D7E97;
+$primaryBold: #BE2165;
+$secondaryBold: #EEC636;
+$dark: #330C1D;
 
 //-----FONTS-----
 $header-font: Apple Chancery, URW Chancery L, Snell Roundhand, Cursive;
@@ -82,9 +88,9 @@ $primary-font: Verdana, Arial, Times, Courier, Georgia;
 //-----ANIMATIONS-----
 
 //-----STYLING-----
-@mixin cursor {
-	cursor: crosshair;
-}
+// @mixin cursor {
+// 	cursor: crosshair;
+// }
 
 .visible {
 	display: normal;
@@ -233,9 +239,9 @@ a {
   text-decoration: underline;
 }
 
-a:hover {
-	@include cursor;
-}
+// a:hover {
+// 	@include cursor;
+// }
 
 details {
   display: block;

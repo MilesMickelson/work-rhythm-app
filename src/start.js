@@ -2,14 +2,14 @@ const electron = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app } = electron.app;
+const { BrowserWindow } = electron.BrowserWindow;
 
 let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1000,
+    width: 960,
     height: 2000,
     webPreferences: {
       nodeIntegration: true,

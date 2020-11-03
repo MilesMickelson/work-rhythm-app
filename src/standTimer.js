@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StandTimer = () => {
+const Posture = () => {
   const classes = useStyles();
   return (
     <div className={ classes.fragmentContainer }>
@@ -21,4 +21,4 @@ const StandTimer = () => {
   );
 };
 
-export default StandTimer;
+export default Posture;

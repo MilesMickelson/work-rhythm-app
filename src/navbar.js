@@ -1,54 +1,205 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 
-import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 
-const chair = require('./images/chair.png');
-const eye = require('./images/eye.png');
-const list = require('./images/list.png');
-const settings = require('./images/settings.png');
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+import CheckIcon from '@material-ui/icons/CheckCircleOutline';
+import VisionIcon from '@material-ui/icons/Visibility';
+import PostureIcon from '@material-ui/icons/AccessibilityNew';
+import SettingsIcon from '@material-ui/icons/Settings';
+import Workflow from './taskList';
+import Vision from './visiontimer';
+import Posture from './standTimer';
+import Settings from './settings';
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role='tabpanel'
+      hidden={ value !== index }
+      id={ `nav-tabpanel-${index}` }
+      aria-labelledby={ `nav-tab-${index}` }
+      {...other}
+    >
+      {value === index && (
+        <Box p={ 4 }>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `nav-tab-${index}`,
+    'aria-controls': `nav-tabpanel-${index}`,
+  };
+}
+
+function LinkTab(props) {
+  return (
+    <Tab
+      component='a'
+      onClick={ (event) => {
+        event.preventDefault();
+      } }
+      { ...props }
+    />
+  );
+}
 
 const useStyles = makeStyles((theme) => ({
-  fragmentContainer: {
-    height: '100%',
+  navPaper: {
     width: '100%',
-    maxWidth: '960px',
+    maxWidth: 960,
     marginLeft: 'auto',
     marginRight: 'auto',
   },
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    '& > *': {
-      margin: theme.spacing(1),
-    },
+    flexGrow: 1,
   },
 }));
 
 const NavBar = () => {
   const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <div className={ classes.fragmentContainer }>
-      <nav className={ classes.root } aria-label='primary'>
-        <ButtonGroup color='primary' aria-label='text primary button group'>
-          <a href='#/' type='button' rel='noopener noreferrer'>
-            <img src={ list } className='nav-icon' alt='' />
-          </a>
-          <a href='#/VisionTimer' type='button' rel='noopener noreferrer'>
-            <img src={ eye } className='nav-icon' alt='' />
-          </a>
-          <a href='#/StandTimer' type='button' rel='noopener noreferrer'>
-            <img src={ chair } className='nav-icon' alt='' />
-          </a>
-          <a href='#/Settings' type='button' rel='noopener noreferrer'>
-            <img src={ settings } className='nav-icon' alt='' />
-          </a>
-        </ButtonGroup>
-      </nav>
+    <div className={ classes.navPaper }>
+      <AppBar position='static'>
+        <Tabs
+          variant='fullWidth'
+          value={ value }
+          onChange={ handleChange }
+          aria-label='nav tabs example'
+        >
+          <LinkTab icon={ <CheckIcon /> } label='Workflow' component={ Workflow } to='/Workflow' {...a11yProps(0)} />
+          <LinkTab icon={ <VisionIcon /> } label='Vision' component={ Vision } to='/Vision' {...a11yProps(1)} />
+          <LinkTab icon={ <PostureIcon /> } label='Posture' component={ Posture } to='/Posture' {...a11yProps(2)} />
+          <LinkTab icon={ <SettingsIcon /> } label='Settings' component={ Settings } to='/Settings' {...a11yProps(3)} />
+        </Tabs>
+        <TabPanel value={ value } index={ 0 }>
+          <Workflow />
+        </TabPanel>
+        <TabPanel value={ value } index={ 1 }>
+          <Vision />
+        </TabPanel>
+        <TabPanel value={ value } index={ 2 }>
+          <Posture />
+        </TabPanel>
+        <TabPanel value={ value } index={ 3 }>
+          <Settings />
+        </TabPanel>
+      </AppBar>
     </div>
   );
 };
 
 export default NavBar;
+
+// const NavBar = (props) => {
+//   const classes = useStyles();
+// const [value, setValue] = React.useState(0);
+
+// const handleChange = (event, newValue) => {
+//   setValue(newValue);
+// };
+
+// const handleCallToRouter = (value) => {
+//   this.props.history.push(value);
+// };
+
+//   return (
+//     <Router>
+//       <Paper round elevation={ 3 } variant='outlined fullWidth' className={ classes.navPaper }>
+//         <Tabs
+//           variant='fullWidth'
+//           // value={ value }
+//           // onChange={ handleChange }
+//           value={ value }
+//           onChange={ handleCallToRouter }
+//           indicatorColor='secondary'
+//           textColor='secondary'
+//           aria-label='icon label tabs example'
+//           centered
+//         >
+//           <Tab icon={ <CheckIcon fontSize='large' /> } label='Workflow' value='/Workflow'>
+//             <Route exact path='/Workflow' component={ Workflow } />
+//           </Tab>
+//           <Tab icon={ <VisionIcon fontSize='large' /> } label='Vision' value='/Vision'>
+//             <Route exact path='/Vision' component={ Vision } />
+//           </Tab>
+//           <Tab icon={ <PostureIcon fontSize='large' /> } label='Posture' value='/Posture'>
+//             <Route exact path='/Posture' component={ Posture } />
+//           </Tab>
+//           <Tab icon={ <SettingsIcon fontSize='large' /> } label='Settings' value='/Settings'>
+//             <Route exact path='/Settings' component={ Settings } />
+//           </Tab>
+//         </Tabs>
+//       </Paper>
+//     </Router>
+//   );
+// };
+
+// portfolio Navigation
+// export default class NavBar extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       home: true,
+//     };
+//     this.toggleHome = this.toggleHome.bind(this);
+//   }
+
+//   toggleHome() {
+//     this.setState({
+//       home: true,
+//       projects: false,
+//       credentials: false,
+//       about: false,
+//     });
+//   }
+
+//   render() {
+//     return (
+//       <div className='container-A'>
+//         <div className='container-B'>
+//           <nav id='nav-wrap' aria-label='primary'>
+//             <a
+//               title='Home Page'
+//               href='#/'
+//               rel='noopener noreferrer'
+//               onClick={ this.toggleHome }
+//             >
+//               <img
+//                 className={ `nav-icon ${this.state.home ? 'isSpinning' : 'notSpinning'}` }
+//                 id='wheel'
+//                 src={ wheel }
+//                 alt='Home'
+//               />
+//             </a>
+//           </nav>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
