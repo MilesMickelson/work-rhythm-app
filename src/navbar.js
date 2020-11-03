@@ -13,14 +13,16 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import CheckIcon from '@material-ui/icons/CheckCircleOutline';
+import ListIcon from '@material-ui/icons/FormatListBulleted';
 import VisionIcon from '@material-ui/icons/Visibility';
 import PostureIcon from '@material-ui/icons/AccessibilityNew';
+import AlarmIcon from '@material-ui/icons/Alarm';
 import SettingsIcon from '@material-ui/icons/Settings';
 
 import Workflow from './taskList';
 import Vision from './visiontimer';
 import Posture from './standTimer';
+import Custom from './customTime';
 import Settings from './settings';
 
 function TabPanel(props) {
@@ -36,7 +38,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={ 4 }>
+        <Box p={ 5 }>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -95,34 +97,39 @@ const NavBar = () => {
 
   return (
     <>
-      <AppBar position='static'>
-        <Tabs
-          variant='fullWidth'
-          value={ value }
-          onChange={ handleChange }
-          aria-label='nav tabs example'
-          className={ classes.navPaper }
-        >
-          <LinkTab icon={ <CheckIcon /> } label='Workflow' href='/Workflow' {...a11yProps(0)} />
-          <LinkTab icon={ <VisionIcon /> } label='Vision' href='/Vision' {...a11yProps(1)} />
-          <LinkTab icon={ <PostureIcon /> } label='Posture' href='/Posture' {...a11yProps(2)} />
-          <LinkTab icon={ <SettingsIcon /> } label='Settings' href='/Settings' {...a11yProps(3)} />
-        </Tabs>
-      </AppBar>
-      <Router>
-        <TabPanel value={ value } index={ 0 }>
-          <Workflow />
-        </TabPanel>
-        <TabPanel value={ value } index={ 1 }>
-          <Vision />
-        </TabPanel>
-        <TabPanel value={ value } index={ 2 }>
-          <Posture />
-        </TabPanel>
-        <TabPanel value={ value } index={ 3 }>
-          <Settings />
-        </TabPanel>
-      </Router>
+      <div className={ classes.navPaper }>
+        <AppBar position='static'>
+          <Tabs
+            variant='fullWidth'
+            value={ value }
+            onChange={ handleChange }
+            aria-label='nav tabs example'
+          >
+            <LinkTab icon={ <ListIcon /> } label='Workflow' href='/Workflow' {...a11yProps(0)} />
+            <LinkTab icon={ <VisionIcon /> } label='Vision' href='/Vision' {...a11yProps(1)} />
+            <LinkTab icon={ <PostureIcon /> } label='Posture' href='/Posture' {...a11yProps(2)} />
+            <LinkTab icon={ <AlarmIcon /> } label='Custom' href='/Custom' {...a11yProps(3)} />
+            <LinkTab icon={ <SettingsIcon /> } label='Settings' href='/Settings' {...a11yProps(4)} />
+          </Tabs>
+        </AppBar>
+        <Router>
+          <TabPanel value={ value } index={ 0 }>
+            <Workflow />
+          </TabPanel>
+          <TabPanel value={ value } index={ 1 }>
+            <Vision />
+          </TabPanel>
+          <TabPanel value={ value } index={ 2 }>
+            <Posture />
+          </TabPanel>
+          <TabPanel value={ value } index={ 3 }>
+            <Custom />
+          </TabPanel>
+          <TabPanel value={ value } index={ 4 }>
+            <Settings />
+          </TabPanel>
+        </Router>
+      </div>
     </>
   );
 };
