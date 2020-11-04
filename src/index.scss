@@ -120,16 +120,6 @@ $primary-font: Verdana, Arial, Times, Courier, Georgia;
 	box-sizing: border-box;
 }
 
-// html {
-//   height: 100vh;
-// 	margin: 0;
-// 	background: linear-gradient(130deg, #e6e6e6 0%, #66ccff 100%) no-repeat center center fixed;
-//   -webkit-background-size: cover;
-//   -moz-background-size: cover;
-//   -o-background-size: cover;
-// 	background-size: cover;
-// }
-
 //Header Wraps
 header {
   display: visible;
@@ -255,50 +245,6 @@ summary {
 
 /*#endregion HTML Tag Styling*/
 
-/*#region NavBar*/
-
-.navBar-wrap {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-evenly;
-	align-items: center;
-	width: 100%;
-	max-width: 960px;
-	min-width: 400px;
-	margin: 0px auto;
-	padding: 1% 0;
-}
-
-// .nav-button {
-// 	height: calc(5px + 4vh);
-// 	min-height: 50px;
-// 	width: calc(150px + 5vh);
-// 	min-width: 150px;
-// 	max-width: 225px;
-// 	vertical-align: middle;
-// 	color: $white-10;
-// 	background-color: transparent;
-// 	border: 1px solid $white-25;
-// 	border-radius: 15px;
-// 	font: calc(1rem + 1vmin) $primary-font;
-// }
-
-/*#endregion NavBar*/
-
-/*#region ToDo'sPane*/
-
-.taskItem {
-	width: 100%;
-	border: 1px solid $white5;
-	border-radius: 5px;
-	background: transparent;
-	margin: 15px auto;
-	padding: 3px 8px;
-	@include primary-font;
-}
-
-/*#endregion ToDo'sPane*/
-
 /*#region VisionPane*/
 
 #timer-wrap {
@@ -337,23 +283,4 @@ summary {
 	margin-left: 50px;
 }
 
-
 /*#endregion VisionPane*/
-
-/*#region PosturePane*/
-
-/*#endregion PosturePane*/
-
-/*#region AppSettings*/
-
-#settings-wrap {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: flex-start;
-	width: 75%;
-	min-width: 650px;
-	max-width: 1000px;
-	margin: 5px auto;
-}
-
-/*#endregion AppSettings*/

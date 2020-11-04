@@ -4,24 +4,25 @@ import { MemoryRouter as Router } from 'react-router';
 
 import {
   makeStyles,
-  withStyles
-} from '@material-ui/core/styles';
+  AppBar,
+  Tabs,
+  Tab,
+  Box
+} from '@material-ui/core';
 
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-
-import ListIcon from '@material-ui/icons/FormatListBulleted';
-import VisionIcon from '@material-ui/icons/Visibility';
-import PostureIcon from '@material-ui/icons/AccessibilityNew';
-import AlarmIcon from '@material-ui/icons/Alarm';
-import SettingsIcon from '@material-ui/icons/Settings';
+import {
+  FormatListBulleted as ListIcon,
+  Visibility as VisionIcon,
+  AccessibilityNew as PostureIcon,
+  Equalizer as StatsIcon,
+  Alarm as AlarmIcon,
+  Settings as SettingsIcon,
+} from '@material-ui/icons';
 
 import Workflow from './taskList';
 import Vision from './visiontimer';
 import Posture from './standTimer';
+import Statistics from './stats';
 import Custom from './customTime';
 import Settings from './settings';
 
@@ -38,19 +39,17 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={ 5 }>
-          <Typography>{children}</Typography>
-        </Box>
+        <Box>{children}</Box>
       )}
     </div>
   );
 }
 
 TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
+// children: PropTypes.node, --included in Mat Ui's original tabpanel api doc above index
 
 function a11yProps(index) {
   return {
@@ -82,9 +81,6 @@ const useStyles = makeStyles(() => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  root: {
-    flexGrow: 1,
-  },
 }));
 
 const NavBar = () => {
@@ -103,13 +99,50 @@ const NavBar = () => {
             variant='fullWidth'
             value={ value }
             onChange={ handleChange }
-            aria-label='nav tabs example'
+            aria-label='navigation bar'
           >
-            <LinkTab icon={ <ListIcon /> } label='Workflow' href='/Workflow' {...a11yProps(0)} />
-            <LinkTab icon={ <VisionIcon /> } label='Vision' href='/Vision' {...a11yProps(1)} />
-            <LinkTab icon={ <PostureIcon /> } label='Posture' href='/Posture' {...a11yProps(2)} />
-            <LinkTab icon={ <AlarmIcon /> } label='Custom' href='/Custom' {...a11yProps(3)} />
-            <LinkTab icon={ <SettingsIcon /> } label='Settings' href='/Settings' {...a11yProps(4)} />
+            <LinkTab
+              icon={ <ListIcon /> }
+              label='Workflow'
+              href='/Workflow'
+              aria-label='workflow pane'
+              {...a11yProps(0)}
+            />
+            <LinkTab
+              icon={ <VisionIcon /> }
+              label='Vision'
+              href='/Vision'
+              aria-label='vision pane'
+              {...a11yProps(1)}
+            />
+            <LinkTab
+              icon={ <PostureIcon /> }
+              label='Posture'
+              href='/Posture'
+              aria-label='posture pane'
+              {...a11yProps(2)}
+            />
+            <LinkTab
+              icon={ <AlarmIcon /> }
+              label='Custom'
+              href='/Custom'
+              aria-label='custom pane'
+              {...a11yProps(3)}
+            />
+            <LinkTab
+              icon={ <StatsIcon /> }
+              label='Statistics'
+              href='/Stats'
+              aria-label='statistics pane'
+              {...a11yProps(4)}
+            />
+            <LinkTab
+              icon={ <SettingsIcon /> }
+              label='Settings'
+              href='/Settings'
+              aria-label='settings pane'
+              {...a11yProps(5)}
+            />
           </Tabs>
         </AppBar>
         <Router>
@@ -126,6 +159,9 @@ const NavBar = () => {
             <Custom />
           </TabPanel>
           <TabPanel value={ value } index={ 4 }>
+            <Statistics />
+          </TabPanel>
+          <TabPanel value={ value } index={ 5 }>
             <Settings />
           </TabPanel>
         </Router>
