@@ -1,11 +1,5 @@
 /*#region Global Styling*/
 //-----SCAFFOLDING-----
-.main-container {
-	height: 100%;
-	width: 100%;
-	min-width: 750px;
-	max-width: 1000px;
-}
 
 @mixin row-center {
 	display: flex;
@@ -20,7 +14,6 @@
 	justify-content: center;
 	align-items: center;
 }
-
 
 .clearfix-wrap::after {
 	content: "";
@@ -65,10 +58,15 @@ $purple3: #6614d1;
 $purple2: #660acf;
 $purple1: #6600cc;
 
-$primaryLight: #E5F3F9;
-$primaryDark: #3D7E97;
-$primaryBold: #BE2165;
-$secondaryBold: #EEC636;
+$primaryMain: #3D7E97;
+$primaryLight: #6fadc8;
+$primaryDark: #005269;
+$secondaryMain: #76ff03;
+$secondaryLight: #91ff35;
+$secondaryDark: #52b202;
+$red: #BE2165;
+$yellow: #EEC636;
+$light: #E1E2E1;
 $dark: #330C1D;
 
 //-----FONTS-----
@@ -246,6 +244,7 @@ summary {
 /*#endregion HTML Tag Styling*/
 
 /*#region VisionPane*/
+
 
 #timer-wrap {
   @include row-center;

@@ -17,12 +17,13 @@ import NavBar from './navbar';
 const App = () => {
   const useStyles = makeStyles(() => ({
     appContainer: {
-      background: 'linear-gradient(130deg, #B2D1DD 0%, #406371 100%)',
-      height: '100vh',
+      height: '100%',
       maxWidth: '100%',
       margin: '0',
       backgroundSize: 'cover',
       backgroundPosition: 'fixed',
+      background: 'linear-gradient(130deg, #B2D1DD 0%, #406371 100%)',
+      paddingTop: 5,
     },
   }));
 

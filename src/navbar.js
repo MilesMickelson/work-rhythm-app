@@ -19,11 +19,11 @@ import {
   Settings as SettingsIcon,
 } from '@material-ui/icons';
 
-import Workflow from './taskList';
-import Vision from './visiontimer';
-import Posture from './standTimer';
+import Workflow from './workflow';
+import Vision from './vision';
+import Posture from './posture';
 import Statistics from './stats';
-import Custom from './customTime';
+import Custom from './custom';
 import Settings from './settings';
 
 function TabPanel(props) {
@@ -69,18 +69,28 @@ function LinkTab(props) {
     />
   );
 }
-const useStyles = makeStyles(() => ({
-  appContainer: {
-    background: 'linear-gradient(130deg, #B2D1DD 0%, #406371 100%)',
-    height: '100%',
-    maxWidth: '100%',
-  },
-  navPaper: {
+const useStyles = makeStyles((theme) => ({
+  navWrap: {
     width: '100%',
     maxWidth: 960,
     marginLeft: 'auto',
     marginRight: 'auto',
+    backgroundColor: theme.palette.primary.light,
+    borderTopWidth: 5,
+    borderTopStyle: 'solid',
+    borderTopColor: theme.palette.primary.dark,
   },
+  linkTab: {
+    '&:hover': {
+      color: theme.palette.secondary.light,
+    },
+    '&:active': {
+      color: theme.palette.secondary.light,
+    },
+    '&:focus': {
+      color: theme.palette.secondary.light,
+    },
+  }
 }));
 
 const NavBar = () => {
@@ -93,7 +103,7 @@ const NavBar = () => {
 
   return (
     <>
-      <div className={ classes.navPaper }>
+      <div className={ classes.navWrap }>
         <AppBar position='static'>
           <Tabs
             variant='fullWidth'
@@ -105,6 +115,7 @@ const NavBar = () => {
               icon={ <ListIcon /> }
               label='Workflow'
               href='/Workflow'
+              className={ classes.linkTab }
               aria-label='workflow pane'
               {...a11yProps(0)}
             />
@@ -112,6 +123,7 @@ const NavBar = () => {
               icon={ <VisionIcon /> }
               label='Vision'
               href='/Vision'
+              className={ classes.linkTab }
               aria-label='vision pane'
               {...a11yProps(1)}
             />
@@ -119,6 +131,7 @@ const NavBar = () => {
               icon={ <PostureIcon /> }
               label='Posture'
               href='/Posture'
+              className={ classes.linkTab }
               aria-label='posture pane'
               {...a11yProps(2)}
             />
@@ -126,6 +139,7 @@ const NavBar = () => {
               icon={ <AlarmIcon /> }
               label='Custom'
               href='/Custom'
+              className={ classes.linkTab }
               aria-label='custom pane'
               {...a11yProps(3)}
             />
@@ -133,6 +147,7 @@ const NavBar = () => {
               icon={ <StatsIcon /> }
               label='Statistics'
               href='/Stats'
+              className={ classes.linkTab }
               aria-label='statistics pane'
               {...a11yProps(4)}
             />
@@ -140,11 +155,13 @@ const NavBar = () => {
               icon={ <SettingsIcon /> }
               label='Settings'
               href='/Settings'
+              className={ classes.linkTab }
               aria-label='settings pane'
               {...a11yProps(5)}
             />
           </Tabs>
         </AppBar>
+        </div>
         <Router>
           <TabPanel value={ value } index={ 0 }>
             <Workflow />
@@ -165,7 +182,6 @@ const NavBar = () => {
             <Settings />
           </TabPanel>
         </Router>
-      </div>
     </>
   );
 };

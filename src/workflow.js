@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-import { makeStyles } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Typography from '@material-ui/core/Typography';
+import {
+  makeStyles,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Checkbox,
+  FormControlLabel,
+  Typography
+} from '@material-ui/core';
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 // import IconButton from '@material-ui/core/IconButton';
 // import DeleteIcon from '@material-ui/icons/Delete';
