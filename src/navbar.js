@@ -7,7 +7,9 @@ import {
   AppBar,
   Tabs,
   Tab,
-  Box
+  Box,
+  BottomNavigation,
+  BottomNavigationAction
 } from '@material-ui/core';
 
 import {
@@ -18,6 +20,9 @@ import {
   Alarm as AlarmIcon,
   Settings as SettingsIcon,
 } from '@material-ui/icons';
+import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
+import InfoIcon from '@material-ui/icons/Info';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import Workflow from './workflow';
 import Vision from './vision';
@@ -25,6 +30,8 @@ import Posture from './posture';
 import Statistics from './stats';
 import Custom from './custom';
 import Settings from './settings';
+import About from './about';
+import Account from './account';
 
 function TabPanel(props) {
   const {
@@ -91,7 +98,30 @@ const useStyles = makeStyles((theme) => ({
     '&:focus': {
       color: theme.palette.secondary.light,
     },
-  }
+  },
+  footerWrap: {
+    width: '100%',
+    maxWidth: 960,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 5,
+    backgroundColor: theme.palette.primary.main,
+    borderBottomWidth: 5,
+    borderBottomStyle: 'solid',
+    borderBottomColor: theme.palette.primary.dark,
+  },
+  footerIcon: {
+    '&:hover': {
+      color: theme.palette.secondary.light,
+    },
+    '&:active': {
+      color: theme.palette.secondary.light,
+      top: 2,
+    },
+    '&:focus': {
+      color: theme.palette.secondary.light,
+    },
+  },
 }));
 
 const NavBar = () => {
@@ -182,7 +212,25 @@ const NavBar = () => {
         <TabPanel value={ value } index={ 5 }>
           <Settings />
         </TabPanel>
+        <TabPanel value={ value } index={ 6 }>
+          <About />
+        </TabPanel>
+        <TabPanel value={ value } index={ 7 }>
+          <Account />
+        </TabPanel>
       </Router>
+      <BottomNavigation
+        value={ value }
+        onChange={ (event, newValue) => {
+          setValue(newValue);
+        } }
+        showLabels
+        className={ classes.footerWrap }
+      >
+        <BottomNavigationAction label='About' icon={ <InfoIcon /> } className={ classes.footerIcon } />
+        <BottomNavigationAction label='Do Not Disturb' icon={ <NotificationsOffIcon /> } className={ classes.footerIcon } />
+        <BottomNavigationAction label='Account' icon={ <AccountCircleIcon /> } className={ classes.footerIcon } />
+      </BottomNavigation>
     </>
   );
 };

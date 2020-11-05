@@ -9,7 +9,6 @@ import Container from '@material-ui/core/Container';
 import theme from './theme';
 
 import NavBar from './navbar';
-import Footer from './footer';
 
 // setConfig({
 //   showReactDomPatchNotification: false
@@ -35,7 +34,6 @@ const App = () => {
       <Container className={ classes.appContainer } disableGutters>
         <CssBaseline />
         <NavBar />
-        <Footer />
       </Container>
     </ThemeProvider>
   );
