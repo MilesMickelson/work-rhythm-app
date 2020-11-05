@@ -65,7 +65,7 @@ function a11yProps(index) {
   };
 }
 
-function LinkTab(props) {
+function TabLink(props) {
   return (
     <Tab
       component='a'
@@ -87,18 +87,6 @@ const useStyles = makeStyles((theme) => ({
     borderTopStyle: 'solid',
     borderTopColor: theme.palette.primary.dark,
   },
-  linkTab: {
-    '&:hover': {
-      color: theme.palette.secondary.light,
-    },
-    '&:active': {
-      color: theme.palette.secondary.light,
-      top: 2,
-    },
-    '&:focus': {
-      color: theme.palette.secondary.light,
-    },
-  },
   footerWrap: {
     width: '100%',
     maxWidth: 960,
@@ -110,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottomStyle: 'solid',
     borderBottomColor: theme.palette.primary.dark,
   },
-  footerIcon: {
+  navLink: {
     '&:hover': {
       color: theme.palette.secondary.light,
     },
@@ -142,51 +130,51 @@ const NavBar = () => {
             onChange={ handleChange }
             aria-label='navigation bar'
           >
-            <LinkTab
+            <TabLink
               icon={ <ListIcon /> }
               label='Workflow'
               href='/Workflow'
-              className={ classes.linkTab }
+              className={ classes.navLink }
               aria-label='workflow pane'
               {...a11yProps(0)}
             />
-            <LinkTab
+            <TabLink
               icon={ <VisionIcon /> }
               label='Vision'
               href='/Vision'
-              className={ classes.linkTab }
+              className={ classes.navLink }
               aria-label='vision pane'
               {...a11yProps(1)}
             />
-            <LinkTab
+            <TabLink
               icon={ <PostureIcon /> }
               label='Posture'
               href='/Posture'
-              className={ classes.linkTab }
+              className={ classes.navLink }
               aria-label='posture pane'
               {...a11yProps(2)}
             />
-            <LinkTab
+            <TabLink
               icon={ <AlarmIcon /> }
               label='Custom'
               href='/Custom'
-              className={ classes.linkTab }
+              className={ classes.navLink }
               aria-label='custom pane'
               {...a11yProps(3)}
             />
-            <LinkTab
+            <TabLink
               icon={ <StatsIcon /> }
               label='Statistics'
               href='/Stats'
-              className={ classes.linkTab }
+              className={ classes.navLink }
               aria-label='statistics pane'
               {...a11yProps(4)}
             />
-            <LinkTab
+            <TabLink
               icon={ <SettingsIcon /> }
               label='Settings'
               href='/Settings'
-              className={ classes.linkTab }
+              className={ classes.navLink }
               aria-label='settings pane'
               {...a11yProps(5)}
             />
@@ -227,9 +215,27 @@ const NavBar = () => {
         showLabels
         className={ classes.footerWrap }
       >
-        <BottomNavigationAction label='About' icon={ <InfoIcon /> } className={ classes.footerIcon } />
-        <BottomNavigationAction label='Do Not Disturb' icon={ <NotificationsOffIcon /> } className={ classes.footerIcon } />
-        <BottomNavigationAction label='Account' icon={ <AccountCircleIcon /> } className={ classes.footerIcon } />
+        <BottomNavigationAction
+          className={ classes.navLink }
+          icon={ <InfoIcon /> }
+          href='/Custom'
+          label='About'
+          aria-label='about page'
+          {...a11yProps(6)}
+        />
+        <BottomNavigationAction
+          label='Do Not Distrb'
+          icon={ <NotificationsOffIcon /> }
+          className={ classes.navLink }
+        />
+        <BottomNavigationAction
+          className={ classes.navLink }
+          icon={ <AccountCircleIcon /> }
+          href='/Account'
+          label='Account'
+          aria-label='account page'
+          {...a11yProps(7)}
+        />
       </BottomNavigation>
     </>
   );
