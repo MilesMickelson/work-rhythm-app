@@ -27,6 +27,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "about-window": "^1.13.4",
+    "clsx": "^1.1.1",
     "cross-env": "^7.0.2",
     "dragula": "^3.7.3",
     "electron": "^8.5.3",

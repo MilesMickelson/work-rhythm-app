@@ -126,19 +126,19 @@ const Settings = () => {
         <h4 className='underline'>Do Not Disturb</h4>
         <FormControlLabel
           control={ <SettingSwitch checked={ state.globalDnd } onChange={ handleChange } name='globalDnd' id='globalDnd' /> }
-          label='Turn off all timers and notifications'
+          label='Turn all timers and notifications off'
         />
         <FormControlLabel
           control={ <SettingSwitch checked={ state.todoDnd } onChange={ handleChange } name='todoDnd' id='todoDnd' /> }
-          label='Turn off all to-do list timers and notifications'
+          label='Turn all to-do list timers and notifications off'
         />
         <FormControlLabel
           control={ <SettingSwitch checked={ state.visionDnd } onChange={ handleChange } name='visionDnd' id='visionDnd' /> }
-          label='Turn off all vision interval timers and notifications'
+          label='Turn all vision interval timers and notifications off'
         />
         <FormControlLabel
           control={ <SettingSwitch checked={ state.postureDnd } onChange={ handleChange } name='postureDnd' id='postureDnd' /> }
-          label='Turn off all postural interval timers and notifications'
+          label='Turn all posture interval timers and notifications off'
         />
       </FormGroup>
     </>
