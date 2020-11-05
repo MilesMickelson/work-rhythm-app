@@ -25,13 +25,25 @@
 
 //-----COLORS-----
 $black: #000000;
-$black2: #0d0d0d;
+$white: #ffffff;
+$fontDark: #0d0d0d;
+$fontLight: #f2f2f2;
+
+$primaryMain: #3D7E97;
+$primaryLight: #6fadc8;
+$primaryDark: #005269;
+$secondaryMain: #76ff03;
+$secondaryLight: #91ff35;
+$secondaryDark: #52b202;
+$red: #BE2165;
+$yellow: #EEC636;
+$light: #E1E2E1;
+$dark: #330C1D;
+
 $black3: #1a1a1a;
 $black4: #262626;
 $black5: #333333;
 $black6: #404040;
-$white: #ffffff;
-$white2: #f2f2f2;
 $white3: #e6e6e6;
 $white4: #d9d9d9;
 $white5: #cccccc;
@@ -58,28 +70,17 @@ $purple3: #6614d1;
 $purple2: #660acf;
 $purple1: #6600cc;
 
-$primaryMain: #3D7E97;
-$primaryLight: #6fadc8;
-$primaryDark: #005269;
-$secondaryMain: #76ff03;
-$secondaryLight: #91ff35;
-$secondaryDark: #52b202;
-$red: #BE2165;
-$yellow: #EEC636;
-$light: #E1E2E1;
-$dark: #330C1D;
-
 //-----FONTS-----
 $header-font: Apple Chancery, URW Chancery L, Snell Roundhand, Cursive;
 $primary-font: Verdana, Arial, Times, Courier, Georgia;
 
 @mixin header-font {
-	color: $black2;
+	color: $fontDark;
 	font-family: $header-font;
 }
 
 @mixin primary-font {
-	color: $white3;
+	color: $fontLight;
 	font-family: $primary-font;
 }
 
@@ -259,9 +260,9 @@ summary {
 
 .vis-button {
 	width: 100%;
-	color: $white2;
+	color: $fontLight;
 	background-color: transparent;
-	border: 1px solid $white5;
+	border: 1px solid $light;
 	border-radius: 15px;
 	font: calc(1rem + 1vmin) $primary-font;
 }
@@ -271,9 +272,9 @@ summary {
 	width: 300px;
 	vertical-align: middle;
 	text-align: center;
-	color: $white2;
+	color: $fontLight;
 	background-color: transparent;
-	border: 3px solid $white5;
+	border: 3px solid $light;
 	border-radius: 50%;
 }
 

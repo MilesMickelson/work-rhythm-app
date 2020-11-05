@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import theme from './theme';
 
 import NavBar from './navbar';
+import Footer from './footer';
 
 // setConfig({
 //   showReactDomPatchNotification: false
@@ -24,6 +25,7 @@ const App = () => {
       backgroundPosition: 'fixed',
       background: 'linear-gradient(130deg, #B2D1DD 0%, #406371 100%)',
       paddingTop: 5,
+      paddingBottom: 5,
     },
   }));
 
@@ -33,6 +35,7 @@ const App = () => {
       <Container className={ classes.appContainer } disableGutters>
         <CssBaseline />
         <NavBar />
+        <Footer />
       </Container>
     </ThemeProvider>
   );

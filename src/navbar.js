@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '&:active': {
       color: theme.palette.secondary.light,
+      top: 2,
     },
     '&:focus': {
       color: theme.palette.secondary.light,
@@ -161,27 +162,27 @@ const NavBar = () => {
             />
           </Tabs>
         </AppBar>
-        </div>
-        <Router>
-          <TabPanel value={ value } index={ 0 }>
-            <Workflow />
-          </TabPanel>
-          <TabPanel value={ value } index={ 1 }>
-            <Vision />
-          </TabPanel>
-          <TabPanel value={ value } index={ 2 }>
-            <Posture />
-          </TabPanel>
-          <TabPanel value={ value } index={ 3 }>
-            <Custom />
-          </TabPanel>
-          <TabPanel value={ value } index={ 4 }>
-            <Statistics />
-          </TabPanel>
-          <TabPanel value={ value } index={ 5 }>
-            <Settings />
-          </TabPanel>
-        </Router>
+      </div>
+      <Router>
+        <TabPanel value={ value } index={ 0 }>
+          <Workflow />
+        </TabPanel>
+        <TabPanel value={ value } index={ 1 }>
+          <Vision />
+        </TabPanel>
+        <TabPanel value={ value } index={ 2 }>
+          <Posture />
+        </TabPanel>
+        <TabPanel value={ value } index={ 3 }>
+          <Custom />
+        </TabPanel>
+        <TabPanel value={ value } index={ 4 }>
+          <Statistics />
+        </TabPanel>
+        <TabPanel value={ value } index={ 5 }>
+          <Settings />
+        </TabPanel>
+      </Router>
     </>
   );
 };
