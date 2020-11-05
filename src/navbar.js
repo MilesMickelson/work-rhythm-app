@@ -8,8 +8,6 @@ import {
   Tabs,
   Tab,
   Box,
-  BottomNavigation,
-  BottomNavigationAction
 } from '@material-ui/core';
 
 import {
@@ -19,9 +17,10 @@ import {
   Equalizer as StatsIcon,
   Alarm as AlarmIcon,
   Settings as SettingsIcon,
+  // AccountCircleIcon as AccountIcon,
 } from '@material-ui/icons';
-import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
-import InfoIcon from '@material-ui/icons/Info';
+// import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
+// import InfoIcon from '@material-ui/icons/Info';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import Workflow from './workflow';
@@ -41,8 +40,8 @@ function TabPanel(props) {
     <div
       role='tabpanel'
       hidden={ value !== index }
-      id={ `nav-tabpanel-${index}` }
-      aria-labelledby={ `nav-tab-${index}` }
+      id={ `scrollable-force-nav-tabpanel-${index}` }
+      aria-labelledby={ `scrollable-force-nav-tab-${index}` }
       {...other}
     >
       {value === index && (
@@ -56,12 +55,12 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-// children: PropTypes.node, --included in Mat Ui's original tabpanel api doc above index
+// children: PropTypes.node, --included in Mat Ui's doc
 
 function a11yProps(index) {
   return {
-    id: `nav-tab-${index}`,
-    'aria-controls': `nav-tabpanel-${index}`,
+    id: `scrollable-force-nav-tab-${index}`,
+    'aria-controls': `scrollable-force-nav-tabpanel-${index}`,
   };
 }
 
@@ -86,17 +85,6 @@ const useStyles = makeStyles((theme) => ({
     borderTopWidth: 5,
     borderTopStyle: 'solid',
     borderTopColor: theme.palette.primary.dark,
-  },
-  footerWrap: {
-    width: '100%',
-    maxWidth: 960,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: 5,
-    backgroundColor: theme.palette.primary.main,
-    borderBottomWidth: 5,
-    borderBottomStyle: 'solid',
-    borderBottomColor: theme.palette.primary.dark,
   },
   navLink: {
     '&:hover': {
@@ -125,10 +113,13 @@ const NavBar = () => {
       <div className={ classes.navWrap }>
         <AppBar position='static'>
           <Tabs
-            variant='fullWidth'
             value={ value }
             onChange={ handleChange }
-            aria-label='navigation bar'
+            variant='scrollable'
+            wrapped='true'
+            scrollButtons='on'
+            indicatorColor='secondary'
+            aria-label='scrollable navigation tabs'
           >
             <TabLink
               icon={ <ListIcon /> }
@@ -178,6 +169,14 @@ const NavBar = () => {
               aria-label='settings pane'
               {...a11yProps(5)}
             />
+            <TabLink
+              icon={ <AccountCircleIcon /> }
+              className={ classes.navLink }
+              label='Account'
+              href='/Account'
+              aria-label='account pane'
+              {...a11yProps(6)}
+            />
           </Tabs>
         </AppBar>
       </div>
@@ -201,42 +200,9 @@ const NavBar = () => {
           <Settings />
         </TabPanel>
         <TabPanel value={ value } index={ 6 }>
-          <About />
-        </TabPanel>
-        <TabPanel value={ value } index={ 7 }>
           <Account />
         </TabPanel>
       </Router>
-      <BottomNavigation
-        value={ value }
-        onChange={ (event, newValue) => {
-          setValue(newValue);
-        } }
-        showLabels
-        className={ classes.footerWrap }
-      >
-        <BottomNavigationAction
-          className={ classes.navLink }
-          icon={ <InfoIcon /> }
-          href='/Custom'
-          label='About'
-          aria-label='about page'
-          {...a11yProps(6)}
-        />
-        <BottomNavigationAction
-          label='Do Not Distrb'
-          icon={ <NotificationsOffIcon /> }
-          className={ classes.navLink }
-        />
-        <BottomNavigationAction
-          className={ classes.navLink }
-          icon={ <AccountCircleIcon /> }
-          href='/Account'
-          label='Account'
-          aria-label='account page'
-          {...a11yProps(7)}
-        />
-      </BottomNavigation>
     </>
   );
 };

@@ -26,8 +26,8 @@
 //-----COLORS-----
 $black: #000000;
 $white: #ffffff;
-$fontDark: #0d0d0d;
-$fontLight: #f2f2f2;
+$darkFont: #0d0d0d;
+$lightFont: #f2f2f2;
 
 $primaryMain: #3D7E97;
 $primaryLight: #6fadc8;
@@ -75,12 +75,12 @@ $header-font: Apple Chancery, URW Chancery L, Snell Roundhand, Cursive;
 $primary-font: Verdana, Arial, Times, Courier, Georgia;
 
 @mixin header-font {
-	color: $fontDark;
+	color: $darkFont;
 	font-family: $header-font;
 }
 
 @mixin primary-font {
-	color: $fontLight;
+	color: $lightFont;
 	font-family: $primary-font;
 }
 
@@ -260,7 +260,7 @@ summary {
 
 .vis-button {
 	width: 100%;
-	color: $fontLight;
+	color: $lightFont;
 	background-color: transparent;
 	border: 1px solid $light;
 	border-radius: 15px;
@@ -272,7 +272,7 @@ summary {
 	width: 300px;
 	vertical-align: middle;
 	text-align: center;
-	color: $fontLight;
+	color: $lightFont;
 	background-color: transparent;
 	border: 3px solid $light;
 	border-radius: 50%;
