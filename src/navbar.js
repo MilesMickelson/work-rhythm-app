@@ -17,7 +17,6 @@ import {
   Equalizer as StatsIcon,
   Alarm as AlarmIcon,
   Settings as SettingsIcon,
-  // AccountCircleIcon as AccountIcon,
 } from '@material-ui/icons';
 // import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 // import InfoIcon from '@material-ui/icons/Info';
@@ -29,7 +28,6 @@ import Posture from './posture';
 import Statistics from './stats';
 import Custom from './custom';
 import Settings from './settings';
-import About from './about';
 import Account from './account';
 
 function TabPanel(props) {
