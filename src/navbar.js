@@ -115,7 +115,7 @@ const NavBar = () => {
             onChange={ handleChange }
             variant='scrollable'
             wrapped='true'
-            scrollButtons='on'
+            scrollButtons='off'
             indicatorColor='secondary'
             aria-label='scrollable navigation tabs'
           >
@@ -151,14 +151,14 @@ const NavBar = () => {
               aria-label='custom pane'
               {...a11yProps(3)}
             />
-            <TabLink
+            {/* <TabLink
               icon={ <StatsIcon /> }
               label='Statistics'
               href='/Stats'
               className={ classes.navLink }
               aria-label='statistics pane'
               {...a11yProps(4)}
-            />
+            /> */}
             <TabLink
               icon={ <SettingsIcon /> }
               label='Settings'
