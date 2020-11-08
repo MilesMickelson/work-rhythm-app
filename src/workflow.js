@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import clsx from 'clsx';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { lighten, makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
@@ -25,6 +25,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import InputBase from '@material-ui/core/InputBase';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionActions from '@material-ui/core/AccordionActions';
+import Chip from '@material-ui/core/Chip';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 
 // ! Later implementation for unique id's-use nano id repo instead
 // const shortid = require('shortid');
@@ -46,16 +60,16 @@ function createData(title, id, priority, recurring, time, due) {
     time,
     due,
     details: [
-      { notes: '', added: '' },
+      { notes: 'these are my notes', added: '11-6-2020' },
     ],
   };
 }
 
 const rows = [
   createData('Write more code!', 1, 'Very High', 'Everyday', 14.3, '11-1-2021', 'these are my notes', '11-6-20'),
-  createData('Eat healthy', 'High', 2, 'Weekly', 14.3, '11-2-2021', 'these are my notes', '11-6-20'),
-  createData('Cook dinner', 'Medium', 3, 'Business Days', 14.3, '11-3-2023', 'these are my notes', '11-6-20'),
-  createData('Exercise', 'Medium', 4, 'Bi-Weekly', 14.3, '12-4-2021', 'these are my notes', '11-6-20'),
+  createData('Eat healthy', 2, 'High', 'Weekly', 14.3, '11-2-2021', 'these are my notes', '11-6-20'),
+  createData('Cook dinner', 3, 'Medium', 'Business Days', 14.3, '11-3-2023', 'these are my notes', '11-6-20'),
+  createData('Exercise', 4, 'Medium', 'Bi-Weekly', 14.3, '12-4-2021', 'these are my notes', '11-6-20'),
   createData('Call mom', 5, 'Low', 'Monthly', 14.3, '11-7-2029', 'these are my notes', '11-6-20'),
 ];
 
@@ -107,16 +121,16 @@ const headCells = [
     label: 'Recurring'
   },
   {
-    id: 'due',
-    numeric: true,
-    disablePadding: false,
-    label: 'Due'
-  },
-  {
     id: 'time',
     numeric: true,
     disablePadding: false,
     label: 'Time Remaining'
+  },
+  {
+    id: 'due',
+    numeric: true,
+    disablePadding: false,
+    label: 'Due'
   },
   {
     id: 'expand',
@@ -192,11 +206,11 @@ const useToolbarStyles = makeStyles((theme) => ({
     theme.palette.type === 'light'
       ? {
         color: theme.palette.primary.main,
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.primary.light,
       }
       : {
         color: theme.palette.text.primary,
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.primary.light,
       },
   toolheader: {
     flex: '1 1 100%',
@@ -216,10 +230,15 @@ const EnhancedTableToolbar = (props) => {
       {numSelected > 0 ? (
         <Typography className={ classes.toolheader } color='primary' variant='subtitle1' component='div'>
           {numSelected}
-          selected
+          Selected
         </Typography>
       ) : (
-        <Typography className={ classes.toolheader } variant='h6' id='tableTitle' component='div'>
+        <Typography
+          className={ classes.toolheader }
+          variant='h6'
+          id='tableTitle'
+          component='div'
+        >
           Primary
         </Typography>
       )}
@@ -230,11 +249,16 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title='Filter list'>
-          <IconButton aria-label='filter list'>
-            <FilterListIcon />
+        <>
+          <Tooltip title='Filter list'>
+            <IconButton aria-label='filter list'>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+          <IconButton aria-label='add to do item'>
+            <AddCircleIcon fontSize='large' />
           </IconButton>
-        </Tooltip>
+        </>
       )}
     </Toolbar>
   );
@@ -244,68 +268,51 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-// ! Expanded Table Row Component //
-const useRowStyles = makeStyles({
+const BootstrapInput = withStyles((theme) => ({
   root: {
-    '& > *': {
-      borderBottom: 'unset',
+    'label + &': {
+      marginTop: theme.spacing(3),
     },
   },
-});
-
-function ExpandRow(props) {
-  const [open] = React.useState(false);
-  const classes = useRowStyles();
-
-  return (
-    <>
-      <TableRow className={ classes.root }>
-        <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
-          <Collapse in={ open } timeout='auto' unmountOnExit>
-            <Box margin={ 1 }>
-              <Typography variant='h6' gutterBottom component='div'>
-                Details
-              </Typography>
-              <Table size='small' aria-label='purchases'>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align='right'>Notes</TableCell>
-                    <TableCell align='right'>Date Added</TableCell>
-                    {/* <TableCell align='right'>Total Time</TableCell> */}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.details.map((detailsRow) => (
-                    <TableRow key={ detailsRow.id }>
-                      <TableCell>{detailsRow.notes}</TableCell>
-                      <TableCell align='right'>{detailsRow.added}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </>
-  );
-}
-
-ExpandRow.propTypes = {
-  row: PropTypes.shape({
-    details: PropTypes.arrayOf(
-      PropTypes.shape({
-        notes: PropTypes.string.isRequired,
-        added: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-      }),
-    ).isRequired,
-  }).isRequired,
-};
+  input: {
+    width: '100%',
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: theme.palette.secondary.main,
+      boxShadow: '0 0 0 0.2rem #005269',
+    },
+  },
+}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
   fragmentContainer: {
     height: '100%',
+    width: '100%',
+    maxWidth: 960,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  subContainer: {
     width: '100%',
     maxWidth: 960,
     marginLeft: 'auto',
@@ -358,11 +365,20 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
   },
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
 }));
 
 // ! WorkFlow Component Through End //
-const WorkFlow = () => {
+const WorkFlow = (props) => {
   const classes = useStyles();
+  const [age, setAge] = React.useState('');
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('priority');
   const [selected, setSelected] = React.useState([]);
@@ -370,13 +386,11 @@ const WorkFlow = () => {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
-
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = rows.map((n) => n.id);
@@ -385,7 +399,6 @@ const WorkFlow = () => {
     }
     setSelected([]);
   };
-
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
@@ -403,26 +416,59 @@ const WorkFlow = () => {
     }
     setSelected(newSelected);
   };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
   const isSelected = (id) => selected.indexOf(id) !== - 1;
-
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={ classes.fragmentContainer }>
+      <div className={ classes.subContainer }>
+        <FormControl className={ classes.margin }>
+          <InputLabel htmlFor='name-input'>Name</InputLabel>
+          <BootstrapInput id='name-input' />
+        </FormControl>
+        <FormControl className={ classes.margin }>
+          <InputLabel id='demo-customized-select-label'>Priority</InputLabel>
+          <Select
+            labelId='demo-customized-select-label'
+            id='demo-customized-select'
+            value={ age }
+            onChange={ handleChange }
+            input={ <BootstrapInput /> }
+          >
+            <MenuItem value={ 1 }>Low</MenuItem>
+            <MenuItem value={ 2 }>Medium</MenuItem>
+            <MenuItem value={ 3 }>High</MenuItem>
+            <MenuItem value={ 4 }>Very High</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl className={ classes.margin }>
+          <InputLabel htmlFor='recurring-select'>Age</InputLabel>
+          <NativeSelect
+            id='recurring-select'
+            value={ age }
+            onChange={ handleChange }
+            input={ <BootstrapInput /> }
+          >
+            <option aria-label='None' value='' />
+            <option value={ 10 }>Ten</option>
+            <option value={ 20 }>Twenty</option>
+            <option value={ 30 }>Thirty</option>
+          </NativeSelect>
+        </FormControl>
+      </div>
       <Paper className={ classes.paper }>
         <EnhancedTableToolbar numSelected={ selected.length } />
         <TableContainer>
@@ -448,41 +494,79 @@ const WorkFlow = () => {
                   const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${id}`;
                   return (
-                    <TableRow
-                      hover
-                      onClick={ (event) => handleClick(event, row.id) }
-                      role='checkbox'
-                      aria-checked={ isItemSelected }
-                      tabIndex={ - 1 }
-                      key={ row.id }
-                      selected={ isItemSelected }
-                    >
-                      <TableCell padding='checkbox'>
-                        <Checkbox
-                          checked={ isItemSelected }
-                          inputProps={ { 'aria-labelledby': labelId } }
-                        />
-                      </TableCell>
-                      <TableCell align='left' component='th' id={ labelId } scope='row' padding='none'>
-                        {row.title}
-                      </TableCell>
-                      <TableCell align='right'>{row.priority}</TableCell>
-                      <TableCell align='right'>{row.recurring}</TableCell>
-                      <TableCell align='right'>{row.time}</TableCell>
-                      <TableCell align='right'>{row.due}</TableCell>
-                      <TableCell>
-                        <IconButton aria-label='expand row' size='small' onClick={ () => setOpen(! open) }>
-                          { open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
+                    <>
+                      <TableRow
+                        hover
+                        tabIndex={ - 1 }
+                        key={ row.id }
+                        aria-checked={ isItemSelected }
+                        selected={ isItemSelected }
+                      >
+                        <TableCell padding='checkbox'>
+                          <Checkbox
+                            role='checkbox'
+                            onClick={ (event) => handleClick(event, row.id) }
+                            aria-checked={ isItemSelected }
+                            selected={ isItemSelected }
+                            checked={ isItemSelected }
+                            inputProps={ { 'aria-labelledby': labelId } }
+                          />
+                        </TableCell>
+                        <TableCell align='left' component='th' id={ labelId } scope='row' padding='none'>
+                          {row.title}
+                        </TableCell>
+                        <TableCell align='right'>{row.priority}</TableCell>
+                        <TableCell align='right'>{row.recurring}</TableCell>
+                        <TableCell align='right'>{row.time}</TableCell>
+                        <TableCell align='right'>{row.due}</TableCell>
+                        <TableCell>
+                          <IconButton
+                            aria-label='expand row'
+                            size='small'
+                            onClick={ () => setOpen(! open) }
+                          >
+                            { open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow
+                        hover
+                        tabIndex={ - 1 }
+                        key={ row.id }
+                        className={ classes.root }
+                        aria-checked={ isItemSelected }
+                        selected={ isItemSelected }
+                      >
+                        <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
+                          <Collapse in={ open } timeout='auto' unmountOnExit>
+                            <Box margin={ 1 }>
+                              <Typography variant='h6' gutterBottom component='div'>
+                                Details
+                              </Typography>
+                              <Table size='small' aria-label='purchases'>
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell align='right'>Notes</TableCell>
+                                    <TableCell align='right'>Date Added</TableCell>
+                                    <TableCell align='right'>Total Time</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {row.details.map((detailsRow) => (
+                                    <TableRow key={ detailsRow.id }>
+                                      <TableCell>{detailsRow.notes}</TableCell>
+                                      <TableCell align='right'>{detailsRow.added}</TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </Box>
+                          </Collapse>
+                        </TableCell>
+                      </TableRow>
+                    </>
                   );
                 })}
-            </TableBody>
-            <TableBody>
-              {rows.map((row) => (
-                <ExpandRow key={ row.id } row={ row } />
-              ))}
             </TableBody>
             {emptyRows > 0 && (
               <TableRow style={ { height: (dense ? 33 : 53) * emptyRows } }>
