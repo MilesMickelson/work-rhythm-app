@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
+import Calendar from 'react-calendar';
 
 import clsx from 'clsx';
 import { lighten, makeStyles, withStyles } from '@material-ui/core/styles';
@@ -27,18 +29,16 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionActions from '@material-ui/core/AccordionActions';
-import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import CloseIcon from '@material-ui/icons/Close';
 
 // ! Later implementation for unique id's-use nano id repo instead
 // const shortid = require('shortid');
@@ -51,26 +51,26 @@ import Divider from '@material-ui/core/Divider';
 // }
 
 // ! Data creation and simulation //
-function createData(title, id, priority, recurring, time, due) {
+function createData(name, id, priority, recurring, time, due) {
   return {
-    title,
+    name,
     id,
     priority,
     recurring,
     time,
     due,
     details: [
-      { notes: 'these are my notes', added: '11-6-2020' },
+      { notes: '', added: '' },
     ],
   };
 }
 
 const rows = [
-  createData('Write more code!', 1, 'Very High', 'Everyday', 14.3, '11-1-2021', 'these are my notes', '11-6-20'),
-  createData('Eat healthy', 2, 'High', 'Weekly', 14.3, '11-2-2021', 'these are my notes', '11-6-20'),
-  createData('Cook dinner', 3, 'Medium', 'Business Days', 14.3, '11-3-2023', 'these are my notes', '11-6-20'),
-  createData('Exercise', 4, 'Medium', 'Bi-Weekly', 14.3, '12-4-2021', 'these are my notes', '11-6-20'),
-  createData('Call mom', 5, 'Low', 'Monthly', 14.3, '11-7-2029', 'these are my notes', '11-6-20'),
+  createData('Write more code!', 1, 1, 'Everyday', 14.3, '1-1-2021', 'these are my details for id 1', '11-1-20'),
+  createData('Eat healthy', 2, 2, 'Weekly', 14.3, '2-1-2021', 'these are my details for id 2', '11-2-20'),
+  createData('Cook dinner', 3, 3, 'Business Days', 14.3, '3-1-2021', 'these are my details for id 3', '11-3-20'),
+  createData('Exercise', 4, 4, 'Bi-Weekly', 14.3, '4-1-2021', 'these are my details for id 4', '11-4-20'),
+  createData('Call mom', 5, 5, 'Monthly', 14.3, '5-1-2021', 'these are my details for id 5', '11-5-20'),
 ];
 
 // ! Sorting Logic //
@@ -103,7 +103,7 @@ function stableSort(array, comparator) {
 // ! Table Header Labels
 const headCells = [
   {
-    id: 'title',
+    id: 'name',
     numeric: false,
     disablePadding: true,
     label: 'Name'
@@ -228,7 +228,7 @@ const EnhancedTableToolbar = (props) => {
       }) }
     >
       {numSelected > 0 ? (
-        <Typography className={ classes.toolheader } color='primary' variant='subtitle1' component='div'>
+        <Typography className={ classes.toolheader } color='primary' variant='subname1' component='div'>
           {numSelected}
           Selected
         </Typography>
@@ -268,17 +268,93 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const BootstrapInput = withStyles((theme) => ({
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const DialogTitle = withStyles(styles)((props) => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={ classes.root } { ...other }>
+      <Typography variant='h6'>{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label='close' className={ classes.closeButton } onClick={ onClose }>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
+
+const TextInput = withStyles((theme) => ({
   root: {
     'label + &': {
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(2),
     },
   },
   input: {
-    width: '100%',
+    width: 440,
     borderRadius: 4,
     position: 'relative',
     backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 16,
+    padding: '10px 25px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: theme.palette.secondary.main,
+      boxShadow: '0 0 0 0.2rem #005269',
+    },
+  },
+}))(InputBase);
+
+const MenuInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: theme.spacing(2),
+    },
+  },
+  input: {
+    width: 100,
+    borderRadius: 4,
+    // position: 'relative',
+    // backgroundColor: theme.palette.background.paper,
     border: '1px solid #ced4da',
     fontSize: 16,
     padding: '10px 26px 10px 12px',
@@ -305,21 +381,17 @@ const BootstrapInput = withStyles((theme) => ({
 }))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
-  fragmentContainer: {
+  fragContainer: {
     height: '100%',
     width: '100%',
     maxWidth: 960,
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  subContainer: {
+  fragWrap: {
     width: '100%',
-    maxWidth: 960,
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
-  paper: {
-    width: '100%',
+  tableWrap: {
     marginBottom: theme.spacing(2),
   },
   table: {
@@ -378,9 +450,15 @@ const useStyles = makeStyles((theme) => ({
 // ! WorkFlow Component Through End //
 const WorkFlow = (props) => {
   const classes = useStyles();
-  const [age, setAge] = React.useState('');
+  // const [value, setValue] = React.useState(0);
+  const [name, setName] = React.useState('');
+  const [priority, setPriority] = React.useState(0);
+  const [recur, setRecur] = React.useState('');
+  const [date, setDate] = React.useState(new Date());
+  const [details, setDetails] = React.useState('');
+  const [actions, setActions] = React.useState('');
+  const [orderBy, setOrderBy] = React.useState('');
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('priority');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -426,50 +504,151 @@ const WorkFlow = (props) => {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
+  // const handleName = (event, newName) => {
+  //   setName(newName);
+  // };
+  const handleName = (event) => {
+    setName(event.target.value);
+  };
+  const handlePriority = (event) => {
+    setPriority(event.target.value);
+  };
+  const handleRecur = (event) => {
+    setRecur(event.target.value);
+  };
+  const handleDate = (event) => {
+    setDate(event.target.value);
+  };
+  const handleDetails = (event) => {
+    setDetails(event.target.value);
+  };
+  const handleActions = (event) => {
+    setActions(event.target.value);
+  };
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
   };
   const isSelected = (id) => selected.indexOf(id) !== - 1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
-    <div className={ classes.fragmentContainer }>
-      <div className={ classes.subContainer }>
+    <div className={ classes.fragContainer }>
+      <div className={ classes.fragWrap }>
         <FormControl className={ classes.margin }>
           <InputLabel htmlFor='name-input'>Name</InputLabel>
-          <BootstrapInput id='name-input' />
+          <TextInput
+            id='name-input'
+            onChange={ handleName }
+            value={ name }
+            input={ <TextInput /> }
+          />
         </FormControl>
         <FormControl className={ classes.margin }>
-          <InputLabel id='demo-customized-select-label'>Priority</InputLabel>
-          <Select
-            labelId='demo-customized-select-label'
-            id='demo-customized-select'
-            value={ age }
-            onChange={ handleChange }
-            input={ <BootstrapInput /> }
-          >
-            <MenuItem value={ 1 }>Low</MenuItem>
-            <MenuItem value={ 2 }>Medium</MenuItem>
-            <MenuItem value={ 3 }>High</MenuItem>
-            <MenuItem value={ 4 }>Very High</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl className={ classes.margin }>
-          <InputLabel htmlFor='recurring-select'>Age</InputLabel>
+          <InputLabel htmlFor='priority-input'>Priority</InputLabel>
           <NativeSelect
-            id='recurring-select'
-            value={ age }
-            onChange={ handleChange }
-            input={ <BootstrapInput /> }
+            id='priority-input'
+            onChange={ handlePriority }
+            value={ priority }
+            input={ <MenuInput /> }
           >
             <option aria-label='None' value='' />
-            <option value={ 10 }>Ten</option>
-            <option value={ 20 }>Twenty</option>
-            <option value={ 30 }>Thirty</option>
+            <option value={ 1 }>Low</option>
+            <option value={ 2 }>Medium</option>
+            <option value={ 3 }>High</option>
+            <option value={ 4 }>Very high</option>
+          </NativeSelect>
+        </FormControl>
+        <FormControl className={ classes.margin }>
+          <InputLabel htmlFor='recurring-select'>Recur</InputLabel>
+          <NativeSelect
+            id='recurring-select'
+            onChange={ handleRecur }
+            value={ recur }
+            input={ <MenuInput /> }
+          >
+            <option aria-label='None' value='' />
+            <option value={ 12 }>Everyday</option>
+            <option value={ 11 }>Mon-Fri</option>
+            <option value={ 10 }>Weekends</option>
+            <option value={ 9 }>Weekly</option>
+            <option value={ 8 }>Bi-Weekly</option>
+            <option value={ 7 }>Tri-Weekly</option>
+            <option value={ 6 }>Monthly</option>
+            <option value={ 5 }>Bi-Monthly</option>
+            <option value={ 4 }>Tri-Monthly</option>
+            <option value={ 3 }>Monthly</option>
+            <option value={ 2 }>Bi-Annually</option>
+            <option value={ 1 }>Annually</option>
+          </NativeSelect>
+        </FormControl>
+        <FormControl className={ classes.margin }>
+          <InputLabel htmlFor='dueDate-select'>Due Date</InputLabel>
+          <NativeSelect
+            id='dueDate-select'
+            onClick={ handleClickOpen }
+            onChange={ handleDate }
+            value={ date }
+            input={ <MenuInput /> }
+          >
+            {/* <Button onClick={ handleClickOpen }>
+              Due Date
+            </Button> */}
+            <Dialog
+              onClose={ handleClose }
+              aria-labelledby='dueDate-dialog-title'
+              open={ open }
+            >
+              <DialogTitle id='dueDate-dialog-title' onClose={ handleClose }>
+                Due Date
+              </DialogTitle>
+              <DialogContent dividers>
+                <Calendar
+                  id='dueDate-select'
+                  onChange={ handleDate }
+                  value={ date }
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button autoFocus onClick={ handleClose }>
+                  Save
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </NativeSelect>
+        </FormControl>
+        <FormControl className={ classes.margin }>
+          <InputLabel htmlFor='details-input'>Notes</InputLabel>
+          <TextInput
+            id='details-input'
+            onChange={ handleDetails }
+            value={ details }
+            input={ <TextInput /> }
+          />
+        </FormControl>
+        <FormControl className={ classes.margin }>
+          <InputLabel htmlFor='actions-input'>Actions</InputLabel>
+          <NativeSelect
+            id='actions-input'
+            onChange={ handleActions }
+            value={ actions }
+            input={ <MenuInput /> }
+          >
+            <option aria-label='None' value='' />
+            <option value={ 1 }>Call</option>
+            <option value={ 2 }>Email</option>
+            <option value={ 3 }>Message</option>
+            <option value={ 4 }>Read</option>
+            <option value={ 5 }>Research</option>
           </NativeSelect>
         </FormControl>
       </div>
-      <Paper className={ classes.paper }>
+      <Paper className={ classes.tableWrap }>
         <EnhancedTableToolbar numSelected={ selected.length } />
         <TableContainer>
           <Table
