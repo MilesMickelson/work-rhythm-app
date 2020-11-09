@@ -331,63 +331,63 @@ const CssTextField = withStyles((theme) => ({
   },
 }))(TextField);
 
-const InputMenuSelect = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: 'relative',
-    backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
-    fontSize: 16,
-    padding: '10px 26px 10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: '#80bdff',
-      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    },
-  },
-}))(InputBase);
 // const InputMenuSelect = withStyles((theme) => ({
 //   root: {
-//     '& label.Mui-focused': {
-//       color: '#262626',
+//     'label + &': {
+//       marginTop: theme.spacing(3),
 //     },
-//     '& .MuiNativeSelect-root': {
-//       width: 90,
-//       borderRadius: 5,
-//       fontSize: 16,
-//       border: '2px solid #005269',
-//       position: 'relative',
-//       '& fieldset': {
-//         border: '2px solid #005269',
-//       },
-//       '&:hover fieldset': {
-//         border: '1px solid #76ff03',
-//       },
-//       '&.Mui-focused fieldset': {
-//         border: '2px solid #76ff03',
-//       },
+//   },
+//   input: {
+//     borderRadius: 4,
+//     position: 'relative',
+//     backgroundColor: theme.palette.background.paper,
+//     border: '1px solid #ced4da',
+//     fontSize: 16,
+//     padding: '10px 26px 10px 12px',
+//     transition: theme.transitions.create(['border-color', 'box-shadow']),
+//     // Use the system font instead of the default Roboto font.
+//     fontFamily: [
+//       '-apple-system',
+//       'BlinkMacSystemFont',
+//       '"Segoe UI"',
+//       'Roboto',
+//       '"Helvetica Neue"',
+//       'Arial',
+//       'sans-serif',
+//       '"Apple Color Emoji"',
+//       '"Segoe UI Emoji"',
+//       '"Segoe UI Symbol"',
+//     ].join(','),
+//     '&:focus': {
+//       borderRadius: 4,
+//       borderColor: '#80bdff',
+//       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
 //     },
 //   },
 // }))(InputBase);
+const InputMenuSelect = withStyles((theme) => ({
+  root: {
+    '& label.Mui-focused': {
+      color: '#262626',
+    },
+    '& .MuiNativeSelect-root': {
+      width: 90,
+      borderRadius: 5,
+      fontSize: 16,
+      border: '2px solid #005269',
+      position: 'relative',
+      '& fieldset': {
+        border: '2px solid #005269',
+      },
+      '&:hover fieldset': {
+        border: '1px solid #76ff03',
+      },
+      '&.Mui-focused fieldset': {
+        border: '2px solid #76ff03',
+      },
+    },
+  },
+}))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
   fragContainer: {
@@ -630,6 +630,21 @@ const WorkFlow = (props) => {
           />
         </FormControl>
         <FormControl className={ classes.margin }>
+          {/* <InputLabel htmlFor='priority-select'>Age</InputLabel>
+          <NativeSelect
+            value={ priority }
+            onChange={ handlePriority }
+            label='Age'
+            inputProps={ {
+              priority: 'priority',
+              id: 'priority-select',
+            } }
+          >
+            <option aria-label='None' value='' />
+            <option value={ 10 }>Ten</option>
+            <option value={ 20 }>Twenty</option>
+            <option value={ 30 }>Thirty</option>
+          </NativeSelect> */}
           <InputLabel htmlFor='priority-input'>Priority</InputLabel>
           <NativeSelect
             id='priority-input'
@@ -715,7 +730,7 @@ const WorkFlow = (props) => {
         </FormControl>
         <FormControl className={ classes.margin }>
           <InputLabel htmlFor='actions-input'>Actions</InputLabel>
-          <InputMenuSelect
+          <NativeSelect
             id='actions-input'
             onChange={ handleActions }
             value={ actions }
@@ -727,11 +742,11 @@ const WorkFlow = (props) => {
             <option value={ 3 }>Message</option>
             <option value={ 4 }>Read</option>
             <option value={ 5 }>Research</option>
-          </InputMenuSelect>
+          </NativeSelect>
         </FormControl>
         <FormControl className={ classes.margin }>
           <InputLabel htmlFor='invite-select'>Invite</InputLabel>
-          <InputMenuSelect
+          <NativeSelect
             id='invite-select'
             onChange={ handleInvites }
             value={ invites }
@@ -742,11 +757,11 @@ const WorkFlow = (props) => {
             <option value={ 2 }>Ryan Reynolds</option>
             <option value={ 3 }>Ryan Gosling</option>
             <option value={ 4 }>Robert Downey Jr.</option>
-          </InputMenuSelect>
+          </NativeSelect>
         </FormControl>
         <FormControl className={ classes.margin }>
           <InputLabel htmlFor='reminder-select'>Reminder</InputLabel>
-          <InputMenuSelect
+          <NativeSelect
             id='reminder-select'
             onChange={ handleReminders }
             value={ reminders }
@@ -761,7 +776,7 @@ const WorkFlow = (props) => {
             <option value={ 3 }>1 month before</option>
             <option value={ 2 }>2 months before</option>
             <option value={ 1 }>3 months before</option>
-          </InputMenuSelect>
+          </NativeSelect>
         </FormControl>
       </div>
       <Paper className={ classes.tableWrap }>
