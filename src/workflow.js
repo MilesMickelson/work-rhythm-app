@@ -30,7 +30,6 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
@@ -319,7 +318,7 @@ const TextInput = withStyles((theme) => ({
     borderRadius: 4,
     position: 'relative',
     backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
+    border: '2px solid #005269',
     fontSize: 16,
     padding: '10px 25px 10px 12px',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
@@ -340,6 +339,7 @@ const TextInput = withStyles((theme) => ({
       borderRadius: 4,
       borderColor: theme.palette.secondary.main,
       boxShadow: '0 0 0 0.2rem #005269',
+      backgroundColor: theme.palette.primary.light,
     },
   },
 }))(InputBase);
@@ -351,13 +351,13 @@ const MenuInput = withStyles((theme) => ({
     },
   },
   input: {
-    width: 100,
+    width: 90,
     borderRadius: 4,
     // position: 'relative',
     // backgroundColor: theme.palette.background.paper,
-    border: '1px solid #ced4da',
+    border: '2px solid #005269',
     fontSize: 16,
-    padding: '10px 26px 10px 12px',
+    padding: '10px 24px 10px 12px',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     // Use the system font instead of the default Roboto font.
     fontFamily: [
@@ -376,6 +376,7 @@ const MenuInput = withStyles((theme) => ({
       borderRadius: 4,
       borderColor: theme.palette.secondary.main,
       boxShadow: '0 0 0 0.2rem #005269',
+      backgroundColor: theme.palette.primary.light,
     },
   },
 }))(InputBase);
@@ -392,10 +393,32 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   tableWrap: {
+    marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
+    // border: '0.1px solid #ced4da',
+    // borderColor: theme.palette.primary.light,
+    borderRadius: 4,
+    boxShadow: '0 0 0 2px #005269',
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ],
   },
   table: {
-    minWidth: 750,
+    width: '100%',
+    minWidth: 760,
+    maxWidth: 960,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   visuallyHidden: {
     border: 0,
@@ -457,6 +480,8 @@ const WorkFlow = (props) => {
   const [date, setDate] = React.useState(new Date());
   const [details, setDetails] = React.useState('');
   const [actions, setActions] = React.useState('');
+  const [invites, setInvites] = React.useState('');
+  const [reminders, setReminders] = React.useState('');
   const [orderBy, setOrderBy] = React.useState('');
   const [order, setOrder] = React.useState('asc');
   const [selected, setSelected] = React.useState([]);
@@ -528,6 +553,12 @@ const WorkFlow = (props) => {
   const handleActions = (event) => {
     setActions(event.target.value);
   };
+  const handleInvites = (event) => {
+    setInvites(event.target.value);
+  };
+  const handleReminders = (event) => {
+    setReminders(event.target.value);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -541,7 +572,12 @@ const WorkFlow = (props) => {
     <div className={ classes.fragContainer }>
       <div className={ classes.fragWrap }>
         <FormControl className={ classes.margin }>
-          <InputLabel htmlFor='name-input'>Name</InputLabel>
+          <InputLabel
+            required='true'
+            htmlFor='name-input'
+          >
+            Title
+          </InputLabel>
           <TextInput
             id='name-input'
             onChange={ handleName }
@@ -557,7 +593,7 @@ const WorkFlow = (props) => {
             value={ priority }
             input={ <MenuInput /> }
           >
-            <option aria-label='None' value='' />
+            <option aria-label='Priority Selection' value='' />
             <option value={ 1 }>Low</option>
             <option value={ 2 }>Medium</option>
             <option value={ 3 }>High</option>
@@ -572,7 +608,7 @@ const WorkFlow = (props) => {
             value={ recur }
             input={ <MenuInput /> }
           >
-            <option aria-label='None' value='' />
+            <option aria-label='Recurring dates' value='' />
             <option value={ 12 }>Everyday</option>
             <option value={ 11 }>Mon-Fri</option>
             <option value={ 10 }>Weekends</option>
@@ -645,6 +681,40 @@ const WorkFlow = (props) => {
             <option value={ 3 }>Message</option>
             <option value={ 4 }>Read</option>
             <option value={ 5 }>Research</option>
+          </NativeSelect>
+        </FormControl>
+        <FormControl className={ classes.margin }>
+          <InputLabel htmlFor='invite-select'>Invite</InputLabel>
+          <NativeSelect
+            id='invite-select'
+            onChange={ handleInvites }
+            value={ invites }
+            input={ <MenuInput /> }
+          >
+            <option aria-label='Invite people' value='' />
+            <option value={ 1 }>Brad Pitt</option>
+            <option value={ 2 }>Ryan Reynolds</option>
+            <option value={ 3 }>Ryan Gosling</option>
+            <option value={ 4 }>Robert Downey Jr.</option>
+          </NativeSelect>
+        </FormControl>
+        <FormControl className={ classes.margin }>
+          <InputLabel htmlFor='reminder-select'>Reminder</InputLabel>
+          <NativeSelect
+            id='reminder-select'
+            onChange={ handleReminders }
+            value={ reminders }
+            input={ <MenuInput /> }
+          >
+            <option aria-label='Invite people' value='' />
+            <option value={ 8 }>Everyday at 9am</option>
+            <option value={ 7 }>1 day before</option>
+            <option value={ 6 }>3 days before</option>
+            <option value={ 5 }>1 week before</option>
+            <option value={ 4 }>2 weeks before</option>
+            <option value={ 3 }>1 month before</option>
+            <option value={ 2 }>2 months before</option>
+            <option value={ 1 }>3 months before</option>
           </NativeSelect>
         </FormControl>
       </div>

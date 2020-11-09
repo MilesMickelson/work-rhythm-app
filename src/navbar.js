@@ -83,6 +83,8 @@ const useStyles = makeStyles((theme) => ({
     borderTopWidth: 5,
     borderTopStyle: 'solid',
     borderTopColor: theme.palette.primary.dark,
+    borderRadius: 3,
+    boxShadow: '0 0 0 0.1rem #005269',
   },
   navLink: {
     '&:hover': {
