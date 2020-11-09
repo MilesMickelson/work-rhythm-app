@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Calendar from 'react-calendar';
 
 import clsx from 'clsx';
-import { lighten, makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
 import IconButton from '@material-ui/core/IconButton';
@@ -31,6 +31,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -307,20 +308,42 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-const TextInput = withStyles((theme) => ({
+const CssTextField = withStyles((theme) => ({
+  root: {
+    '& label.Mui-focused': {
+      color: '#262626',
+    },
+    '& .MuiOutlinedInput-root': {
+      width: 440,
+      borderRadius: 5,
+      fontSize: 16,
+      position: 'relative',
+      '& fieldset': {
+        border: '2px solid #005269',
+      },
+      '&:hover fieldset': {
+        border: '2px solid #76ff03',
+      },
+      '&.Mui-focused fieldset': {
+        border: '3px solid #76ff03',
+      },
+    },
+  },
+}))(TextField);
+
+const InputMenuSelect = withStyles((theme) => ({
   root: {
     'label + &': {
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(3),
     },
   },
   input: {
-    width: 440,
     borderRadius: 4,
     position: 'relative',
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #005269',
+    border: '1px solid #ced4da',
     fontSize: 16,
-    padding: '10px 25px 10px 12px',
+    padding: '10px 26px 10px 12px',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     // Use the system font instead of the default Roboto font.
     fontFamily: [
@@ -337,49 +360,34 @@ const TextInput = withStyles((theme) => ({
     ].join(','),
     '&:focus': {
       borderRadius: 4,
-      borderColor: theme.palette.secondary.main,
-      boxShadow: '0 0 0 0.2rem #005269',
-      backgroundColor: theme.palette.primary.light,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
     },
   },
 }))(InputBase);
-
-const MenuInput = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      marginTop: theme.spacing(2),
-    },
-  },
-  input: {
-    width: 90,
-    borderRadius: 4,
-    // position: 'relative',
-    // backgroundColor: theme.palette.background.paper,
-    border: '2px solid #005269',
-    fontSize: 16,
-    padding: '10px 24px 10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: theme.palette.secondary.main,
-      boxShadow: '0 0 0 0.2rem #005269',
-      backgroundColor: theme.palette.primary.light,
-    },
-  },
-}))(InputBase);
+// const InputMenuSelect = withStyles((theme) => ({
+//   root: {
+//     '& label.Mui-focused': {
+//       color: '#262626',
+//     },
+//     '& .MuiNativeSelect-root': {
+//       width: 90,
+//       borderRadius: 5,
+//       fontSize: 16,
+//       border: '2px solid #005269',
+//       position: 'relative',
+//       '& fieldset': {
+//         border: '2px solid #005269',
+//       },
+//       '&:hover fieldset': {
+//         border: '1px solid #76ff03',
+//       },
+//       '&.Mui-focused fieldset': {
+//         border: '2px solid #76ff03',
+//       },
+//     },
+//   },
+// }))(InputBase);
 
 const useStyles = makeStyles((theme) => ({
   fragContainer: {
@@ -392,6 +400,12 @@ const useStyles = makeStyles((theme) => ({
   fragWrap: {
     width: '100%',
   },
+  textInput: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
   tableWrap: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
@@ -399,19 +413,6 @@ const useStyles = makeStyles((theme) => ({
     // borderColor: theme.palette.primary.light,
     borderRadius: 4,
     boxShadow: '0 0 0 2px #005269',
-    // Use the system font instead of the default Roboto font.
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ],
   },
   table: {
     width: '100%',
@@ -420,6 +421,37 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
+  // textField: {
+  //   input: {
+  //   width: 440,
+  //   borderRadius: 4,
+  //   position: 'relative',
+  //   backgroundColor: theme.palette.background.paper,
+  //   border: '2px solid #005269',
+  //   fontSize: 16,
+  //   padding: '10px 25px 10px 12px',
+  //   transition: theme.transitions.create(['border-color', 'box-shadow']),
+  //   // Use the system font instead of the default Roboto font.
+  //   fontFamily: [
+  //     '-apple-system',
+  //     'BlinkMacSystemFont',
+  //     '"Segoe UI"',
+  //     'Roboto',
+  //     '"Helvetica Neue"',
+  //     'Arial',
+  //     'sans-serif',
+  //     '"Apple Color Emoji"',
+  //     '"Segoe UI Emoji"',
+  //     '"Segoe UI Symbol"',
+  //   ].join(','),
+  //   '&:focus': {
+  //     borderRadius: 4,
+  //     borderColor: theme.palette.secondary.main,
+  //     boxShadow: '0 0 0 0.2rem #005269',
+  //     backgroundColor: theme.palette.primary.light,
+  //     },
+  //   },
+  // },
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -568,21 +600,33 @@ const WorkFlow = (props) => {
   const isSelected = (id) => selected.indexOf(id) !== - 1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+  // const [state, setState] = React.useState({
+  //   age: '',
+  //   name: 'hai',
+  // });
+  // const handleChange = (event) => {
+  //   const name = event.target.name;
+  //   setState({
+  //     ...state,
+  //     [name]: event.target.value,
+  //   });
+  // };
+
   return (
     <div className={ classes.fragContainer }>
       <div className={ classes.fragWrap }>
         <FormControl className={ classes.margin }>
-          <InputLabel
-            required='true'
-            htmlFor='name-input'
-          >
-            Title
-          </InputLabel>
-          <TextInput
-            id='name-input'
+          <CssTextField
+            label='Title'
+            id='title-input'
+            // InputLabelProps={ { shrink: true } }
+            // defaultValue="Default Value"
+            // helperText='Title'
+            margin='dense'
+            variant='outlined'
             onChange={ handleName }
             value={ name }
-            input={ <TextInput /> }
+            multiline
           />
         </FormControl>
         <FormControl className={ classes.margin }>
@@ -591,7 +635,7 @@ const WorkFlow = (props) => {
             id='priority-input'
             onChange={ handlePriority }
             value={ priority }
-            input={ <MenuInput /> }
+            input={ <InputMenuSelect /> }
           >
             <option aria-label='Priority Selection' value='' />
             <option value={ 1 }>Low</option>
@@ -606,7 +650,7 @@ const WorkFlow = (props) => {
             id='recurring-select'
             onChange={ handleRecur }
             value={ recur }
-            input={ <MenuInput /> }
+            input={ <InputMenuSelect /> }
           >
             <option aria-label='Recurring dates' value='' />
             <option value={ 12 }>Everyday</option>
@@ -630,7 +674,7 @@ const WorkFlow = (props) => {
             onClick={ handleClickOpen }
             onChange={ handleDate }
             value={ date }
-            input={ <MenuInput /> }
+            input={ <InputMenuSelect /> }
           >
             {/* <Button onClick={ handleClickOpen }>
               Due Date
@@ -659,21 +703,23 @@ const WorkFlow = (props) => {
           </NativeSelect>
         </FormControl>
         <FormControl className={ classes.margin }>
-          <InputLabel htmlFor='details-input'>Notes</InputLabel>
-          <TextInput
+          <CssTextField
+            label='Details'
             id='details-input'
+            margin='dense'
+            variant='outlined'
             onChange={ handleDetails }
             value={ details }
-            input={ <TextInput /> }
+            multiline
           />
         </FormControl>
         <FormControl className={ classes.margin }>
           <InputLabel htmlFor='actions-input'>Actions</InputLabel>
-          <NativeSelect
+          <InputMenuSelect
             id='actions-input'
             onChange={ handleActions }
             value={ actions }
-            input={ <MenuInput /> }
+            input={ <InputMenuSelect /> }
           >
             <option aria-label='None' value='' />
             <option value={ 1 }>Call</option>
@@ -681,30 +727,30 @@ const WorkFlow = (props) => {
             <option value={ 3 }>Message</option>
             <option value={ 4 }>Read</option>
             <option value={ 5 }>Research</option>
-          </NativeSelect>
+          </InputMenuSelect>
         </FormControl>
         <FormControl className={ classes.margin }>
           <InputLabel htmlFor='invite-select'>Invite</InputLabel>
-          <NativeSelect
+          <InputMenuSelect
             id='invite-select'
             onChange={ handleInvites }
             value={ invites }
-            input={ <MenuInput /> }
+            input={ <InputMenuSelect /> }
           >
             <option aria-label='Invite people' value='' />
             <option value={ 1 }>Brad Pitt</option>
             <option value={ 2 }>Ryan Reynolds</option>
             <option value={ 3 }>Ryan Gosling</option>
             <option value={ 4 }>Robert Downey Jr.</option>
-          </NativeSelect>
+          </InputMenuSelect>
         </FormControl>
         <FormControl className={ classes.margin }>
           <InputLabel htmlFor='reminder-select'>Reminder</InputLabel>
-          <NativeSelect
+          <InputMenuSelect
             id='reminder-select'
             onChange={ handleReminders }
             value={ reminders }
-            input={ <MenuInput /> }
+            input={ <InputMenuSelect /> }
           >
             <option aria-label='Invite people' value='' />
             <option value={ 8 }>Everyday at 9am</option>
@@ -715,7 +761,7 @@ const WorkFlow = (props) => {
             <option value={ 3 }>1 month before</option>
             <option value={ 2 }>2 months before</option>
             <option value={ 1 }>3 months before</option>
-          </NativeSelect>
+          </InputMenuSelect>
         </FormControl>
       </div>
       <Paper className={ classes.tableWrap }>
