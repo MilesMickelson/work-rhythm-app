@@ -38,6 +38,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
+import SaveIcon from '@material-ui/icons/Save';
 
 import useInput from './hooks/useInput';
 // ! Later implementation for unique id's-use nano id repo instead
@@ -50,7 +51,7 @@ import useInput from './hooks/useInput';
 //   };
 // }
 
-// ! Data creation and simulation //
+// ! Data //
 function createData(name, id, priority, recurring, time, due) {
   return {
     name,
@@ -71,6 +72,46 @@ const rows = [
   createData('Cook dinner', 3, 3, 'Business Days', 14.3, '3-1-2021', 'these are my details for id 3', '11-3-20'),
   createData('Exercise', 4, 4, 'Bi-Weekly', 14.3, '4-1-2021', 'these are my details for id 4', '11-4-20'),
   createData('Call mom', 5, 5, 'Monthly', 14.3, '5-1-2021', 'these are my details for id 5', '11-5-20'),
+];
+
+// ! Table Header Labels //
+const headCells = [
+  {
+    id: 'name',
+    numeric: false,
+    disablePadding: true,
+    label: 'Name'
+  },
+  {
+    id: 'priority',
+    numeric: true,
+    disablePadding: false,
+    label: 'Priority'
+  },
+  {
+    id: 'recurring',
+    numeric: true,
+    disablePadding: false,
+    label: 'Recurring'
+  },
+  {
+    id: 'time',
+    numeric: true,
+    disablePadding: false,
+    label: 'Time Remaining'
+  },
+  {
+    id: 'due',
+    numeric: true,
+    disablePadding: false,
+    label: 'Due'
+  },
+  {
+    id: 'expand',
+    numeric: false,
+    disablePadding: false,
+    label: 'Expand'
+  },
 ];
 
 // ! Sorting Logic //
@@ -100,7 +141,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// ! Workflow Component Styling Classes //
+// ! Primary Styling Class //
 const useStyles = makeStyles((theme) => ({
   fragContainer: {
     height: '100%',
@@ -111,9 +152,19 @@ const useStyles = makeStyles((theme) => ({
   },
   inputWrap: {
     width: '100%',
-    marginTop: theme.spacing(2),
-    borderRadius: 4,
-    boxShadow: '0 0 0 2px #005269',
+    borderRadiusTopLeft: 4,
+    borderRadiusTopRight: 4,
+    borderBottom: '2px solid #005269'
+  },
+  button: {
+    marginLeft: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+  },
+  closeTodo: {
+    color: theme.palette.primary.light,
+  },
+  addTodo: {
+    color: theme.palette.primary.dark,
   },
   tableWrap: {
     marginTop: theme.spacing(2),
@@ -211,47 +262,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// ! Table Header Labels
-const headCells = [
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: true,
-    label: 'Name'
-  },
-  {
-    id: 'priority',
-    numeric: true,
-    disablePadding: false,
-    label: 'Priority'
-  },
-  {
-    id: 'recurring',
-    numeric: true,
-    disablePadding: false,
-    label: 'Recurring'
-  },
-  {
-    id: 'time',
-    numeric: true,
-    disablePadding: false,
-    label: 'Time Remaining'
-  },
-  {
-    id: 'due',
-    numeric: true,
-    disablePadding: false,
-    label: 'Due'
-  },
-  {
-    id: 'expand',
-    numeric: false,
-    disablePadding: false,
-    label: 'Expand'
-  },
-];
-
-// ! Enhanced Table Header Component
+// ! Table Header Component //
 function EnhancedTableHead(props) {
   // eslint-disable-next-line object-curly-newline
   const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
@@ -307,27 +318,7 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-// ! Enhanced Table Toolbar Component //
-// const useToolbarStyles = makeStyles((theme) => ({
-//   root: {
-//     paddingLeft: theme.spacing(2),
-//     paddingRight: theme.spacing(1),
-//   },
-//   highlight:
-//     theme.palette.type === 'light'
-//       ? {
-//         color: theme.palette.primary.main,
-//         backgroundColor: theme.palette.primary.light,
-//       }
-//       : {
-//         color: theme.palette.text.primary,
-//         backgroundColor: theme.palette.primary.light,
-//       },
-//   toolheader: {
-//     flex: '1 1 100%',
-//   },
-// }));
-
+// ! Table Toolbar Component //
 const EnhancedTableToolbar = (props) => {
   const { numSelected } = props;
   const classes = useStyles();
@@ -342,6 +333,14 @@ const EnhancedTableToolbar = (props) => {
   const [reminders, setReminders] = React.useState('');
   const [open, setCalendarOpen] = React.useState(false);
   const [showInput, setShowInput] = React.useState(false);
+  console.log('EnhancedTableToolbarNameState ->', name);
+  console.log('EnhancedTableToolbarPriState ->', priority);
+  console.log('EnhancedTableToolbarRecState ->', recur);
+  console.log('EnhancedTableToolbarDateState ->', date);
+  console.log('EnhancedTableToolbarDetailsState ->', details);
+  console.log('EnhancedTableToolbarActnsState ->', actions);
+  console.log('EnhancedTableToolbarInvtsState ->', invites);
+  console.log('EnhancedTableToolbarRmndrsState ->', reminders);
   const handleName = (event) => {
     setName(event.target.value);
   };
@@ -548,6 +547,24 @@ const EnhancedTableToolbar = (props) => {
               <option value={ 1 }>3 months before</option>
             </Select>
           </FormControl>
+          <Button
+            variant='contained'
+            color='primary'
+            size='large'
+            className={ classes.button }
+            startIcon={ <SaveIcon /> }
+          >
+            Save
+          </Button>
+          <Button
+            variant='contained'
+            color='primary'
+            size='large'
+            className={ classes.button }
+            startIcon={ <DeleteIcon /> }
+          >
+            Cancel
+          </Button>
         {/* // todo add save and cancel buttons - both with a reset on input fields reset= () => setValue='' */}
         </div>
       </Collapse>
@@ -589,7 +606,7 @@ const EnhancedTableToolbar = (props) => {
               aria-expanded={ showInput }
               onClick={ handleShowInputClick }
             >
-              { showInput ? <RemoveCircleIcon fontSize='large' /> : <AddCircleIcon fontSize='large' />}
+              { showInput ? <RemoveCircleIcon className={ classes.closeTodo } fontSize='large' /> : <AddCircleIcon className={ classes.addTodo } fontSize='large' />}
             </IconButton>
           </>
         )}
