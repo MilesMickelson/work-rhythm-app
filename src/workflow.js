@@ -30,7 +30,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
+import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
@@ -310,10 +310,10 @@ const DialogActions = withStyles((theme) => ({
 
 const CssTextField = withStyles((theme) => ({
   root: {
-    '& label.Mui-focused': {
+    '& label.Select': {
       color: '#262626',
     },
-    '& .MuiOutlinedInput-root': {
+    '& .MuiFilledInput-root': {
       width: 440,
       borderRadius: 5,
       fontSize: 16,
@@ -331,64 +331,6 @@ const CssTextField = withStyles((theme) => ({
   },
 }))(TextField);
 
-// const InputMenuSelect = withStyles((theme) => ({
-//   root: {
-//     'label + &': {
-//       marginTop: theme.spacing(3),
-//     },
-//   },
-//   input: {
-//     borderRadius: 4,
-//     position: 'relative',
-//     backgroundColor: theme.palette.background.paper,
-//     border: '1px solid #ced4da',
-//     fontSize: 16,
-//     padding: '10px 26px 10px 12px',
-//     transition: theme.transitions.create(['border-color', 'box-shadow']),
-//     // Use the system font instead of the default Roboto font.
-//     fontFamily: [
-//       '-apple-system',
-//       'BlinkMacSystemFont',
-//       '"Segoe UI"',
-//       'Roboto',
-//       '"Helvetica Neue"',
-//       'Arial',
-//       'sans-serif',
-//       '"Apple Color Emoji"',
-//       '"Segoe UI Emoji"',
-//       '"Segoe UI Symbol"',
-//     ].join(','),
-//     '&:focus': {
-//       borderRadius: 4,
-//       borderColor: '#80bdff',
-//       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-//     },
-//   },
-// }))(InputBase);
-const InputMenuSelect = withStyles((theme) => ({
-  root: {
-    '& label.Mui-focused': {
-      color: '#262626',
-    },
-    '& .MuiNativeSelect-root': {
-      width: 90,
-      borderRadius: 5,
-      fontSize: 16,
-      border: '2px solid #005269',
-      position: 'relative',
-      '& fieldset': {
-        border: '2px solid #005269',
-      },
-      '&:hover fieldset': {
-        border: '1px solid #76ff03',
-      },
-      '&.Mui-focused fieldset': {
-        border: '2px solid #76ff03',
-      },
-    },
-  },
-}))(InputBase);
-
 const useStyles = makeStyles((theme) => ({
   fragContainer: {
     height: '100%',
@@ -399,12 +341,6 @@ const useStyles = makeStyles((theme) => ({
   },
   fragWrap: {
     width: '100%',
-  },
-  textInput: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: '25ch',
-    },
   },
   tableWrap: {
     marginTop: theme.spacing(2),
@@ -421,37 +357,6 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  // textField: {
-  //   input: {
-  //   width: 440,
-  //   borderRadius: 4,
-  //   position: 'relative',
-  //   backgroundColor: theme.palette.background.paper,
-  //   border: '2px solid #005269',
-  //   fontSize: 16,
-  //   padding: '10px 25px 10px 12px',
-  //   transition: theme.transitions.create(['border-color', 'box-shadow']),
-  //   // Use the system font instead of the default Roboto font.
-  //   fontFamily: [
-  //     '-apple-system',
-  //     'BlinkMacSystemFont',
-  //     '"Segoe UI"',
-  //     'Roboto',
-  //     '"Helvetica Neue"',
-  //     'Arial',
-  //     'sans-serif',
-  //     '"Apple Color Emoji"',
-  //     '"Segoe UI Emoji"',
-  //     '"Segoe UI Symbol"',
-  //   ].join(','),
-  //   '&:focus': {
-  //     borderRadius: 4,
-  //     borderColor: theme.palette.secondary.main,
-  //     boxShadow: '0 0 0 0.2rem #005269',
-  //     backgroundColor: theme.palette.primary.light,
-  //     },
-  //   },
-  // },
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -617,57 +522,48 @@ const WorkFlow = (props) => {
       <div className={ classes.fragWrap }>
         <FormControl className={ classes.margin }>
           <CssTextField
+            multiline
             label='Title'
-            id='title-input'
-            // InputLabelProps={ { shrink: true } }
-            // defaultValue="Default Value"
-            // helperText='Title'
             margin='dense'
-            variant='outlined'
+            variant='filled'
             onChange={ handleName }
             value={ name }
-            multiline
+            inputProps={ {
+              name: '',
+              id: 'title-input',
+            } }
           />
         </FormControl>
-        <FormControl className={ classes.margin }>
-          {/* <InputLabel htmlFor='priority-select'>Age</InputLabel>
-          <NativeSelect
+        <FormControl variant='filled' size='small' className={ classes.margin }>
+          <InputLabel htmlFor='priority'>Priority</InputLabel>
+          <Select
+            native
             value={ priority }
             onChange={ handlePriority }
-            label='Age'
             inputProps={ {
-              priority: 'priority',
-              id: 'priority-select',
+              priority: '',
+              id: 'priority',
             } }
           >
-            <option aria-label='None' value='' />
-            <option value={ 10 }>Ten</option>
-            <option value={ 20 }>Twenty</option>
-            <option value={ 30 }>Thirty</option>
-          </NativeSelect> */}
-          <InputLabel htmlFor='priority-input'>Priority</InputLabel>
-          <NativeSelect
-            id='priority-input'
-            onChange={ handlePriority }
-            value={ priority }
-            input={ <InputMenuSelect /> }
-          >
-            <option aria-label='Priority Selection' value='' />
+            <option aria-label='none' value='' />
             <option value={ 1 }>Low</option>
             <option value={ 2 }>Medium</option>
             <option value={ 3 }>High</option>
             <option value={ 4 }>Very high</option>
-          </NativeSelect>
+          </Select>
         </FormControl>
-        <FormControl className={ classes.margin }>
-          <InputLabel htmlFor='recurring-select'>Recur</InputLabel>
-          <NativeSelect
-            id='recurring-select'
+        <FormControl variant='filled' size='small' className={ classes.margin }>
+          <InputLabel htmlFor='recur'>Recur</InputLabel>
+          <Select
+            native
             onChange={ handleRecur }
             value={ recur }
-            input={ <InputMenuSelect /> }
+            inputProps={ {
+              recur: '',
+              id: 'recur',
+            } }
           >
-            <option aria-label='Recurring dates' value='' />
+            <option aria-label='none' value='' />
             <option value={ 12 }>Everyday</option>
             <option value={ 11 }>Mon-Fri</option>
             <option value={ 10 }>Weekends</option>
@@ -680,20 +576,20 @@ const WorkFlow = (props) => {
             <option value={ 3 }>Monthly</option>
             <option value={ 2 }>Bi-Annually</option>
             <option value={ 1 }>Annually</option>
-          </NativeSelect>
+          </Select>
         </FormControl>
-        <FormControl className={ classes.margin }>
-          <InputLabel htmlFor='dueDate-select'>Due Date</InputLabel>
-          <NativeSelect
-            id='dueDate-select'
+        <FormControl variant='filled' size='small' className={ classes.margin }>
+          <InputLabel htmlFor='due'>Due Date</InputLabel>
+          <Select
+            native
             onClick={ handleClickOpen }
             onChange={ handleDate }
             value={ date }
-            input={ <InputMenuSelect /> }
+            inputProps={ {
+              recur: '',
+              id: 'due',
+            } }
           >
-            {/* <Button onClick={ handleClickOpen }>
-              Due Date
-            </Button> */}
             <Dialog
               onClose={ handleClose }
               aria-labelledby='dueDate-dialog-title'
@@ -715,26 +611,32 @@ const WorkFlow = (props) => {
                 </Button>
               </DialogActions>
             </Dialog>
-          </NativeSelect>
+          </Select>
         </FormControl>
         <FormControl className={ classes.margin }>
           <CssTextField
+            multiline
             label='Details'
-            id='details-input'
             margin='dense'
-            variant='outlined'
+            variant='filled'
             onChange={ handleDetails }
             value={ details }
-            multiline
+            inputProps={ {
+              name: '',
+              id: 'details-input',
+            } }
           />
         </FormControl>
-        <FormControl className={ classes.margin }>
-          <InputLabel htmlFor='actions-input'>Actions</InputLabel>
-          <NativeSelect
-            id='actions-input'
+        <FormControl variant='filled' size='small' className={ classes.margin }>
+          <InputLabel htmlFor='actions'>Actions</InputLabel>
+          <Select
+            native
             onChange={ handleActions }
             value={ actions }
-            input={ <InputMenuSelect /> }
+            inputProps={ {
+              actions: '',
+              id: 'actions',
+            } }
           >
             <option aria-label='None' value='' />
             <option value={ 1 }>Call</option>
@@ -742,32 +644,38 @@ const WorkFlow = (props) => {
             <option value={ 3 }>Message</option>
             <option value={ 4 }>Read</option>
             <option value={ 5 }>Research</option>
-          </NativeSelect>
+          </Select>
         </FormControl>
-        <FormControl className={ classes.margin }>
-          <InputLabel htmlFor='invite-select'>Invite</InputLabel>
-          <NativeSelect
-            id='invite-select'
+        <FormControl variant='filled' size='small' className={ classes.margin }>
+          <InputLabel htmlFor='invite'>Invite</InputLabel>
+          <Select
+            native
             onChange={ handleInvites }
             value={ invites }
-            input={ <InputMenuSelect /> }
+            inputProps={ {
+              invites: '',
+              id: 'invite',
+            } }
           >
-            <option aria-label='Invite people' value='' />
+            <option aria-label='None' value='' />
             <option value={ 1 }>Brad Pitt</option>
             <option value={ 2 }>Ryan Reynolds</option>
             <option value={ 3 }>Ryan Gosling</option>
             <option value={ 4 }>Robert Downey Jr.</option>
-          </NativeSelect>
+          </Select>
         </FormControl>
-        <FormControl className={ classes.margin }>
-          <InputLabel htmlFor='reminder-select'>Reminder</InputLabel>
-          <NativeSelect
-            id='reminder-select'
+        <FormControl variant='filled' size='small' className={ classes.margin }>
+          <InputLabel htmlFor='reminder'>Reminders</InputLabel>
+          <Select
+            native
             onChange={ handleReminders }
             value={ reminders }
-            input={ <InputMenuSelect /> }
+            inputProps={ {
+              reminders: '',
+              id: 'reminder',
+            } }
           >
-            <option aria-label='Invite people' value='' />
+            <option aria-label='None' value='' />
             <option value={ 8 }>Everyday at 9am</option>
             <option value={ 7 }>1 day before</option>
             <option value={ 6 }>3 days before</option>
@@ -776,7 +684,7 @@ const WorkFlow = (props) => {
             <option value={ 3 }>1 month before</option>
             <option value={ 2 }>2 months before</option>
             <option value={ 1 }>3 months before</option>
-          </NativeSelect>
+          </Select>
         </FormControl>
       </div>
       <Paper className={ classes.tableWrap }>
