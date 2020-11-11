@@ -168,7 +168,7 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
   },
-  root: {
+  border: {
     '& > *': {
       borderBottom: 'unset',
     },
@@ -191,6 +191,23 @@ const useStyles = makeStyles((theme) => ({
   },
   expandOpen: {
     transform: 'rotate(180deg)',
+  },
+  root: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+  },
+  highlight:
+    theme.palette.type === 'light'
+      ? {
+        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.light,
+      }
+      : {
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.primary.light,
+      },
+  toolheader: {
+    flex: '1 1 100%',
   },
 }));
 
@@ -291,29 +308,29 @@ EnhancedTableHead.propTypes = {
 };
 
 // ! Enhanced Table Toolbar Component //
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-        color: theme.palette.primary.main,
-        backgroundColor: theme.palette.primary.light,
-      }
-      : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.primary.light,
-      },
-  toolheader: {
-    flex: '1 1 100%',
-  },
-}));
+// const useToolbarStyles = makeStyles((theme) => ({
+//   root: {
+//     paddingLeft: theme.spacing(2),
+//     paddingRight: theme.spacing(1),
+//   },
+//   highlight:
+//     theme.palette.type === 'light'
+//       ? {
+//         color: theme.palette.primary.main,
+//         backgroundColor: theme.palette.primary.light,
+//       }
+//       : {
+//         color: theme.palette.text.primary,
+//         backgroundColor: theme.palette.primary.light,
+//       },
+//   toolheader: {
+//     flex: '1 1 100%',
+//   },
+// }));
 
 const EnhancedTableToolbar = (props) => {
   const { numSelected } = props;
-  const classes = useToolbarStyles();
+  const classes = useStyles();
   const [value, setValue] = useState('');
   const [name, setName] = React.useState('');
   const [priority, setPriority] = React.useState(0);
@@ -794,7 +811,7 @@ const WorkFlow = (props) => {
                         hover
                         tabIndex={ - 1 }
                         key={ row.id }
-                        className={ classes.root }
+                        className={ classes.border }
                         aria-checked={ isItemSelected }
                         selected={ isItemSelected }
                       >
