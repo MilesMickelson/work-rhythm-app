@@ -25,15 +25,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
-import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -41,6 +39,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 
+import useInput from './hooks/useInput';
 // ! Later implementation for unique id's-use nano id repo instead
 // const shortid = require('shortid');
 // function createNewTodo(text) {
@@ -100,6 +99,100 @@ function stableSort(array, comparator) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
+
+// ! Workflow Component Styling Classes //
+const useStyles = makeStyles((theme) => ({
+  fragContainer: {
+    height: '100%',
+    width: '100%',
+    maxWidth: 960,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  inputWrap: {
+    width: '100%',
+    marginTop: theme.spacing(2),
+    borderRadius: 4,
+    boxShadow: '0 0 0 2px #005269',
+  },
+  tableWrap: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    borderRadius: 4,
+    boxShadow: '0 0 0 2px #005269',
+  },
+  table: {
+    width: '100%',
+    minWidth: 760,
+    maxWidth: 960,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: - 1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1,
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary,
+  },
+  icon: {
+    verticalAlign: 'bottom',
+    height: 20,
+    width: 20,
+  },
+  details: {
+    alignItems: 'center',
+  },
+  column: {
+    flexBasis: '33.33%',
+  },
+  helper: {
+    borderLeft: `2px solid ${theme.palette.divider}`,
+    padding: theme.spacing(1, 2),
+  },
+  link: {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  topMargin: {
+    marginTop: 16,
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+}));
 
 // ! Table Header Labels
 const headCells = [
@@ -219,49 +312,272 @@ const useToolbarStyles = makeStyles((theme) => ({
 }));
 
 const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles();
   const { numSelected } = props;
-
+  const classes = useToolbarStyles();
+  const [value, setValue] = useState('');
+  const [name, setName] = React.useState('');
+  const [priority, setPriority] = React.useState(0);
+  const [recur, setRecur] = React.useState('');
+  const [date, setDate] = React.useState(new Date());
+  const [details, setDetails] = React.useState('');
+  const [actions, setActions] = React.useState('');
+  const [invites, setInvites] = React.useState('');
+  const [reminders, setReminders] = React.useState('');
+  const [open, setCalendarOpen] = React.useState(false);
+  const [showInput, setShowInput] = React.useState(false);
+  const handleName = (event) => {
+    setName(event.target.value);
+  };
+  const handlePriority = (event) => {
+    setPriority(event.target.value);
+  };
+  const handleRecur = (event) => {
+    setRecur(event.target.value);
+  };
+  const handleDate = (event) => {
+    setDate(event.target.value);
+  };
+  const handleDetails = (event) => {
+    setDetails(event.target.value);
+  };
+  const handleActions = (event) => {
+    setActions(event.target.value);
+  };
+  const handleInvites = (event) => {
+    setInvites(event.target.value);
+  };
+  const handleReminders = (event) => {
+    setReminders(event.target.value);
+  };
+  const handleCalendarClick = () => {
+    setCalendarOpen(! open);
+  };
+  const handleShowInputClick = () => {
+    setShowInput(! showInput);
+  };
   return (
-    <Toolbar
-      className={ clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      }) }
-    >
-      {numSelected > 0 ? (
-        <Typography className={ classes.toolheader } color='primary' variant='subname1' component='div'>
-          {numSelected}
-          Selected
-        </Typography>
-      ) : (
-        <Typography
-          className={ classes.toolheader }
-          variant='h6'
-          id='tableTitle'
-          component='div'
-        >
-          Primary
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title='Delete'>
-          <IconButton aria-label='delete'>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <>
-          <Tooltip title='Filter list'>
-            <IconButton aria-label='filter list'>
-              <FilterListIcon />
+    <>
+      <Collapse
+        aria-label='show more'
+        aria-expanded={ showInput }
+        in={ showInput }
+        timeout='auto'
+        unmountOnExit
+      >
+        <div className={ classes.inputWrap }>
+          <FormControl className={ classes.margin }>
+            <CssTextField
+              multiline
+              label='Title'
+              margin='dense'
+              variant='filled'
+              onChange={ handleName }
+              value={ name }
+              inputProps={ {
+                name: '',
+                id: 'title-input',
+              } }
+            />
+          </FormControl>
+          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+            <InputLabel htmlFor='priority'>Priority</InputLabel>
+            <Select
+              native
+              value={ priority }
+              onChange={ handlePriority }
+              inputProps={ {
+                priority: '',
+                id: 'priority',
+              } }
+            >
+              <option aria-label='none' value='' />
+              <option value={ 1 }>Low</option>
+              <option value={ 2 }>Medium</option>
+              <option value={ 3 }>High</option>
+              <option value={ 4 }>Very high</option>
+            </Select>
+          </FormControl>
+          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+            <InputLabel htmlFor='recur'>Recur</InputLabel>
+            <Select
+              native
+              onChange={ handleRecur }
+              value={ recur }
+              inputProps={ {
+                recur: '',
+                id: 'recur',
+              } }
+            >
+              <option aria-label='none' value='' />
+              <option value={ 12 }>Everyday</option>
+              <option value={ 11 }>Mon-Fri</option>
+              <option value={ 10 }>Weekends</option>
+              <option value={ 9 }>Weekly</option>
+              <option value={ 8 }>Bi-Weekly</option>
+              <option value={ 7 }>Tri-Weekly</option>
+              <option value={ 6 }>Monthly</option>
+              <option value={ 5 }>Bi-Monthly</option>
+              <option value={ 4 }>Tri-Monthly</option>
+              <option value={ 3 }>Monthly</option>
+              <option value={ 2 }>Bi-Annually</option>
+              <option value={ 1 }>Annually</option>
+            </Select>
+          </FormControl>
+          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+            <InputLabel htmlFor='due'>Due Date</InputLabel>
+            <Select
+              native
+              onClick={ handleCalendarClick }
+              onChange={ handleDate }
+              value={ date }
+              inputProps={ {
+                recur: '',
+                id: 'due',
+              } }
+            >
+              <Dialog
+                onClose={ handleCalendarClick }
+                aria-labelledby='dueDate-dialog-title'
+                open={ open }
+              >
+                <DialogTitle id='dueDate-dialog-title' onClose={ handleCalendarClick }>
+                  Due Date
+                </DialogTitle>
+                <DialogContent dividers>
+                  <Calendar
+                    id='dueDate-select'
+                    onChange={ handleDate }
+                    value={ date }
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button autoFocus onClick={ handleCalendarClick }>
+                    Save
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Select>
+          </FormControl>
+          <FormControl className={ classes.margin }>
+            <CssTextField
+              multiline
+              label='Details'
+              margin='dense'
+              variant='filled'
+              onChange={ handleDetails }
+              value={ details }
+              inputProps={ {
+                name: '',
+                id: 'details-input',
+              } }
+            />
+          </FormControl>
+          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+            <InputLabel htmlFor='actions'>Actions</InputLabel>
+            <Select
+              native
+              onChange={ handleActions }
+              value={ actions }
+              inputProps={ {
+                actions: '',
+                id: 'actions',
+              } }
+            >
+              <option aria-label='None' value='' />
+              <option value={ 1 }>Call</option>
+              <option value={ 2 }>Email</option>
+              <option value={ 3 }>Message</option>
+              <option value={ 4 }>Read</option>
+              <option value={ 5 }>Research</option>
+            </Select>
+          </FormControl>
+          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+            <InputLabel htmlFor='invite'>Invite</InputLabel>
+            <Select
+              native
+              onChange={ handleInvites }
+              value={ invites }
+              inputProps={ {
+                invites: '',
+                id: 'invite',
+              } }
+            >
+              <option aria-label='None' value='' />
+              <option value={ 1 }>Brad Pitt</option>
+              <option value={ 2 }>Ryan Reynolds</option>
+              <option value={ 3 }>Ryan Gosling</option>
+              <option value={ 4 }>Robert Downey Jr.</option>
+            </Select>
+          </FormControl>
+          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+            <InputLabel htmlFor='reminder'>Reminders</InputLabel>
+            <Select
+              native
+              onChange={ handleReminders }
+              value={ reminders }
+              inputProps={ {
+                reminders: '',
+                id: 'reminder',
+              } }
+            >
+              <option aria-label='None' value='' />
+              <option value={ 8 }>Everyday at 9am</option>
+              <option value={ 7 }>1 day before</option>
+              <option value={ 6 }>3 days before</option>
+              <option value={ 5 }>1 week before</option>
+              <option value={ 4 }>2 weeks before</option>
+              <option value={ 3 }>1 month before</option>
+              <option value={ 2 }>2 months before</option>
+              <option value={ 1 }>3 months before</option>
+            </Select>
+          </FormControl>
+        {/* // todo add save and cancel buttons - both with a reset on input fields reset= () => setValue='' */}
+        </div>
+      </Collapse>
+      <Toolbar
+        className={ clsx(classes.root, {
+          [classes.highlight]: numSelected > 0,
+        }) }
+      >
+        {numSelected > 0 ? (
+          <Typography className={ classes.toolheader } color='primary' variant='subname1' component='div'>
+            {numSelected}
+            Selected
+          </Typography>
+        ) : (
+          <Typography
+            className={ classes.toolheader }
+            variant='h6'
+            id='tableTitle'
+            component='div'
+          >
+            Primary
+          </Typography>
+        )}
+        {numSelected > 0 ? (
+          <Tooltip title='Delete'>
+            <IconButton aria-label='delete'>
+              <DeleteIcon />
             </IconButton>
           </Tooltip>
-          <IconButton aria-label='add to do item'>
-            <AddCircleIcon fontSize='large' />
-          </IconButton>
-        </>
-      )}
-    </Toolbar>
+        ) : (
+          <>
+            <Tooltip title='Filter list'>
+              <IconButton aria-label='filter list'>
+                <FilterListIcon />
+              </IconButton>
+            </Tooltip>
+            <IconButton
+              aria-label='show input'
+              aria-expanded={ showInput }
+              onClick={ handleShowInputClick }
+            >
+              { showInput ? <RemoveCircleIcon fontSize='large' /> : <AddCircleIcon fontSize='large' />}
+            </IconButton>
+          </>
+        )}
+      </Toolbar>
+    </>
   );
 };
 
@@ -269,6 +585,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
+// ! Dialog Calendar Component //
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -283,7 +600,10 @@ const styles = (theme) => ({
 });
 
 const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
+  const {
+    children, classes, onClose, ...other
+  } = props;
+  // const [value, setValue] = useInput('');
   return (
     <MuiDialogTitle disableTypography className={ classes.root } { ...other }>
       <Typography variant='h6'>{children}</Typography>
@@ -309,7 +629,8 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-const CssTextField = withStyles((theme) => ({
+// ! TextField Input Component //
+const CssTextField = withStyles(() => ({
   root: {
     '& label.Select': {
       color: '#262626',
@@ -332,119 +653,19 @@ const CssTextField = withStyles((theme) => ({
   },
 }))(TextField);
 
-const useStyles = makeStyles((theme) => ({
-  fragContainer: {
-    height: '100%',
-    width: '100%',
-    maxWidth: 960,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  inputWrap: {
-    width: '100%',
-    marginTop: theme.spacing(2),
-    borderRadius: 4,
-    boxShadow: '0 0 0 2px #005269',
-  },
-  tableWrap: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    borderRadius: 4,
-    boxShadow: '0 0 0 2px #005269',
-  },
-  table: {
-    width: '100%',
-    minWidth: 760,
-    maxWidth: 960,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: - 1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
-  },
-  icon: {
-    verticalAlign: 'bottom',
-    height: 20,
-    width: 20,
-  },
-  details: {
-    alignItems: 'center',
-  },
-  column: {
-    flexBasis: '33.33%',
-  },
-  helper: {
-    borderLeft: `2px solid ${theme.palette.divider}`,
-    padding: theme.spacing(1, 2),
-  },
-  link: {
-    color: theme.palette.primary.main,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  root: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  topMargin: {
-    marginTop: 16,
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-}));
-
 // ! WorkFlow Component Through End //
 const WorkFlow = (props) => {
   const classes = useStyles();
-  // const [value, setValue] = React.useState(0);
-  const [name, setName] = React.useState('');
-  const [priority, setPriority] = React.useState(0);
-  const [recur, setRecur] = React.useState('');
-  const [date, setDate] = React.useState(new Date());
-  const [details, setDetails] = React.useState('');
-  const [actions, setActions] = React.useState('');
-  const [invites, setInvites] = React.useState('');
-  const [reminders, setReminders] = React.useState('');
-  const [orderBy, setOrderBy] = React.useState('');
-  const [order, setOrder] = React.useState('asc');
+  // const [value, setValue] = useInput('');
+  const [expanded, setExpanded] = React.useState(false);
+
   const [selected, setSelected] = React.useState([]);
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [open, setCalendarOpen] = React.useState(false);
-  const [expanded, setExpanded] = React.useState(false);
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -485,39 +706,6 @@ const WorkFlow = (props) => {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
-  // const handleName = (event, newName) => {
-  //   setName(newName);
-  // };
-  const handleName = (event) => {
-    setName(event.target.value);
-  };
-  const handlePriority = (event) => {
-    setPriority(event.target.value);
-  };
-  const handleRecur = (event) => {
-    setRecur(event.target.value);
-  };
-  const handleDate = (event) => {
-    setDate(event.target.value);
-  };
-  const handleDetails = (event) => {
-    setDetails(event.target.value);
-  };
-  const handleActions = (event) => {
-    setActions(event.target.value);
-  };
-  const handleInvites = (event) => {
-    setInvites(event.target.value);
-  };
-  const handleReminders = (event) => {
-    setReminders(event.target.value);
-  };
-  const handleCalendarClick = () => {
-    setCalendarOpen(! open);
-  };
   const handleExpandClick = () => {
     setExpanded(! expanded);
   };
@@ -538,174 +726,6 @@ const WorkFlow = (props) => {
 
   return (
     <div className={ classes.fragContainer }>
-      <div className={ classes.inputWrap }>
-        <FormControl className={ classes.margin }>
-          <CssTextField
-            multiline
-            label='Title'
-            margin='dense'
-            variant='filled'
-            onChange={ handleName }
-            value={ name }
-            inputProps={ {
-              name: '',
-              id: 'title-input',
-            } }
-          />
-        </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.topMargin }>
-          <InputLabel htmlFor='priority'>Priority</InputLabel>
-          <Select
-            native
-            value={ priority }
-            onChange={ handlePriority }
-            inputProps={ {
-              priority: '',
-              id: 'priority',
-            } }
-          >
-            <option aria-label='none' value='' />
-            <option value={ 1 }>Low</option>
-            <option value={ 2 }>Medium</option>
-            <option value={ 3 }>High</option>
-            <option value={ 4 }>Very high</option>
-          </Select>
-        </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.topMargin }>
-          <InputLabel htmlFor='recur'>Recur</InputLabel>
-          <Select
-            native
-            onChange={ handleRecur }
-            value={ recur }
-            inputProps={ {
-              recur: '',
-              id: 'recur',
-            } }
-          >
-            <option aria-label='none' value='' />
-            <option value={ 12 }>Everyday</option>
-            <option value={ 11 }>Mon-Fri</option>
-            <option value={ 10 }>Weekends</option>
-            <option value={ 9 }>Weekly</option>
-            <option value={ 8 }>Bi-Weekly</option>
-            <option value={ 7 }>Tri-Weekly</option>
-            <option value={ 6 }>Monthly</option>
-            <option value={ 5 }>Bi-Monthly</option>
-            <option value={ 4 }>Tri-Monthly</option>
-            <option value={ 3 }>Monthly</option>
-            <option value={ 2 }>Bi-Annually</option>
-            <option value={ 1 }>Annually</option>
-          </Select>
-        </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.topMargin }>
-          <InputLabel htmlFor='due'>Due Date</InputLabel>
-          <Select
-            native
-            onClick={ handleCalendarClick }
-            onChange={ handleDate }
-            value={ date }
-            inputProps={ {
-              recur: '',
-              id: 'due',
-            } }
-          >
-            <Dialog
-              onClose={ handleCalendarClick }
-              aria-labelledby='dueDate-dialog-title'
-              open={ open }
-            >
-              <DialogTitle id='dueDate-dialog-title' onClose={ handleCalendarClick }>
-                Due Date
-              </DialogTitle>
-              <DialogContent dividers>
-                <Calendar
-                  id='dueDate-select'
-                  onChange={ handleDate }
-                  value={ date }
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button autoFocus onClick={ handleCalendarClick }>
-                  Save
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </Select>
-        </FormControl>
-        <FormControl className={ classes.margin }>
-          <CssTextField
-            multiline
-            label='Details'
-            margin='dense'
-            variant='filled'
-            onChange={ handleDetails }
-            value={ details }
-            inputProps={ {
-              name: '',
-              id: 'details-input',
-            } }
-          />
-        </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.topMargin }>
-          <InputLabel htmlFor='actions'>Actions</InputLabel>
-          <Select
-            native
-            onChange={ handleActions }
-            value={ actions }
-            inputProps={ {
-              actions: '',
-              id: 'actions',
-            } }
-          >
-            <option aria-label='None' value='' />
-            <option value={ 1 }>Call</option>
-            <option value={ 2 }>Email</option>
-            <option value={ 3 }>Message</option>
-            <option value={ 4 }>Read</option>
-            <option value={ 5 }>Research</option>
-          </Select>
-        </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.topMargin }>
-          <InputLabel htmlFor='invite'>Invite</InputLabel>
-          <Select
-            native
-            onChange={ handleInvites }
-            value={ invites }
-            inputProps={ {
-              invites: '',
-              id: 'invite',
-            } }
-          >
-            <option aria-label='None' value='' />
-            <option value={ 1 }>Brad Pitt</option>
-            <option value={ 2 }>Ryan Reynolds</option>
-            <option value={ 3 }>Ryan Gosling</option>
-            <option value={ 4 }>Robert Downey Jr.</option>
-          </Select>
-        </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.topMargin }>
-          <InputLabel htmlFor='reminder'>Reminders</InputLabel>
-          <Select
-            native
-            onChange={ handleReminders }
-            value={ reminders }
-            inputProps={ {
-              reminders: '',
-              id: 'reminder',
-            } }
-          >
-            <option aria-label='None' value='' />
-            <option value={ 8 }>Everyday at 9am</option>
-            <option value={ 7 }>1 day before</option>
-            <option value={ 6 }>3 days before</option>
-            <option value={ 5 }>1 week before</option>
-            <option value={ 4 }>2 weeks before</option>
-            <option value={ 3 }>1 month before</option>
-            <option value={ 2 }>2 months before</option>
-            <option value={ 1 }>3 months before</option>
-          </Select>
-        </FormControl>
-      </div>
       <Paper className={ classes.tableWrap }>
         <EnhancedTableToolbar numSelected={ selected.length } />
         <TableContainer>
@@ -766,7 +786,6 @@ const WorkFlow = (props) => {
                               [classes.expandOpen]: expanded,
                             }) }
                           >
-
                             <ExpandMoreIcon />
                           </IconButton>
                         </TableCell>
