@@ -27,6 +27,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -339,14 +340,15 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  fragWrap: {
+  inputWrap: {
     width: '100%',
+    marginTop: theme.spacing(2),
+    borderRadius: 4,
+    boxShadow: '0 0 0 2px #005269',
   },
   tableWrap: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    // border: '0.1px solid #ced4da',
-    // borderColor: theme.palette.primary.light,
     borderRadius: 4,
     boxShadow: '0 0 0 2px #005269',
   },
@@ -405,6 +407,22 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
+  topMargin: {
+    marginTop: 16,
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
 }));
 
 // ! WorkFlow Component Through End //
@@ -425,7 +443,8 @@ const WorkFlow = (props) => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [open, setOpen] = React.useState(false);
+  const [open, setCalendarOpen] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -496,11 +515,11 @@ const WorkFlow = (props) => {
   const handleReminders = (event) => {
     setReminders(event.target.value);
   };
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleCalendarClick = () => {
+    setCalendarOpen(! open);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleExpandClick = () => {
+    setExpanded(! expanded);
   };
   const isSelected = (id) => selected.indexOf(id) !== - 1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
@@ -519,7 +538,7 @@ const WorkFlow = (props) => {
 
   return (
     <div className={ classes.fragContainer }>
-      <div className={ classes.fragWrap }>
+      <div className={ classes.inputWrap }>
         <FormControl className={ classes.margin }>
           <CssTextField
             multiline
@@ -534,7 +553,7 @@ const WorkFlow = (props) => {
             } }
           />
         </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.margin }>
+        <FormControl variant='filled' size='small' className={ classes.topMargin }>
           <InputLabel htmlFor='priority'>Priority</InputLabel>
           <Select
             native
@@ -552,7 +571,7 @@ const WorkFlow = (props) => {
             <option value={ 4 }>Very high</option>
           </Select>
         </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.margin }>
+        <FormControl variant='filled' size='small' className={ classes.topMargin }>
           <InputLabel htmlFor='recur'>Recur</InputLabel>
           <Select
             native
@@ -578,11 +597,11 @@ const WorkFlow = (props) => {
             <option value={ 1 }>Annually</option>
           </Select>
         </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.margin }>
+        <FormControl variant='filled' size='small' className={ classes.topMargin }>
           <InputLabel htmlFor='due'>Due Date</InputLabel>
           <Select
             native
-            onClick={ handleClickOpen }
+            onClick={ handleCalendarClick }
             onChange={ handleDate }
             value={ date }
             inputProps={ {
@@ -591,11 +610,11 @@ const WorkFlow = (props) => {
             } }
           >
             <Dialog
-              onClose={ handleClose }
+              onClose={ handleCalendarClick }
               aria-labelledby='dueDate-dialog-title'
               open={ open }
             >
-              <DialogTitle id='dueDate-dialog-title' onClose={ handleClose }>
+              <DialogTitle id='dueDate-dialog-title' onClose={ handleCalendarClick }>
                 Due Date
               </DialogTitle>
               <DialogContent dividers>
@@ -606,7 +625,7 @@ const WorkFlow = (props) => {
                 />
               </DialogContent>
               <DialogActions>
-                <Button autoFocus onClick={ handleClose }>
+                <Button autoFocus onClick={ handleCalendarClick }>
                   Save
                 </Button>
               </DialogActions>
@@ -627,7 +646,7 @@ const WorkFlow = (props) => {
             } }
           />
         </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.margin }>
+        <FormControl variant='filled' size='small' className={ classes.topMargin }>
           <InputLabel htmlFor='actions'>Actions</InputLabel>
           <Select
             native
@@ -646,7 +665,7 @@ const WorkFlow = (props) => {
             <option value={ 5 }>Research</option>
           </Select>
         </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.margin }>
+        <FormControl variant='filled' size='small' className={ classes.topMargin }>
           <InputLabel htmlFor='invite'>Invite</InputLabel>
           <Select
             native
@@ -664,7 +683,7 @@ const WorkFlow = (props) => {
             <option value={ 4 }>Robert Downey Jr.</option>
           </Select>
         </FormControl>
-        <FormControl variant='filled' size='small' className={ classes.margin }>
+        <FormControl variant='filled' size='small' className={ classes.topMargin }>
           <InputLabel htmlFor='reminder'>Reminders</InputLabel>
           <Select
             native
@@ -739,11 +758,16 @@ const WorkFlow = (props) => {
                         <TableCell align='right'>{row.due}</TableCell>
                         <TableCell>
                           <IconButton
-                            aria-label='expand row'
+                            aria-label='show more'
+                            aria-expanded={ expanded }
                             size='small'
-                            onClick={ () => setOpen(! open) }
+                            onClick={ handleExpandClick }
+                            className={ clsx(classes.expand, {
+                              [classes.expandOpen]: expanded,
+                            }) }
                           >
-                            { open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+
+                            <ExpandMoreIcon />
                           </IconButton>
                         </TableCell>
                       </TableRow>
@@ -756,7 +780,7 @@ const WorkFlow = (props) => {
                         selected={ isItemSelected }
                       >
                         <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
-                          <Collapse in={ open } timeout='auto' unmountOnExit>
+                          <Collapse in={ expanded } timeout='auto' unmountOnExit>
                             <Box margin={ 1 }>
                               <Typography variant='h6' gutterBottom component='div'>
                                 Details

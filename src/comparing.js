@@ -147,3 +147,6 @@ export default function CollapsibleTable() {
     </TableContainer>
   );
 }
+
+// onClick={ () => setExpanded(! open) }
+// { open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
