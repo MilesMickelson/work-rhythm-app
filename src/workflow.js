@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { nanoid } from 'nanoid';
 
 import Calendar from 'react-calendar';
 
@@ -41,18 +42,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 import useInput from './hooks/useInput';
-// ! Later implementation for unique id's-use nano id repo instead
-// const shortid = require('shortid');
-// function createNewTodo(text) {
-//   return {
-//     completed: false,
-//     id: shortid.generate(),
-//     text
-//   };
-// }
+
+const nanoId = nanoid();
+console.log('createNanoID -> id', nanoId);
 
 // let newTodoItem = {
-//   'id': id,
+//   'key': key,
 //   'title': title,
 //   'priority': priority,
 //   'recurring': recurring,
@@ -65,35 +60,33 @@ import useInput from './hooks/useInput';
 // }
 
 // ! Data //
-function createData(name, id, priority, recurring, time, due) {
-  return {
-    name,
-    id,
-    priority,
-    recurring,
-    time,
-    due,
-    details: [
-      { notes: '', added: '' },
-    ],
-  };
-}
+// function createData(key, id, title, priority, recur, timer, due) {
+//   return {
+//     key,
+//     id,
+//     title,
+//     priority,
+//     recur,
+//     timer,
+//     due,
+//     details: [
+//       {
+//         notes: '', added: '', actions: '', invites: ''
+//       },
+//     ],
+//   };
+// }
 
-const rows = [
-  createData('Write more code!', 1, 1, 'Everyday', 14.3, '1-1-2021', 'these are my details for id 1', '11-1-20'),
-  createData('Eat healthy', 2, 2, 'Weekly', 14.3, '2-1-2021', 'these are my details for id 2', '11-2-20'),
-  createData('Cook dinner', 3, 3, 'Business Days', 14.3, '3-1-2021', 'these are my details for id 3', '11-3-20'),
-  createData('Exercise', 4, 4, 'Bi-Weekly', 14.3, '4-1-2021', 'these are my details for id 4', '11-4-20'),
-  createData('Call mom', 5, 5, 'Monthly', 14.3, '5-1-2021', 'these are my details for id 5', '11-5-20'),
-];
+// createData(1, 7, 'Title of my todo', 1, 'Everyday', 20, '1-1-2021', 'these are my details for id 1', '11-1-20', 'Email', '3'),
+const todoItems = [];
 
 // ! Table Header Labels //
 const headCells = [
   {
-    id: 'name',
+    id: 'title',
     numeric: false,
     disablePadding: true,
-    label: 'Name'
+    label: 'Title'
   },
   {
     id: 'priority',
@@ -102,16 +95,16 @@ const headCells = [
     label: 'Priority'
   },
   {
-    id: 'recurring',
+    id: 'recur',
     numeric: true,
     disablePadding: false,
-    label: 'Recurring'
+    label: 'Recur'
   },
   {
-    id: 'time',
+    id: 'timer',
     numeric: true,
     disablePadding: false,
-    label: 'Time Remaining'
+    label: 'Timer'
   },
   {
     id: 'due',
@@ -336,26 +329,31 @@ const EnhancedTableToolbar = (props) => {
   const { numSelected } = props;
   const classes = useStyles();
   // const [value, setValue] = useState('');
-  const [name, setName] = React.useState('');
+  const [title, setTitle] = React.useState('');
   const [priority, setPriority] = React.useState(0);
   const [recur, setRecur] = React.useState('');
   const [date, setDate] = React.useState(new Date());
-  const [details, setDetails] = React.useState('');
+  const [notes, setNotes] = React.useState('');
   const [actions, setActions] = React.useState('');
   const [invites, setInvites] = React.useState('');
   const [reminders, setReminders] = React.useState('');
+  const [key, setKey] = React.useState(0);
+  const [editing, setEditing] = React.useState(false);
+  const [completed, setCompleted] = React.useState(false);
+
   const [open, setCalendarOpen] = React.useState(false);
   const [showInput, setShowInput] = React.useState(false);
-  console.log('EnhancedTableToolbarNameState ->', name);
+
+  console.log('EnhancedTableToolbarNameState ->', title);
   console.log('EnhancedTableToolbarPriState ->', priority);
   console.log('EnhancedTableToolbarRecState ->', recur);
   console.log('EnhancedTableToolbarDateState ->', date);
-  console.log('EnhancedTableToolbarDetailsState ->', details);
+  console.log('EnhancedTableToolbarDetailsState ->', notes);
   console.log('EnhancedTableToolbarActnsState ->', actions);
   console.log('EnhancedTableToolbarInvtsState ->', invites);
   console.log('EnhancedTableToolbarRmndrsState ->', reminders);
   const handleName = (event) => {
-    setName(event.target.value);
+    setTitle(event.target.value);
   };
   const handlePriority = (event) => {
     setPriority(event.target.value);
@@ -366,8 +364,8 @@ const EnhancedTableToolbar = (props) => {
   const handleDate = (event) => {
     setDate(event.target.value);
   };
-  const handleDetails = (event) => {
-    setDetails(event.target.value);
+  const handleNotes = (event) => {
+    setNotes(event.target.value);
   };
   const handleActions = (event) => {
     setActions(event.target.value);
@@ -383,6 +381,15 @@ const EnhancedTableToolbar = (props) => {
   };
   const handleShowInputClick = () => {
     setShowInput(! showInput);
+  };
+  const handleEditing = () => {
+    setEditing(! editing);
+  };
+  const handleCompleted = () => {
+    setCompleted(! completed);
+  };
+  const handleAddTodoItem = () => {
+
   };
   return (
     <>
@@ -401,7 +408,7 @@ const EnhancedTableToolbar = (props) => {
               margin='dense'
               variant='filled'
               onChange={ handleName }
-              value={ name }
+              value={ title }
               // reset={ () => setValue='' }
             />
           </FormControl>
@@ -475,11 +482,11 @@ const EnhancedTableToolbar = (props) => {
           <FormControl className={ classes.margin }>
             <CssTextField
               multiline
-              label='Details'
+              label='Notes'
               margin='dense'
               variant='filled'
-              onChange={ handleDetails }
-              value={ details }
+              onChange={ handleNotes }
+              value={ notes }
             />
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
@@ -498,7 +505,7 @@ const EnhancedTableToolbar = (props) => {
             </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='invite'>Invite</InputLabel>
+            <InputLabel htmlFor='invite'>Invites</InputLabel>
             <Select
               native
               onChange={ handleInvites }
@@ -517,10 +524,6 @@ const EnhancedTableToolbar = (props) => {
               native
               onChange={ handleReminders }
               value={ reminders }
-              inputProps={ {
-                reminders: '',
-                id: 'reminder',
-              } }
             >
               <option aria-label='None' value='' />
               <option value={ 8 }>Everyday at 9am</option>
@@ -597,7 +600,7 @@ const EnhancedTableToolbar = (props) => {
               aria-expanded={ showInput }
               onClick={ handleShowInputClick }
             >
-              { showInput ? <RemoveCircleIcon className={ classes.closeTodo } fontSize='large' /> : <AddCircleIcon className={ classes.addTodo } fontSize='large' />}
+              { showInput ? <Tooltip title='Cancel Item Input'><RemoveCircleIcon className={ classes.closeTodo } fontSize='large' /></Tooltip> : <Tooltip title='Add Todo Item'><AddCircleIcon className={ classes.addTodo } fontSize='large' /></Tooltip>}
             </IconButton>
           </>
         )}
@@ -698,7 +701,7 @@ const WorkFlow = (props) => {
   };
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.id);
+      const newSelecteds = todoItems.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -735,19 +738,7 @@ const WorkFlow = (props) => {
     setExpanded(! expanded);
   };
   const isSelected = (id) => selected.indexOf(id) !== - 1;
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
-  // const [state, setState] = React.useState({
-  //   age: '',
-  //   name: 'hai',
-  // });
-  // const handleChange = (event) => {
-  //   const name = event.target.name;
-  //   setState({
-  //     ...state,
-  //     [name]: event.target.value,
-  //   });
-  // };
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, todoItems.length - page * rowsPerPage);
   // console.log('Workflow Comp. State ->', name);
   // console.log('Workflow Comp. State ->', priority);
   // console.log('Workflow Comp. State ->', recur);
@@ -774,10 +765,10 @@ const WorkFlow = (props) => {
               orderBy={ orderBy }
               onSelectAllClick={ handleSelectAllClick }
               onRequestSort={ handleRequestSort }
-              rowCount={ rows.length }
+              rowCount={ todoItems.length }
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(todoItems, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, id) => {
                   const isItemSelected = isSelected(row.id);
@@ -805,8 +796,8 @@ const WorkFlow = (props) => {
                           {row.title}
                         </TableCell>
                         <TableCell align='right'>{row.priority}</TableCell>
-                        <TableCell align='right'>{row.recurring}</TableCell>
-                        <TableCell align='right'>{row.time}</TableCell>
+                        <TableCell align='right'>{row.recur}</TableCell>
+                        <TableCell align='right'>{row.timer}</TableCell>
                         <TableCell align='right'>{row.due}</TableCell>
                         <TableCell>
                           <IconButton
@@ -845,7 +836,7 @@ const WorkFlow = (props) => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {row.details.map((detailsRow) => (
+                                  {todoItems.details.map((detailsRow) => (
                                     <TableRow key={ detailsRow.id }>
                                       <TableCell>{detailsRow.notes}</TableCell>
                                       <TableCell align='right'>{detailsRow.added}</TableCell>
@@ -871,7 +862,7 @@ const WorkFlow = (props) => {
         <TablePagination
           rowsPerPageOptions={ [10, 20, 50] }
           component='div'
-          count={ rows.length }
+          count={ todoItems.length }
           rowsPerPage={ rowsPerPage }
           page={ page }
           onChangePage={ handleChangePage }
