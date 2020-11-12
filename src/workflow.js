@@ -38,7 +38,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
-import SaveIcon from '@material-ui/icons/Save';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 import useInput from './hooks/useInput';
 // ! Later implementation for unique id's-use nano id repo instead
@@ -49,6 +49,19 @@ import useInput from './hooks/useInput';
 //     id: shortid.generate(),
 //     text
 //   };
+// }
+
+// let newTodoItem = {
+//   'id': id,
+//   'title': title,
+//   'priority': priority,
+//   'recurring': recurring,
+//   'timer': timer,
+//   'due': due,
+//   'details': details,
+//   'invites': invites,
+//   'actions': actions,
+//   'reminders': reminders,
 // }
 
 // ! Data //
@@ -322,7 +335,7 @@ EnhancedTableHead.propTypes = {
 const EnhancedTableToolbar = (props) => {
   const { numSelected } = props;
   const classes = useStyles();
-  const [value, setValue] = useState('');
+  // const [value, setValue] = useState('');
   const [name, setName] = React.useState('');
   const [priority, setPriority] = React.useState(0);
   const [recur, setRecur] = React.useState('');
@@ -389,10 +402,7 @@ const EnhancedTableToolbar = (props) => {
               variant='filled'
               onChange={ handleName }
               value={ name }
-              inputProps={ {
-                name: '',
-                id: 'title-input',
-              } }
+              // reset={ () => setValue='' }
             />
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
@@ -401,10 +411,6 @@ const EnhancedTableToolbar = (props) => {
               native
               value={ priority }
               onChange={ handlePriority }
-              inputProps={ {
-                priority: '',
-                id: 'priority',
-              } }
             >
               <option aria-label='none' value='' />
               <option value={ 1 }>Low</option>
@@ -419,10 +425,6 @@ const EnhancedTableToolbar = (props) => {
               native
               onChange={ handleRecur }
               value={ recur }
-              inputProps={ {
-                recur: '',
-                id: 'recur',
-              } }
             >
               <option aria-label='none' value='' />
               <option value={ 12 }>Everyday</option>
@@ -446,10 +448,6 @@ const EnhancedTableToolbar = (props) => {
               onClick={ handleCalendarClick }
               onChange={ handleDate }
               value={ date }
-              inputProps={ {
-                recur: '',
-                id: 'due',
-              } }
             >
               <Dialog
                 onClose={ handleCalendarClick }
@@ -482,10 +480,6 @@ const EnhancedTableToolbar = (props) => {
               variant='filled'
               onChange={ handleDetails }
               value={ details }
-              inputProps={ {
-                name: '',
-                id: 'details-input',
-              } }
             />
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
@@ -494,10 +488,6 @@ const EnhancedTableToolbar = (props) => {
               native
               onChange={ handleActions }
               value={ actions }
-              inputProps={ {
-                actions: '',
-                id: 'actions',
-              } }
             >
               <option aria-label='None' value='' />
               <option value={ 1 }>Call</option>
@@ -513,10 +503,6 @@ const EnhancedTableToolbar = (props) => {
               native
               onChange={ handleInvites }
               value={ invites }
-              inputProps={ {
-                invites: '',
-                id: 'invite',
-              } }
             >
               <option aria-label='None' value='' />
               <option value={ 1 }>Brad Pitt</option>
@@ -551,8 +537,11 @@ const EnhancedTableToolbar = (props) => {
             variant='contained'
             color='primary'
             size='large'
+            aria-label='show input'
+            aria-expanded={ showInput }
             className={ classes.button }
-            startIcon={ <SaveIcon /> }
+            startIcon={ <SaveAltIcon /> }
+            onClick={ handleShowInputClick }
           >
             Save
           </Button>
@@ -560,12 +549,14 @@ const EnhancedTableToolbar = (props) => {
             variant='contained'
             color='primary'
             size='large'
+            aria-label='show input'
+            aria-expanded={ showInput }
             className={ classes.button }
-            startIcon={ <DeleteIcon /> }
+            startIcon={ <CloseIcon /> }
+            onClick={ handleShowInputClick }
           >
             Cancel
           </Button>
-        {/* // todo add save and cancel buttons - both with a reset on input fields reset= () => setValue='' */}
         </div>
       </Collapse>
       <Toolbar
@@ -635,11 +626,11 @@ const styles = (theme) => ({
 
 const DialogTitle = withStyles(styles)((props) => {
   const {
-    children, classes, onClose, ...other
+    children, classes, onClose,
   } = props;
   // const [value, setValue] = useInput('');
   return (
-    <MuiDialogTitle disableTypography className={ classes.root } { ...other }>
+    <MuiDialogTitle disableTypography className={ classes.root }>
       <Typography variant='h6'>{children}</Typography>
       {onClose ? (
         <IconButton aria-label='close' className={ classes.closeButton } onClick={ onClose }>
@@ -757,7 +748,14 @@ const WorkFlow = (props) => {
   //     [name]: event.target.value,
   //   });
   // };
-
+  // console.log('Workflow Comp. State ->', name);
+  // console.log('Workflow Comp. State ->', priority);
+  // console.log('Workflow Comp. State ->', recur);
+  // console.log('Workflow Comp. State ->', date);
+  // console.log('Workflow Comp. State ->', details);
+  // console.log('Workflow Comp. State ->', actions);
+  // console.log('Workflow Comp. State ->', invites);
+  // console.log('Workflow Comp. State ->', reminders);
   return (
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>

@@ -134,10 +134,7 @@
 //   setName(newName);
 // };
 
-import React, { Component } from 'react';
-import InputField from './InputField.jsx';
-import ItemsList from './ItemsList.jsx';
-
+// ! Primary App
 class App extends Component {
   constructor(props) {
     super(props);
@@ -240,14 +237,7 @@ class App extends Component {
   }
 }
 
-export default App;
-import React, { Component } from "react";
-
-class InputField extends Component {
-  constructor (props){
-    super (props);
-  }
-
+// ! Input field
   render() {
     return (
       <div className='card'>
@@ -276,15 +266,7 @@ class InputField extends Component {
   }
 }
 
-export default InputField;
-import React, { Component } from "react";
-import ToDoListItem from './ToDoItem.jsx';
-
-class ItemsList extends Component {
-  constructor (props){
-    super (props);
-  }
-
+// ! Items List
   render() {
     if (this.props.toDoItems.length === 0){
       return (
@@ -312,14 +294,7 @@ class ItemsList extends Component {
   }
 }
 
-export default ItemsList;
-import React, { Component } from "react";
-
-class ToDoListItem extends Component {
-  constructor (props){
-    super (props);
-  }
-
+// ! Todo list / Editing in progress
   render() {
     if (this.props.data.isEditing){
       return (
@@ -366,25 +341,3 @@ class ToDoListItem extends Component {
     }
   }
 }
-
-export default ToDoListItem;
-import React, { Component } from "react";
-
-class Welcome extends Component {
-  constructor (props){
-    super (props);
-  }
-
-  render() {
-    return (
-      <div className='card text-left'>
-        <div className={`${ 'card-body' } ${ 'welcomeCard' }`}>
-          <div className='welcomeCardHeader'>Welcome to Very Simple ToDo App!</div>
-          <div>Get started now by adding a todo on the left.</div>
-        </div>
-      </div>
-    );
-  }
-}
-
-export default Welcome;
