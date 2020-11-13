@@ -22,7 +22,7 @@ import {
 // import InfoIcon from '@material-ui/icons/Info';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-import Workflow from './workflow';
+import Workflow from './workflow/workflow';
 import Vision from './vision';
 import Posture from './posture';
 import Statistics from './stats';
