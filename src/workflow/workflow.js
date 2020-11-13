@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { nanoid } from 'nanoid';
 
+import { nanoid } from 'nanoid';
 import Calendar from 'react-calendar';
 
 import clsx from 'clsx';
@@ -41,10 +41,9 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
-import useInput from './hooks/useInput';
-
-const nanoId = nanoid();
-console.log('createNanoID -> id', nanoId);
+// import useInputState from '../hooks/useInput';
+import useInputState from '../hooks/useInputState';
+import useTodoState from '../hooks/useTodoState';
 
 // let newTodoItem = {
 //   'key': key,
@@ -59,7 +58,7 @@ console.log('createNanoID -> id', nanoId);
 //   'reminders': reminders,
 // }
 
-// ! Data //
+// ! Old Mock Data+Creation //
 // function createData(key, id, title, priority, recur, timer, due) {
 //   return {
 //     key,
@@ -78,7 +77,7 @@ console.log('createNanoID -> id', nanoId);
 // }
 
 // createData(1, 7, 'Title of my todo', 1, 'Everyday', 20, '1-1-2021', 'these are my details for id 1', '11-1-20', 'Email', '3'),
-const todoItems = [];
+// const todoItems = [];
 
 // ! Table Header Labels //
 const headCells = [
@@ -325,44 +324,50 @@ EnhancedTableHead.propTypes = {
 };
 
 // ! Table Toolbar Component //
-const EnhancedTableToolbar = (props) => {
+const EnhancedTableToolbar = (props, todoItems, addTodoItem, saveTodoItem) => {
   const { numSelected } = props;
   const classes = useStyles();
-  // const [value, setValue] = useState('');
-  const [title, setTitle] = React.useState('');
+  const { value, reset, onChange } = useInputState();
+  const { todoItems, addTodoItem } = useTodoState([]);
+  // const [title, setTitle] = React.useState('');
   const [priority, setPriority] = React.useState(0);
   const [recur, setRecur] = React.useState('');
-  const [date, setDate] = React.useState(new Date());
+  const [due, setDue] = React.useState(new Date());
   const [notes, setNotes] = React.useState('');
   const [actions, setActions] = React.useState('');
   const [invites, setInvites] = React.useState('');
   const [reminders, setReminders] = React.useState('');
-  const [key, setKey] = React.useState(0);
+  // const [key, setKey] = React.useState(0);
   const [editing, setEditing] = React.useState(false);
   const [completed, setCompleted] = React.useState(false);
-
   const [open, setCalendarOpen] = React.useState(false);
   const [showInput, setShowInput] = React.useState(false);
-
-  console.log('EnhancedTableToolbarNameState ->', title);
-  console.log('EnhancedTableToolbarPriState ->', priority);
-  console.log('EnhancedTableToolbarRecState ->', recur);
-  console.log('EnhancedTableToolbarDateState ->', date);
-  console.log('EnhancedTableToolbarDetailsState ->', notes);
-  console.log('EnhancedTableToolbarActnsState ->', actions);
-  console.log('EnhancedTableToolbarInvtsState ->', invites);
-  console.log('EnhancedTableToolbarRmndrsState ->', reminders);
-  const handleName = (event) => {
-    setTitle(event.target.value);
-  };
+  // const [todoItems, setTodoItems] = React.useState([]);
+  // const [todoItems, setTodoItems] = React.useState([
+  //   { text: 'Write more code!' },
+  //   { text: 'Write even more code!' },
+  //   { text: 'Write the most code!' }
+  // ]);
+  // console.log('EnhancedTableToolbarNameState ->', title);
+  // console.log('EnhancedTableToolbarPriState ->', priority);
+  // console.log('EnhancedTableToolbarRecState ->', recur);
+  // console.log('EnhancedTableToolbarDateState ->', due);
+  // console.log('EnhancedTableToolbarDetailsState ->', notes);
+  // console.log('EnhancedTableToolbarActnsState ->', actions);
+  // console.log('EnhancedTableToolbarInvtsState ->', invites);
+  // console.log('EnhancedTableToolbarRmndrsState ->', reminders);
+  console.log('Toolbar todoItems state:', todoItems);
+  // const handleTitle = (event) => {
+  //   setTitle(event.target.value);
+  // };
   const handlePriority = (event) => {
     setPriority(event.target.value);
   };
   const handleRecur = (event) => {
     setRecur(event.target.value);
   };
-  const handleDate = (event) => {
-    setDate(event.target.value);
+  const handleDue = (event) => {
+    setDue(event.target.value);
   };
   const handleNotes = (event) => {
     setNotes(event.target.value);
@@ -388,223 +393,267 @@ const EnhancedTableToolbar = (props) => {
   const handleCompleted = () => {
     setCompleted(! completed);
   };
-  const handleAddTodoItem = () => {
-
-  };
+  // const handleAddTodoItem = () => {
+  //   const checkRequired = document.getElementById('title' + key).value;
+  //   if (checkRequired.trim() === '');
+  //   return (null);
+  // };
+  // let todoItem = (title, priority, recur, due, notes, actions, invites, reminders);
+  // const addTodoItem = () => {
+  //   const id = nanoid();
+  //   const newTodoItem = [...todoItems, {
+  //     id,
+  //     title,
+  //     priority,
+  //     recur,
+  //     due,
+  //     notes,
+  //     actions,
+  //     invites,
+  //     reminders,
+  //   }];
+  //   setTodoItems(newTodoItem);
+  //   console.log('New todoItem:', newTodoItem);
+  // };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   if (! value) return;
+  //   addTodoItem(value);
+  //   setValue('');
+  // };
   return (
     <>
-      <Collapse
-        aria-label='show more'
-        aria-expanded={ showInput }
-        in={ showInput }
-        timeout='auto'
-        unmountOnExit
+      <form
+        // onSubmit={ handleSubmit }
+        onSubmit={ (event) => {
+          event.preventDefault();
+          saveTodoItem(value);
+          reset();
+        } }
       >
-        <div className={ classes.inputWrap }>
-          <FormControl className={ classes.margin }>
-            <CssTextField
-              multiline
-              label='Title'
-              margin='dense'
-              variant='filled'
-              onChange={ handleName }
-              value={ title }
-              // reset={ () => setValue='' }
-            />
-          </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='priority'>Priority</InputLabel>
-            <Select
-              native
-              value={ priority }
-              onChange={ handlePriority }
-            >
-              <option aria-label='none' value='' />
-              <option value={ 1 }>Low</option>
-              <option value={ 2 }>Medium</option>
-              <option value={ 3 }>High</option>
-              <option value={ 4 }>Very high</option>
-            </Select>
-          </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='recur'>Recur</InputLabel>
-            <Select
-              native
-              onChange={ handleRecur }
-              value={ recur }
-            >
-              <option aria-label='none' value='' />
-              <option value={ 12 }>Everyday</option>
-              <option value={ 11 }>Mon-Fri</option>
-              <option value={ 10 }>Weekends</option>
-              <option value={ 9 }>Weekly</option>
-              <option value={ 8 }>Bi-Weekly</option>
-              <option value={ 7 }>Tri-Weekly</option>
-              <option value={ 6 }>Monthly</option>
-              <option value={ 5 }>Bi-Monthly</option>
-              <option value={ 4 }>Tri-Monthly</option>
-              <option value={ 3 }>Monthly</option>
-              <option value={ 2 }>Bi-Annually</option>
-              <option value={ 1 }>Annually</option>
-            </Select>
-          </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='due'>Due Date</InputLabel>
-            <Select
-              native
-              onClick={ handleCalendarClick }
-              onChange={ handleDate }
-              value={ date }
-            >
-              <Dialog
-                onClose={ handleCalendarClick }
-                aria-labelledby='dueDate-dialog-title'
-                open={ open }
+        <Collapse
+          aria-label='show more'
+          aria-expanded={ showInput }
+          in={ showInput }
+          timeout='auto'
+          unmountOnExit
+        >
+          <div className={ classes.inputWrap }>
+            <FormControl className={ classes.margin }>
+              <CssTextField
+                multiline
+                margin='dense'
+                variant='filled'
+                value={ value }
+                onChange={ onChange }
+                label='Title'
+                id='title'
+                // reset={ () => setValue='' }
+              />
+            </FormControl>
+            <FormControl variant='filled' size='small' className={ classes.topMargin }>
+              <InputLabel htmlFor='priority'>Priority</InputLabel>
+              <Select
+                native
+                onChange={ handlePriority }
+                value={ priority }
+                id='priority'
               >
-                <DialogTitle id='dueDate-dialog-title' onClose={ handleCalendarClick }>
-                  Due Date
-                </DialogTitle>
-                <DialogContent dividers>
-                  <Calendar
-                    id='dueDate-select'
-                    onChange={ handleDate }
-                    value={ date }
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button autoFocus onClick={ handleCalendarClick }>
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </Select>
-          </FormControl>
-          <FormControl className={ classes.margin }>
-            <CssTextField
-              multiline
-              label='Notes'
-              margin='dense'
-              variant='filled'
-              onChange={ handleNotes }
-              value={ notes }
-            />
-          </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='actions'>Actions</InputLabel>
-            <Select
-              native
-              onChange={ handleActions }
-              value={ actions }
-            >
-              <option aria-label='None' value='' />
-              <option value={ 1 }>Call</option>
-              <option value={ 2 }>Email</option>
-              <option value={ 3 }>Message</option>
-              <option value={ 4 }>Read</option>
-              <option value={ 5 }>Research</option>
-            </Select>
-          </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='invite'>Invites</InputLabel>
-            <Select
-              native
-              onChange={ handleInvites }
-              value={ invites }
-            >
-              <option aria-label='None' value='' />
-              <option value={ 1 }>Brad Pitt</option>
-              <option value={ 2 }>Ryan Reynolds</option>
-              <option value={ 3 }>Ryan Gosling</option>
-              <option value={ 4 }>Robert Downey Jr.</option>
-            </Select>
-          </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='reminder'>Reminders</InputLabel>
-            <Select
-              native
-              onChange={ handleReminders }
-              value={ reminders }
-            >
-              <option aria-label='None' value='' />
-              <option value={ 8 }>Everyday at 9am</option>
-              <option value={ 7 }>1 day before</option>
-              <option value={ 6 }>3 days before</option>
-              <option value={ 5 }>1 week before</option>
-              <option value={ 4 }>2 weeks before</option>
-              <option value={ 3 }>1 month before</option>
-              <option value={ 2 }>2 months before</option>
-              <option value={ 1 }>3 months before</option>
-            </Select>
-          </FormControl>
-          <Button
-            variant='contained'
-            color='primary'
-            size='large'
-            aria-label='show input'
-            aria-expanded={ showInput }
-            className={ classes.button }
-            startIcon={ <SaveAltIcon /> }
-            onClick={ handleShowInputClick }
-          >
-            Save
-          </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            size='large'
-            aria-label='show input'
-            aria-expanded={ showInput }
-            className={ classes.button }
-            startIcon={ <CloseIcon /> }
-            onClick={ handleShowInputClick }
-          >
-            Cancel
-          </Button>
-        </div>
-      </Collapse>
-      <Toolbar
-        className={ clsx(classes.root, {
-          [classes.highlight]: numSelected > 0,
-        }) }
-      >
-        {numSelected > 0 ? (
-          <Typography className={ classes.toolheader } color='primary' variant='subname1' component='div'>
-            {numSelected}
-            Selected
-          </Typography>
-        ) : (
-          <Typography
-            className={ classes.toolheader }
-            variant='h6'
-            id='tableTitle'
-            component='div'
-          >
-            Primary
-          </Typography>
-        )}
-        {numSelected > 0 ? (
-          <Tooltip title='Delete'>
-            <IconButton aria-label='delete'>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <>
-            <Tooltip title='Filter list'>
-              <IconButton aria-label='filter list'>
-                <FilterListIcon />
-              </IconButton>
-            </Tooltip>
-            <IconButton
+                <option aria-label='none' value='' />
+                <option value={ 1 }>Low</option>
+                <option value={ 2 }>Medium</option>
+                <option value={ 3 }>High</option>
+                <option value={ 4 }>Very high</option>
+              </Select>
+            </FormControl>
+            <FormControl variant='filled' size='small' className={ classes.topMargin }>
+              <InputLabel htmlFor='recur'>Recur</InputLabel>
+              <Select
+                native
+                onChange={ handleRecur }
+                value={ recur }
+                id='recur'
+              >
+                <option aria-label='none' value='' />
+                <option value={ 12 }>Everyday</option>
+                <option value={ 11 }>Mon-Fri</option>
+                <option value={ 10 }>Weekends</option>
+                <option value={ 9 }>Weekly</option>
+                <option value={ 8 }>Bi-Weekly</option>
+                <option value={ 7 }>Tri-Weekly</option>
+                <option value={ 6 }>Monthly</option>
+                <option value={ 5 }>Bi-Monthly</option>
+                <option value={ 4 }>Tri-Monthly</option>
+                <option value={ 3 }>Monthly</option>
+                <option value={ 2 }>Bi-Annually</option>
+                <option value={ 1 }>Annually</option>
+              </Select>
+            </FormControl>
+            <FormControl variant='filled' size='small' className={ classes.topMargin }>
+              <InputLabel htmlFor='due'>Due Date</InputLabel>
+              <Select
+                native
+                onClick={ handleCalendarClick }
+                onChange={ handleDue }
+                value={ due }
+                id='due'
+              >
+                <Dialog
+                  onClose={ handleCalendarClick }
+                  aria-labelledby='dueDate-dialog-title'
+                  open={ open }
+                >
+                  <DialogTitle id='dueDate-dialog-title' onClose={ handleCalendarClick }>
+                    Due Date
+                  </DialogTitle>
+                  <DialogContent dividers>
+                    <Calendar
+                      id='dueDate-dialog'
+                      // onChange={ handleDate }
+                      // value={ date }
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button autoFocus onClick={ handleCalendarClick }>
+                      Save
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </Select>
+            </FormControl>
+            <FormControl className={ classes.margin }>
+              <CssTextField
+                multiline
+                margin='dense'
+                variant='filled'
+                label='Notes'
+                value={ notes }
+                id='notes'
+                onChange={ handleNotes }
+              />
+            </FormControl>
+            <FormControl variant='filled' size='small' className={ classes.topMargin }>
+              <InputLabel htmlFor='actions'>Actions</InputLabel>
+              <Select
+                native
+                onChange={ handleActions }
+                value={ actions }
+                id='actions'
+              >
+                <option aria-label='None' value='' />
+                <option value={ 1 }>Call</option>
+                <option value={ 2 }>Email</option>
+                <option value={ 3 }>Message</option>
+                <option value={ 4 }>Read</option>
+                <option value={ 5 }>Research</option>
+              </Select>
+            </FormControl>
+            <FormControl variant='filled' size='small' className={ classes.topMargin }>
+              <InputLabel htmlFor='invite'>Invites</InputLabel>
+              <Select
+                native
+                onChange={ handleInvites }
+                value={ invites }
+                id='invites'
+              >
+                <option aria-label='None' value='' />
+                <option value={ 1 }>Brad Pitt</option>
+                <option value={ 2 }>Ryan Reynolds</option>
+                <option value={ 3 }>Ryan Gosling</option>
+                <option value={ 4 }>Robert Downey Jr.</option>
+              </Select>
+            </FormControl>
+            <FormControl variant='filled' size='small' className={ classes.topMargin }>
+              <InputLabel htmlFor='reminder'>Reminders</InputLabel>
+              <Select
+                native
+                onChange={ handleReminders }
+                value={ reminders }
+                id='reminders'
+              >
+                <option aria-label='None' value='' />
+                <option value={ 8 }>Everyday at 9am</option>
+                <option value={ 7 }>1 day before</option>
+                <option value={ 6 }>3 days before</option>
+                <option value={ 5 }>1 week before</option>
+                <option value={ 4 }>2 weeks before</option>
+                <option value={ 3 }>1 month before</option>
+                <option value={ 2 }>2 months before</option>
+                <option value={ 1 }>3 months before</option>
+              </Select>
+            </FormControl>
+            <Button
+              type='submit'
+              variant='contained'
+              color='primary'
+              size='large'
               aria-label='show input'
               aria-expanded={ showInput }
+              className={ classes.button }
+              startIcon={ <SaveAltIcon /> }
+              // onClick={ () => { handleAddTodoItem(); handleShowInputClick(); } }
               onClick={ handleShowInputClick }
             >
-              { showInput ? <Tooltip title='Cancel Item Input'><RemoveCircleIcon className={ classes.closeTodo } fontSize='large' /></Tooltip> : <Tooltip title='Add Todo Item'><AddCircleIcon className={ classes.addTodo } fontSize='large' /></Tooltip>}
-            </IconButton>
-          </>
-        )}
-      </Toolbar>
+              Save
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              size='large'
+              aria-label='show input'
+              aria-expanded={ showInput }
+              className={ classes.button }
+              startIcon={ <CloseIcon /> }
+              onClick={ handleShowInputClick }
+            >
+              Cancel
+            </Button>
+          </div>
+        </Collapse>
+        <Toolbar
+          className={ clsx(classes.root, {
+            [classes.highlight]: numSelected > 0,
+          }) }
+        >
+          {numSelected > 0 ? (
+            <Typography className={ classes.toolheader } color='primary' variant='subname1' component='div'>
+              {numSelected}
+              Selected
+            </Typography>
+          ) : (
+            <Typography
+              className={ classes.toolheader }
+              variant='h6'
+              id='tableTitle'
+              component='div'
+            >
+              Primary
+            </Typography>
+          )}
+          {numSelected > 0 ? (
+            <Tooltip title='Delete'>
+              <IconButton aria-label='delete'>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          ) : (
+            <>
+              <Tooltip title='Filter list'>
+                <IconButton aria-label='filter list'>
+                  <FilterListIcon />
+                </IconButton>
+              </Tooltip>
+              <IconButton
+                aria-label='show input'
+                aria-expanded={ showInput }
+                onClick={ handleShowInputClick }
+              >
+                { showInput ? <Tooltip title='Cancel Item Input'><RemoveCircleIcon className={ classes.closeTodo } fontSize='large' /></Tooltip> : <Tooltip title='Add Todo Item'><AddCircleIcon className={ classes.addTodo } fontSize='large' /></Tooltip>}
+              </IconButton>
+            </>
+          )}
+        </Toolbar>
+      </form>
     </>
   );
 };
@@ -684,9 +733,10 @@ const CssTextField = withStyles(() => ({
 // ! WorkFlow Component Through End //
 const WorkFlow = (props) => {
   const classes = useStyles();
-  // const [value, setValue] = useInput('');
+  const { todoItems, addTodoItem } = useTodoState([]);
+  // const [value, setValue] = useState('');
+  // const [todoItems, setTodoItems] = React.useState([]);
   const [expanded, setExpanded] = React.useState(false);
-
   const [selected, setSelected] = React.useState([]);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('');
@@ -737,20 +787,23 @@ const WorkFlow = (props) => {
   const handleExpandClick = () => {
     setExpanded(! expanded);
   };
+
   const isSelected = (id) => selected.indexOf(id) !== - 1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, todoItems.length - page * rowsPerPage);
   // console.log('Workflow Comp. State ->', name);
-  // console.log('Workflow Comp. State ->', priority);
-  // console.log('Workflow Comp. State ->', recur);
-  // console.log('Workflow Comp. State ->', date);
-  // console.log('Workflow Comp. State ->', details);
-  // console.log('Workflow Comp. State ->', actions);
-  // console.log('Workflow Comp. State ->', invites);
-  // console.log('Workflow Comp. State ->', reminders);
+  console.log('Workflow State todoItems: ->', todoItems);
+
   return (
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>
-        <EnhancedTableToolbar numSelected={ selected.length } />
+        <EnhancedTableToolbar
+          saveTodo={ (title) => {
+            const trimmedText = title.trim();
+            if (trimmedText.length > 0) {
+              addTodoItem(trimmedText);
+            } } }
+          numSelected={ selected.length }
+        />
         <TableContainer>
           <Table
             className={ classes.table }
@@ -759,33 +812,37 @@ const WorkFlow = (props) => {
             aria-label='enhanced table'
           >
             <EnhancedTableHead
+              // addTodoItem={ addTodoItem }
               classes={ classes }
-              numSelected={ selected.length }
               order={ order }
               orderBy={ orderBy }
               onSelectAllClick={ handleSelectAllClick }
               onRequestSort={ handleRequestSort }
+              numSelected={ selected.length }
               rowCount={ todoItems.length }
             />
             <TableBody>
               {stableSort(todoItems, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, id) => {
-                  const isItemSelected = isSelected(row.id);
+                .map((todoItem, id) => {
+                  const isItemSelected = isSelected(todoItem.id);
                   const labelId = `enhanced-table-checkbox-${id}`;
                   return (
                     <>
                       <TableRow
                         hover
                         tabIndex={ - 1 }
-                        key={ row.id }
+                        key={ id.toString() }
+                        // key={ index }
+                        // index={ index }
+                        todoItem={ todoItem }
                         aria-checked={ isItemSelected }
                         selected={ isItemSelected }
                       >
                         <TableCell padding='checkbox'>
                           <Checkbox
                             role='checkbox'
-                            onClick={ (event) => handleClick(event, row.id) }
+                            onClick={ (event) => handleClick(event, todoItem.id) }
                             aria-checked={ isItemSelected }
                             selected={ isItemSelected }
                             checked={ isItemSelected }
@@ -793,12 +850,12 @@ const WorkFlow = (props) => {
                           />
                         </TableCell>
                         <TableCell align='left' component='th' id={ labelId } scope='row' padding='none'>
-                          {row.title}
+                          {todoItem.title}
                         </TableCell>
-                        <TableCell align='right'>{row.priority}</TableCell>
-                        <TableCell align='right'>{row.recur}</TableCell>
-                        <TableCell align='right'>{row.timer}</TableCell>
-                        <TableCell align='right'>{row.due}</TableCell>
+                        <TableCell align='right'>{todoItem.priority}</TableCell>
+                        <TableCell align='right'>{todoItem.recur}</TableCell>
+                        <TableCell align='right'>{todoItem.timer}</TableCell>
+                        <TableCell align='right'>{todoItem.due}</TableCell>
                         <TableCell>
                           <IconButton
                             aria-label='show more'
@@ -816,7 +873,7 @@ const WorkFlow = (props) => {
                       <TableRow
                         hover
                         tabIndex={ - 1 }
-                        key={ row.id }
+                        key={ todoItem.id }
                         className={ classes.border }
                         aria-checked={ isItemSelected }
                         selected={ isItemSelected }
@@ -836,12 +893,12 @@ const WorkFlow = (props) => {
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                  {todoItems.details.map((detailsRow) => (
+                                  {/* {todoItems.details.map((detailsRow) => (
                                     <TableRow key={ detailsRow.id }>
                                       <TableCell>{detailsRow.notes}</TableCell>
                                       <TableCell align='right'>{detailsRow.added}</TableCell>
                                     </TableRow>
-                                  ))}
+                                  ))} */}
                                 </TableBody>
                               </Table>
                             </Box>
