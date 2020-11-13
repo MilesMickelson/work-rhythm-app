@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   makeStyles,
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Settings = () => {
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     startOnLogin: true,
     startVisLogin: true,
     showVisTime: true,

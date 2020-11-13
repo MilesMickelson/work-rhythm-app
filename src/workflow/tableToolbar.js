@@ -87,13 +87,6 @@ const CssTextField = withStyles(() => ({
 }))(TextField);
 
 const useStyles = makeStyles((theme) => ({
-  fragContainer: {
-    height: '100%',
-    width: '100%',
-    maxWidth: 960,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
   inputWrap: {
     width: '100%',
     borderRadiusTopLeft: 4,
@@ -110,64 +103,6 @@ const useStyles = makeStyles((theme) => ({
   addTodo: {
     color: theme.palette.primary.dark,
   },
-  tableWrap: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    borderRadius: 4,
-    boxShadow: '0 0 0 2px #005269',
-  },
-  table: {
-    width: '100%',
-    minWidth: 760,
-    maxWidth: 960,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: - 1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
-  },
-  icon: {
-    verticalAlign: 'bottom',
-    height: 20,
-    width: 20,
-  },
-  details: {
-    alignItems: 'center',
-  },
-  column: {
-    flexBasis: '33.33%',
-  },
-  helper: {
-    borderLeft: `2px solid ${theme.palette.divider}`,
-    padding: theme.spacing(1, 2),
-  },
-  link: {
-    color: theme.palette.primary.main,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  border: {
-    '& > *': {
-      borderBottom: 'unset',
-    },
-  },
   margin: {
     margin: theme.spacing(1),
   },
@@ -176,16 +111,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     marginBottom: theme.spacing(1),
     marginLeft: theme.spacing(1),
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
   },
   root: {
     paddingLeft: theme.spacing(2),
@@ -206,29 +131,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = (props, todoItems, addTodoItem, saveTodoItem) => {
+const EnhancedTableToolbar = (props, itemList, addTodoItem, saveTodoItem) => {
   const { numSelected } = props;
   const classes = useStyles();
   const { value, reset, onChange } = useInputState();
   const { handleOpenDialog } = useOpenDialog();
   // const { todoItems, addTodoItem } = useTodoState([]);
-  const [priority, setPriority] = React.useState(0);
-  const [recur, setRecur] = React.useState('');
-  const [due, setDue] = React.useState(new Date());
-  const [notes, setNotes] = React.useState('');
-  const [actions, setActions] = React.useState('');
-  const [invites, setInvites] = React.useState('');
-  const [reminders, setReminders] = React.useState('');
-  const [editing, setEditing] = React.useState(false);
-  const [completed, setCompleted] = React.useState(false);
-  const [showInput, setShowInput] = React.useState(false);
-  // const [todoItems, setTodoItems] = React.useState([
+  const [priority, setPriority] = useState(0);
+  const [recur, setRecur] = useState('');
+  const [due, setDue] = useState(new Date());
+  const [notes, setNotes] = useState('');
+  const [actions, setActions] = useState('');
+  const [invites, setInvites] = useState('');
+  const [reminders, setReminders] = useState('');
+  const [editing, setEditing] = useState(false);
+  const [completed, setCompleted] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+  // const [itemList, setItemList] = useState([
   //   { text: 'Write more code!' },
   //   { text: 'Write even more code!' },
   //   { text: 'Write the most code!' }
   // ]);
   // console.log('EnhancedTableToolbarNameState ->', title);
-  console.log('Toolbar todoItems state:', todoItems);
+  console.log('Toolbar todoItems state:', itemList);
   // const handleTitle = (event) => {
   //   setTitle(event.target.value);
   // };
@@ -459,50 +384,50 @@ const EnhancedTableToolbar = (props, todoItems, addTodoItem, saveTodoItem) => {
             </Button>
           </div>
         </Collapse>
-        <Toolbar
-          className={ clsx(classes.root, {
-            [classes.highlight]: numSelected > 0,
-          }) }
-        >
-          {numSelected > 0 ? (
-            <Typography className={ classes.toolheader } color='primary' variant='subname1' component='div'>
-              {numSelected}
-              Selected
-            </Typography>
-          ) : (
-            <Typography
-              className={ classes.toolheader }
-              variant='h6'
-              id='tableTitle'
-              component='div'
-            >
-              Primary
-            </Typography>
-          )}
-          {numSelected > 0 ? (
-            <Tooltip title='Delete'>
-              <IconButton aria-label='delete'>
-                <DeleteIcon />
+      </form>
+      <Toolbar
+        className={ clsx(classes.root, {
+          [classes.highlight]: numSelected > 0,
+        }) }
+      >
+        {numSelected > 0 ? (
+          <Typography className={ classes.toolheader } color='primary' variant='subname1' component='div'>
+            {numSelected}
+            Selected
+          </Typography>
+        ) : (
+          <Typography
+            className={ classes.toolheader }
+            variant='h6'
+            id='tableTitle'
+            component='div'
+          >
+            Primary
+          </Typography>
+        )}
+        {numSelected > 0 ? (
+          <Tooltip title='Delete'>
+            <IconButton aria-label='delete'>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <>
+            <Tooltip title='Filter list'>
+              <IconButton aria-label='filter list'>
+                <FilterListIcon />
               </IconButton>
             </Tooltip>
-          ) : (
-            <>
-              <Tooltip title='Filter list'>
-                <IconButton aria-label='filter list'>
-                  <FilterListIcon />
-                </IconButton>
-              </Tooltip>
-              <IconButton
-                aria-label='show input'
-                aria-expanded={ showInput }
-                onClick={ handleShowInputClick }
-              >
-                { showInput ? <Tooltip title='Cancel Item Input'><RemoveCircleIcon className={ classes.closeTodo } fontSize='large' /></Tooltip> : <Tooltip title='Add Todo Item'><AddCircleIcon className={ classes.addTodo } fontSize='large' /></Tooltip>}
-              </IconButton>
-            </>
-          )}
-        </Toolbar>
-      </form>
+            <IconButton
+              aria-label='show input'
+              aria-expanded={ showInput }
+              onClick={ handleShowInputClick }
+            >
+              { showInput ? <Tooltip title='Cancel Item Input'><RemoveCircleIcon className={ classes.closeTodo } fontSize='large' /></Tooltip> : <Tooltip title='Add Todo Item'><AddCircleIcon className={ classes.addTodo } fontSize='large' /></Tooltip>}
+            </IconButton>
+          </>
+        )}
+      </Toolbar>
     </>
   );
 };

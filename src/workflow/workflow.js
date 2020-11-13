@@ -1,32 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-
-import { nanoid } from 'nanoid';
 
 import clsx from 'clsx';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import useInputState from '../hooks/useInputState';
 import useTodoState from '../hooks/useTodoState';
+import useSetSelected from '../hooks/useSetSelected';
 import CalDialog from './dialog';
 import EnhancedTableToolbar from './tableToolbar';
 import EnhancedTableHead from './tableHead';
+import TodoItem from './todoitem';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -61,22 +53,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 960,
     marginLeft: 'auto',
     marginRight: 'auto',
-  },
-  inputWrap: {
-    width: '100%',
-    borderRadiusTopLeft: 4,
-    borderRadiusTopRight: 4,
-    borderBottom: '2px solid #005269'
-  },
-  button: {
-    marginLeft: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-  },
-  closeTodo: {
-    color: theme.palette.primary.light,
-  },
-  addTodo: {
-    color: theme.palette.primary.dark,
   },
   tableWrap: {
     marginTop: theme.spacing(2),
@@ -136,15 +112,6 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: 'unset',
     },
   },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  topMargin: {
-    marginTop: 16,
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-  },
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
@@ -155,45 +122,39 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-        color: theme.palette.primary.main,
-        backgroundColor: theme.palette.primary.light,
-      }
-      : {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.primary.light,
-      },
-  toolheader: {
-    flex: '1 1 100%',
-  },
 }));
 
 const WorkFlow = (props) => {
   const classes = useStyles();
-  const { todoItems, addTodoItem } = useTodoState([]);
-  // const [todoItems, setTodoItems] = React.useState([]);
-  const [expanded, setExpanded] = React.useState(false);
-  const [selected, setSelected] = React.useState([]);
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('');
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const { itemList, addTodoItem } = useTodoState([]);
+  // const [itemList, setItemList] = React.useState([]);
+  const [itemList, addTodoItem] = useTodoState([]);
 
+
+  const [selected, setSelected] = useSetSelected([]);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('');
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+  const handleChangeDense = (event) => {
+    setDense(event.target.checked);
+  };
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = todoItems.map((n) => n.id);
+      const newSelecteds = itemList.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -216,34 +177,18 @@ const WorkFlow = (props) => {
     }
     setSelected(newSelected);
   };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-  const handleExpandClick = () => {
-    setExpanded(! expanded);
-  };
-
   const isSelected = (id) => selected.indexOf(id) !== - 1;
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, todoItems.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
+
+
   // console.log('Workflow Comp. State ->', name);
-  console.log('Workflow State todoItems: ->', todoItems);
+  console.log('Workflow State todoItems: ->', itemList);
 
   return (
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>
         <EnhancedTableToolbar
-          saveTodo={ (title) => {
-            const trimmedText = title.trim();
-            if (trimmedText.length > 0) {
-              addTodoItem(trimmedText);
-            } } }
+          saveTodo={ (todoItem) => { addTodoItem(todoItem); } }
           numSelected={ selected.length }
         />
         <TableContainer>
@@ -261,93 +206,19 @@ const WorkFlow = (props) => {
               onSelectAllClick={ handleSelectAllClick }
               onRequestSort={ handleRequestSort }
               numSelected={ selected.length }
-              rowCount={ todoItems.length }
+              rowCount={ itemList.length }
             />
             <TableBody>
-              {stableSort(todoItems, getComparator(order, orderBy))
+              {stableSort(itemList, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((todoItem, id) => {
-                  const isItemSelected = isSelected(todoItem.id);
-                  const labelId = `enhanced-table-checkbox-${id}`;
+                .map((itemList, id) => {
+                  const isItemSelected = isSelected(itemList.id);
                   return (
-                    <>
-                      <TableRow
-                        hover
-                        tabIndex={ - 1 }
-                        key={ id.toString() }
-                        // key={ index }
-                        // index={ index }
-                        todoItem={ todoItem }
-                        aria-checked={ isItemSelected }
-                        selected={ isItemSelected }
-                      >
-                        <TableCell padding='checkbox'>
-                          <Checkbox
-                            role='checkbox'
-                            onClick={ (event) => handleClick(event, todoItem.id) }
-                            aria-checked={ isItemSelected }
-                            selected={ isItemSelected }
-                            checked={ isItemSelected }
-                            inputProps={ { 'aria-labelledby': labelId } }
-                          />
-                        </TableCell>
-                        <TableCell align='left' component='th' id={ labelId } scope='row' padding='none'>
-                          {todoItem.title}
-                        </TableCell>
-                        <TableCell align='right'>{todoItem.priority}</TableCell>
-                        <TableCell align='right'>{todoItem.recur}</TableCell>
-                        <TableCell align='right'>{todoItem.timer}</TableCell>
-                        <TableCell align='right'>{todoItem.due}</TableCell>
-                        <TableCell>
-                          <IconButton
-                            aria-label='show more'
-                            aria-expanded={ expanded }
-                            size='small'
-                            onClick={ handleExpandClick }
-                            className={ clsx(classes.expand, {
-                              [classes.expandOpen]: expanded,
-                            }) }
-                          >
-                            <ExpandMoreIcon />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow
-                        hover
-                        tabIndex={ - 1 }
-                        key={ todoItem.id }
-                        className={ classes.border }
-                        aria-checked={ isItemSelected }
-                        selected={ isItemSelected }
-                      >
-                        <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
-                          <Collapse in={ expanded } timeout='auto' unmountOnExit>
-                            <Box margin={ 1 }>
-                              <Typography variant='h6' gutterBottom component='div'>
-                                Details
-                              </Typography>
-                              <Table size='small' aria-label='purchases'>
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell align='right'>Notes</TableCell>
-                                    <TableCell align='right'>Date Added</TableCell>
-                                    <TableCell align='right'>Total Time</TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {/* {todoItems.details.map((detailsRow) => (
-                                    <TableRow key={ detailsRow.id }>
-                                      <TableCell>{detailsRow.notes}</TableCell>
-                                      <TableCell align='right'>{detailsRow.added}</TableCell>
-                                    </TableRow>
-                                  ))} */}
-                                </TableBody>
-                              </Table>
-                            </Box>
-                          </Collapse>
-                        </TableCell>
-                      </TableRow>
-                    </>
+                    <TodoItem
+                      isItemSelected={ isItemSelected }
+                      key={ key }
+                      id={ id }
+                    />
                   );
                 })}
             </TableBody>
@@ -361,7 +232,7 @@ const WorkFlow = (props) => {
         <TablePagination
           rowsPerPageOptions={ [10, 20, 50] }
           component='div'
-          count={ todoItems.length }
+          count={ itemList.length }
           rowsPerPage={ rowsPerPage }
           page={ page }
           onChangePage={ handleChangePage }

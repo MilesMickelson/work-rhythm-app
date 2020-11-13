@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -48,7 +48,7 @@ const headCells = [
   },
 ];
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   fragContainer: {
     height: '100%',
     width: '100%',
@@ -72,7 +72,10 @@ const useStyles = makeStyles((theme) => ({
 const EnhancedTableHead = (props) => {
   // eslint-disable-next-line object-curly-newline
   const classes = useStyles();
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const {
+    onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort
+  } = props;
+  const [selected, setSelected] = useSetSelected([]);
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
