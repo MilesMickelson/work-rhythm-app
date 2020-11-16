@@ -131,12 +131,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = (props, itemList, addTodoItem, saveTodoItem) => {
+const EnhancedTableToolbar = (props, saveTodoItem) => {
   const { numSelected } = props;
   const classes = useStyles();
   const { value, reset, onChange } = useInputState();
   const { handleOpenDialog } = useOpenDialog();
-  // const { todoItems, addTodoItem } = useTodoState([]);
+  const { itemList, addTodoItem } = useTodoState([]);
+  const [title, setTitle] = useState(0);
   const [priority, setPriority] = useState(0);
   const [recur, setRecur] = useState('');
   const [due, setDue] = useState(new Date());
@@ -154,9 +155,9 @@ const EnhancedTableToolbar = (props, itemList, addTodoItem, saveTodoItem) => {
   // ]);
   // console.log('EnhancedTableToolbarNameState ->', title);
   console.log('Toolbar todoItems state:', itemList);
-  // const handleTitle = (event) => {
-  //   setTitle(event.target.value);
-  // };
+  const handleTitle = (event) => {
+    setTitle(event.target.value);
+  };
   const handlePriority = (event) => {
     setPriority(event.target.value);
   };
@@ -187,41 +188,13 @@ const EnhancedTableToolbar = (props, itemList, addTodoItem, saveTodoItem) => {
   const handleCompleted = () => {
     setCompleted(! completed);
   };
-  // const handleAddTodoItem = () => {
-  //   const checkRequired = document.getElementById('title' + key).value;
-  //   if (checkRequired.trim() === '');
-  //   return (null);
-  // };
-  // let todoItem = (title, priority, recur, due, notes, actions, invites, reminders);
-  // const addTodoItem = () => {
-  //   const id = nanoid();
-  //   const newTodoItem = [...todoItems, {
-  //     id,
-  //     title,
-  //     priority,
-  //     recur,
-  //     due,
-  //     notes,
-  //     actions,
-  //     invites,
-  //     reminders,
-  //   }];
-  //   setTodoItems(newTodoItem);
-  //   console.log('New todoItem:', newTodoItem);
-  // };
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   if (! value) return;
-  //   addTodoItem(value);
-  //   setValue('');
-  // };
   return (
     <>
       <form
         // onSubmit={ handleSubmit }
         onSubmit={ (event) => {
           event.preventDefault();
-          saveTodoItem(value);
+          saveTodoItem(title, priority, recur, due, notes, actions, invites, reminders);
           reset();
         } }
       >
@@ -238,8 +211,8 @@ const EnhancedTableToolbar = (props, itemList, addTodoItem, saveTodoItem) => {
                 multiline
                 margin='dense'
                 variant='filled'
-                value={ value }
-                onChange={ onChange }
+                value={ title }
+                onChange={ handleTitle }
                 label='Title'
                 id='title'
                 // reset={ () => setValue='' }

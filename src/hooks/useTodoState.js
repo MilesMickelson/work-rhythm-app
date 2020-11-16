@@ -15,6 +15,7 @@ export default (initialValue) => {
       actions,
       invites,
       reminders,
+      added,
     ) => {
       setItemList([
         ...itemList,
@@ -27,6 +28,7 @@ export default (initialValue) => {
         actions,
         invites,
         reminders,
+        added,
       ]);
     },
   };

@@ -126,12 +126,47 @@ const useStyles = makeStyles((theme) => ({
 
 const WorkFlow = (props) => {
   const classes = useStyles();
-  // const { itemList, addTodoItem } = useTodoState([]);
-  // const [itemList, setItemList] = React.useState([]);
-  const [itemList, addTodoItem] = useTodoState([]);
-
-
-  const [selected, setSelected] = useSetSelected([]);
+  const { itemList, addTodoItem } = useTodoState([]);
+  // const [itemList, setItemList] = React.useState([
+  //   {
+  //     id: 1,
+  //     title: 'This is my first todo item',
+  //     priority: 'High',
+  //     recur: 'Bi-weekly',
+  //     due: '11-15-2021',
+  //     notes: 'these are some notes for my first todo item',
+  //     actions: 'email',
+  //     invites: 'Brad Pitt',
+  //     reminders: '1 day before',
+  //     added: '11-16-2020',
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'This is my second todo item',
+  //     priority: 'Medium',
+  //     recur: 'Weekly',
+  //     due: '11-16-2021',
+  //     notes: 'these are some notes for my second todo item',
+  //     actions: 'message',
+  //     invites: 'Ryan Reynolds',
+  //     reminders: '3 days before',
+  //     added: '11-16-2020',
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'This is my third todo item',
+  //     priority: 'Low',
+  //     recur: 'Everyday',
+  //     due: '11-18-2021',
+  //     notes: 'these are some notes for my third todo item',
+  //     actions: 'email',
+  //     invites: 'Brad Pitt',
+  //     reminders: '3 days before',
+  //     added: '11-16-2020',
+  //   },
+  // ]);
+  // const [itemList, addTodoItem] = useTodoState([]);
+  const [selected, setSelected] = useState('');
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [page, setPage] = useState(0);
@@ -177,9 +212,8 @@ const WorkFlow = (props) => {
     }
     setSelected(newSelected);
   };
-  const isSelected = (id) => selected.indexOf(id) !== - 1;
+  const isSelected = (index) => selected.indexOf(index) !== - 1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
-
 
   // console.log('Workflow Comp. State ->', name);
   console.log('Workflow State todoItems: ->', itemList);
@@ -209,18 +243,11 @@ const WorkFlow = (props) => {
               rowCount={ itemList.length }
             />
             <TableBody>
-              {stableSort(itemList, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((itemList, id) => {
-                  const isItemSelected = isSelected(itemList.id);
-                  return (
-                    <TodoItem
-                      isItemSelected={ isItemSelected }
-                      key={ key }
-                      id={ id }
-                    />
-                  );
-                })}
+              <TodoItem
+                key={ itemList.key }
+                index={ itemList.index }
+                // isItemSelected={ isItemSelected }
+              />
             </TableBody>
             {emptyRows > 0 && (
               <TableRow style={ { height: (dense ? 33 : 53) * emptyRows } }>
@@ -246,5 +273,18 @@ const WorkFlow = (props) => {
     </div>
   );
 };
+
+// {stableSort(itemList, getComparator(order, orderBy))
+//   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+//   .map((itemList, index) => {
+//     const isItemSelected = isSelected(itemList.index);
+//     return (
+//       <TodoItem
+//         key={ itemList.key }
+//         index={ itindex }
+//         // isItemSelected={ isItemSelected }
+//       />
+//     );
+//   })}
 
 export default WorkFlow;

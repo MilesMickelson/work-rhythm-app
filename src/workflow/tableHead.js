@@ -75,7 +75,7 @@ const EnhancedTableHead = (props) => {
   const {
     onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort
   } = props;
-  const [selected, setSelected] = useSetSelected([]);
+  // const [selected, setSelected] = useSetSelected([]);
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
