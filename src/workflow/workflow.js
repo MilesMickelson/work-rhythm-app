@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { nanoid } from 'nanoid';
+
 import clsx from 'clsx';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -124,47 +126,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const itemKey = nanoid();
+
 const WorkFlow = (props) => {
   const classes = useStyles();
-  const { itemList, addTodoItem } = useTodoState([]);
-  // const [itemList, setItemList] = React.useState([
-  //   {
-  //     id: 1,
-  //     title: 'This is my first todo item',
-  //     priority: 'High',
-  //     recur: 'Bi-weekly',
-  //     due: '11-15-2021',
-  //     notes: 'these are some notes for my first todo item',
-  //     actions: 'email',
-  //     invites: 'Brad Pitt',
-  //     reminders: '1 day before',
-  //     added: '11-16-2020',
-  //   },
-  //   {
-  //     id: 2,
-  //     title: 'This is my second todo item',
-  //     priority: 'Medium',
-  //     recur: 'Weekly',
-  //     due: '11-16-2021',
-  //     notes: 'these are some notes for my second todo item',
-  //     actions: 'message',
-  //     invites: 'Ryan Reynolds',
-  //     reminders: '3 days before',
-  //     added: '11-16-2020',
-  //   },
-  //   {
-  //     id: 3,
-  //     title: 'This is my third todo item',
-  //     priority: 'Low',
-  //     recur: 'Everyday',
-  //     due: '11-18-2021',
-  //     notes: 'these are some notes for my third todo item',
-  //     actions: 'email',
-  //     invites: 'Brad Pitt',
-  //     reminders: '3 days before',
-  //     added: '11-16-2020',
-  //   },
-  // ]);
+  // const { itemList, addTodoItem } = useTodoState([]);
+  const [itemList, setItemList] = React.useState([
+    {
+      id: 1,
+      title: 'This is my first todo item',
+      priority: 'High',
+      recur: 'Bi-weekly',
+      due: '11-15-2021',
+      notes: 'these are some notes for my first todo item',
+      actions: 'email',
+      invites: 'Brad Pitt',
+      reminders: '1 day before',
+      added: '11-16-2020',
+    },
+    {
+      id: 2,
+      title: 'This is my second todo item',
+      priority: 'Medium',
+      recur: 'Weekly',
+      due: '11-16-2021',
+      notes: 'these are some notes for my second todo item',
+      actions: 'message',
+      invites: 'Ryan Reynolds',
+      reminders: '3 days before',
+      added: '11-16-2020',
+    },
+    {
+      id: 3,
+      title: 'This is my third todo item',
+      priority: 'Low',
+      recur: 'Everyday',
+      due: '11-18-2021',
+      notes: 'these are some notes for my third todo item',
+      actions: 'email',
+      invites: 'Brad Pitt',
+      reminders: '3 days before',
+      added: '11-16-2020',
+    },
+  ]);
   // const [itemList, addTodoItem] = useTodoState([]);
   const [selected, setSelected] = useState('');
   const [order, setOrder] = useState('asc');
@@ -222,7 +226,7 @@ const WorkFlow = (props) => {
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>
         <EnhancedTableToolbar
-          saveTodo={ (todoItem) => { addTodoItem(todoItem); } }
+          // saveTodo={ (todoItem) => { addTodoItem(todoItem); } }
           numSelected={ selected.length }
         />
         <TableContainer>
@@ -243,11 +247,20 @@ const WorkFlow = (props) => {
               rowCount={ itemList.length }
             />
             <TableBody>
-              <TodoItem
-                key={ itemList.key }
-                index={ itemList.index }
-                // isItemSelected={ isItemSelected }
-              />
+              {stableSort(itemList, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((todoItem, index) => {
+                  const isItemSelected = isSelected(itemList.index);
+                  return (
+                    <TodoItem
+                      key={ itemKey }
+                      index={ index }
+                      todoItem={ todoItem }
+                      aria-checked={ isItemSelected }
+                      isItemSelected={ isItemSelected }
+                    />
+                  );
+                })}
             </TableBody>
             {emptyRows > 0 && (
               <TableRow style={ { height: (dense ? 33 : 53) * emptyRows } }>
@@ -273,18 +286,5 @@ const WorkFlow = (props) => {
     </div>
   );
 };
-
-// {stableSort(itemList, getComparator(order, orderBy))
-//   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-//   .map((itemList, index) => {
-//     const isItemSelected = isSelected(itemList.index);
-//     return (
-//       <TodoItem
-//         key={ itemList.key }
-//         index={ itindex }
-//         // isItemSelected={ isItemSelected }
-//       />
-//     );
-//   })}
 
 export default WorkFlow;

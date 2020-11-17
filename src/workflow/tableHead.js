@@ -70,12 +70,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 const EnhancedTableHead = (props) => {
-  // eslint-disable-next-line object-curly-newline
   const classes = useStyles();
   const {
     onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort
   } = props;
-  // const [selected, setSelected] = useSetSelected([]);
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -118,8 +116,6 @@ const EnhancedTableHead = (props) => {
 };
 
 EnhancedTableHead.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  // classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,

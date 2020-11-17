@@ -23,7 +23,7 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
-import useInputState from '../hooks/useInputState';
+import useInput from '../hooks/useInputState';
 import useTodoState from '../hooks/useTodoState';
 import useOpenDialog from '../hooks/useOpenDialog';
 import CalDialog from './dialog';
@@ -134,10 +134,9 @@ const useStyles = makeStyles((theme) => ({
 const EnhancedTableToolbar = (props, saveTodoItem) => {
   const { numSelected } = props;
   const classes = useStyles();
-  const { value, reset, onChange } = useInputState();
-  const { handleOpenDialog } = useOpenDialog();
-  const { itemList, addTodoItem } = useTodoState([]);
-  const [title, setTitle] = useState(0);
+  const { value, reset, onChange } = useInput();
+  // const { itemList, addTodoItem } = useTodoState([]);
+  const [title] = useInput('');
   const [priority, setPriority] = useState(0);
   const [recur, setRecur] = useState('');
   const [due, setDue] = useState(new Date());
@@ -145,56 +144,50 @@ const EnhancedTableToolbar = (props, saveTodoItem) => {
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
   const [reminders, setReminders] = useState('');
-  const [editing, setEditing] = useState(false);
-  const [completed, setCompleted] = useState(false);
+  // const [completed, setCompleted] = useState(false);
+  // const [editing, setEditing] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  // const [itemList, setItemList] = useState([
-  //   { text: 'Write more code!' },
-  //   { text: 'Write even more code!' },
-  //   { text: 'Write the most code!' }
-  // ]);
-  // console.log('EnhancedTableToolbarNameState ->', title);
-  console.log('Toolbar todoItems state:', itemList);
-  const handleTitle = (event) => {
-    setTitle(event.target.value);
-  };
-  const handlePriority = (event) => {
-    setPriority(event.target.value);
-  };
-  const handleRecur = (event) => {
-    setRecur(event.target.value);
-  };
-  const handleDue = (event) => {
-    setDue(event.target.value);
-  };
-  const handleNotes = (event) => {
-    setNotes(event.target.value);
-  };
-  const handleActions = (event) => {
-    setActions(event.target.value);
-  };
-  const handleInvites = (event) => {
-    setInvites(event.target.value);
-  };
-  const handleReminders = (event) => {
-    setReminders(event.target.value);
-  };
+  const { handleOpenDialog } = useOpenDialog();
+  // const handleTitle = (event) => {
+  //   setTitle(event.target.value);
+  // };
+  // const handlePriority = (event) => {
+  //   setPriority(event.target.value);
+  // };
+  // const handleRecur = (event) => {
+  //   setRecur(event.target.value);
+  // };
+  // const handleDue = (event) => {
+  //   setDue(event.target.value);
+  // };
+  // const handleNotes = (event) => {
+  //   setNotes(event.target.value);
+  // };
+  // const handleActions = (event) => {
+  //   setActions(event.target.value);
+  // };
+  // const handleInvites = (event) => {
+  //   setInvites(event.target.value);
+  // };
+  // const handleReminders = (event) => {
+  //   setReminders(event.target.value);
+  // };
   const handleShowInputClick = () => {
     setShowInput(! showInput);
   };
-  const handleEditing = () => {
-    setEditing(! editing);
-  };
-  const handleCompleted = () => {
-    setCompleted(! completed);
-  };
+  // const handleEditing = () => {
+  //   setEditing(! editing);
+  // };
+  // const handleCompleted = () => {
+  //   setCompleted(! completed);
+  // };
   return (
     <>
       <form
         // onSubmit={ handleSubmit }
         onSubmit={ (event) => {
           event.preventDefault();
-          saveTodoItem(title, priority, recur, due, notes, actions, invites, reminders);
+          saveTodoItem();
           reset();
         } }
       >
@@ -212,7 +205,7 @@ const EnhancedTableToolbar = (props, saveTodoItem) => {
                 margin='dense'
                 variant='filled'
                 value={ title }
-                onChange={ handleTitle }
+                onChange={ onChange }
                 label='Title'
                 id='title'
                 // reset={ () => setValue='' }
@@ -222,8 +215,8 @@ const EnhancedTableToolbar = (props, saveTodoItem) => {
               <InputLabel htmlFor='priority'>Priority</InputLabel>
               <Select
                 native
-                onChange={ handlePriority }
-                value={ priority }
+                onChange={ onChange }
+                value={ value }
                 id='priority'
               >
                 <option aria-label='none' value='' />
@@ -237,8 +230,8 @@ const EnhancedTableToolbar = (props, saveTodoItem) => {
               <InputLabel htmlFor='recur'>Recur</InputLabel>
               <Select
                 native
-                onChange={ handleRecur }
-                value={ recur }
+                onChange={ onChange }
+                value={ value }
                 id='recur'
               >
                 <option aria-label='none' value='' />
@@ -261,8 +254,8 @@ const EnhancedTableToolbar = (props, saveTodoItem) => {
               <Select
                 native
                 onClick={ handleOpenDialog }
-                onChange={ handleDue }
-                value={ due }
+                onChange={ onChange }
+                value={ value }
                 id='due'
               >
                 <CalDialog />
@@ -274,17 +267,17 @@ const EnhancedTableToolbar = (props, saveTodoItem) => {
                 margin='dense'
                 variant='filled'
                 label='Notes'
-                value={ notes }
+                value={ value }
                 id='notes'
-                onChange={ handleNotes }
+                onChange={ onChange }
               />
             </FormControl>
             <FormControl variant='filled' size='small' className={ classes.topMargin }>
               <InputLabel htmlFor='actions'>Actions</InputLabel>
               <Select
                 native
-                onChange={ handleActions }
-                value={ actions }
+                onChange={ onChange }
+                value={ value }
                 id='actions'
               >
                 <option aria-label='None' value='' />
@@ -299,8 +292,8 @@ const EnhancedTableToolbar = (props, saveTodoItem) => {
               <InputLabel htmlFor='invite'>Invites</InputLabel>
               <Select
                 native
-                onChange={ handleInvites }
-                value={ invites }
+                onChange={ onChange }
+                value={ value }
                 id='invites'
               >
                 <option aria-label='None' value='' />
@@ -314,8 +307,8 @@ const EnhancedTableToolbar = (props, saveTodoItem) => {
               <InputLabel htmlFor='reminder'>Reminders</InputLabel>
               <Select
                 native
-                onChange={ handleReminders }
-                value={ reminders }
+                onChange={ onChange }
+                value={ value }
                 id='reminders'
               >
                 <option aria-label='None' value='' />
