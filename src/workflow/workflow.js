@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
-import clsx from 'clsx';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,10 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-import useInputState from '../hooks/useInputState';
-import useTodoState from '../hooks/useTodoState';
-import useSetSelected from '../hooks/useSetSelected';
-import CalDialog from './dialog';
+import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
 import EnhancedTableHead from './tableHead';
 import TodoItem from './todoitem';
@@ -126,50 +122,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const itemKey = nanoid();
-
 const WorkFlow = (props) => {
   const classes = useStyles();
-  // const { itemList, addTodoItem } = useTodoState([]);
-  const [itemList, setItemList] = React.useState([
-    {
-      id: 1,
-      title: 'This is my first todo item',
-      priority: 'High',
-      recur: 'Bi-weekly',
-      due: '11-15-2021',
-      notes: 'these are some notes for my first todo item',
-      actions: 'email',
-      invites: 'Brad Pitt',
-      reminders: '1 day before',
-      added: '11-16-2020',
-    },
-    {
-      id: 2,
-      title: 'This is my second todo item',
-      priority: 'Medium',
-      recur: 'Weekly',
-      due: '11-16-2021',
-      notes: 'these are some notes for my second todo item',
-      actions: 'message',
-      invites: 'Ryan Reynolds',
-      reminders: '3 days before',
-      added: '11-16-2020',
-    },
-    {
-      id: 3,
-      title: 'This is my third todo item',
-      priority: 'Low',
-      recur: 'Everyday',
-      due: '11-18-2021',
-      notes: 'these are some notes for my third todo item',
-      actions: 'email',
-      invites: 'Brad Pitt',
-      reminders: '3 days before',
-      added: '11-16-2020',
-    },
+  const [nanoId] = React.useState(nanoid);
+  const [itemList, setItemList] = useState([
+    // {
+    //   title: 'This is my first todo item',
+    //   priority: 'High',
+    //   recur: 'Bi-weekly',
+    //   due: '11-15-2021',
+    //   notes: 'these are some notes for my first todo item',
+    //   actions: 'email',
+    //   invites: 'Brad Pitt',
+    //   reminders: '1 day before',
+    //   added: '11-16-2020',
+    // },
+    // {
+    //   title: 'This is my second todo item',
+    //   priority: 'Medium',
+    //   recur: 'Weekly',
+    //   due: '11-16-2021',
+    //   notes: 'these are some notes for my second todo item',
+    //   actions: 'message',
+    //   invites: 'Ryan Reynolds',
+    //   reminders: '3 days before',
+    //   added: '11-16-2020',
+    // },
+    // {
+    //   title: 'This is my third todo item',
+    //   priority: 'Low',
+    //   recur: 'Everyday',
+    //   due: '11-18-2021',
+    //   notes: 'these are some notes for my third todo item',
+    //   actions: 'email',
+    //   invites: 'Brad Pitt',
+    //   reminders: '3 days before',
+    //   added: '11-16-2020',
+    // },
   ]);
-  // const [itemList, addTodoItem] = useTodoState([]);
   const [selected, setSelected] = useState('');
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
@@ -216,6 +206,7 @@ const WorkFlow = (props) => {
     }
     setSelected(newSelected);
   };
+
   const isSelected = (index) => selected.indexOf(index) !== - 1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
 
@@ -225,8 +216,8 @@ const WorkFlow = (props) => {
   return (
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>
+        <InputForm />
         <EnhancedTableToolbar
-          // saveTodo={ (todoItem) => { addTodoItem(todoItem); } }
           numSelected={ selected.length }
         />
         <TableContainer>
@@ -237,7 +228,6 @@ const WorkFlow = (props) => {
             aria-label='enhanced table'
           >
             <EnhancedTableHead
-              // addTodoItem={ addTodoItem }
               classes={ classes }
               order={ order }
               orderBy={ orderBy }
@@ -247,20 +237,18 @@ const WorkFlow = (props) => {
               rowCount={ itemList.length }
             />
             <TableBody>
-              {stableSort(itemList, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((todoItem, index) => {
-                  const isItemSelected = isSelected(itemList.index);
-                  return (
-                    <TodoItem
-                      key={ itemKey }
-                      index={ index }
-                      todoItem={ todoItem }
-                      aria-checked={ isItemSelected }
-                      isItemSelected={ isItemSelected }
-                    />
-                  );
-                })}
+              {itemList.map((todoItem, index) => {
+                const isItemSelected = isSelected(itemList.index);
+                return (
+                  <TodoItem
+                    key={ nanoId }
+                    index={ index }
+                    todoItem={ todoItem }
+                    aria-checked={ isItemSelected }
+                    isItemSelected={ isItemSelected }
+                  />
+                );
+              })}
             </TableBody>
             {emptyRows > 0 && (
               <TableRow style={ { height: (dense ? 33 : 53) * emptyRows } }>
@@ -286,5 +274,8 @@ const WorkFlow = (props) => {
     </div>
   );
 };
+
+// {stableSort(itemList, getComparator(order, orderBy))
+//   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
 export default WorkFlow;
