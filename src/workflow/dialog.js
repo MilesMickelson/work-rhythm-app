@@ -57,8 +57,8 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-const CalDialog = () => {
-  const { open, handleOpenDialog } = useOpenDialog();
+const CalDialog = (props) => {
+  const { open, handleOpenDialog } = props;
   return (
     <Dialog
       onClose={ handleOpenDialog }

@@ -25,8 +25,6 @@ import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
 import EnhancedTableHead from './tableHead';
 
-import useItemListState from '../hooks/useItemListState';
-
 const idKey = nanoid();
 
 function descendingComparator(a, b, orderBy) {
@@ -135,42 +133,17 @@ const useStyles = makeStyles((theme) => ({
 
 const WorkFlow = () => {
   const classes = useStyles();
-  const { todoItems, addTodoItem } = useItemListState([]);
-  // const [itemList, setItemList] = useState([
-  // {
-  //   title: 'This is my first todo item',
-  //   priority: 'High',
-  //   recur: 'Bi-weekly',
-  //   due: '11-15-2021',
-  //   notes: 'these are some notes for my first todo item',
-  //   actions: 'email',
-  //   invites: 'Brad Pitt',
-  //   reminders: '1 day before',
-  //   added: '11-16-2020',
-  // },
-  // {
-  //   title: 'This is my second todo item',
-  //   priority: 'Medium',
-  //   recur: 'Weekly',
-  //   due: '11-16-2021',
-  //   notes: 'these are some notes for my second todo item',
-  //   actions: 'message',
-  //   invites: 'Ryan Reynolds',
-  //   reminders: '3 days before',
-  //   added: '11-16-2020',
-  // },
-  // {
-  //   title: 'This is my third todo item',
-  //   priority: 'Low',
-  //   recur: 'Everyday',
-  //   due: '11-18-2021',
-  //   notes: 'these are some notes for my third todo item',
-  //   actions: 'email',
-  //   invites: 'Brad Pitt',
-  //   reminders: '3 days before',
-  //   added: '11-16-2020',
-  // },
-  // ]);
+  const [title, setTitle] = useState('');
+  const [priority, setPriority] = useState(0);
+  const [recur, setRecur] = useState('');
+  const [due, setDue] = useState(new Date());
+  const [notes, setNotes] = useState('');
+  const [actions, setActions] = useState('');
+  const [invites, setInvites] = useState('');
+  const [reminders, setReminders] = useState('');
+  const [editing, setEditing] = useState(false);
+  const [completed, setCompleted] = useState(false);
+  const [showInput, setShowInput] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState('');
   const [order, setOrder] = useState('asc');
@@ -178,6 +151,105 @@ const WorkFlow = () => {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [itemList, setItemList] = useState([
+    {
+      key: '345j543',
+      title: 'This is my first todo item',
+      priority: 'High',
+      recur: 'Bi-weekly',
+      due: '11-15-2021',
+      notes: 'these are some notes for my first todo item',
+      actions: 'email',
+      invites: 'Brad Pitt',
+      reminders: '1 day before',
+      added: '11-16-2020',
+    },
+    {
+      key: '345957',
+      title: 'This is my second todo item',
+      priority: 'Medium',
+      recur: 'Weekly',
+      due: '11-16-2021',
+      notes: 'these are some notes for my second todo item',
+      actions: 'message',
+      invites: 'Ryan Reynolds',
+      reminders: '3 days before',
+      added: '11-16-2020',
+    },
+    {
+      key: '3430982',
+      title: 'This is my third todo item',
+      priority: 'Low',
+      recur: 'Everyday',
+      due: '11-18-2021',
+      notes: 'these are some notes for my third todo item',
+      actions: 'email',
+      invites: 'Brad Pitt',
+      reminders: '3 days before',
+      added: '11-16-2020',
+    },
+  ]);
+  const handleTitle = (event) => {
+    setTitle(event.target.value);
+  };
+  const handlePriority = (event) => {
+    setPriority(event.target.value);
+  };
+  const handleRecur = (event) => {
+    setRecur(event.target.value);
+  };
+  const handleDue = (event) => {
+    setDue(event.target.value);
+  };
+  const handleNotes = (event) => {
+    setNotes(event.target.value);
+  };
+  const handleActions = (event) => {
+    setActions(event.target.value);
+  };
+  const handleInvites = (event) => {
+    setInvites(event.target.value);
+  };
+  const handleReminders = (event) => {
+    setReminders(event.target.value);
+  };
+  const handleEditing = () => {
+    setEditing(! editing);
+  };
+  const handleCompleted = () => {
+    setCompleted(! completed);
+  };
+  const handleExpandClick = () => {
+    setExpanded(! expanded);
+  };
+  const handleShowInput = () => {
+    setShowInput(! showInput);
+  };
+  // const addTodoItem = (title, priority, recur, due, notes, actions, invites, reminders) => {
+  //   const newTodoItems = [
+  //     ...itemList,
+  //     {
+  // title,
+  // priority,
+  // recur,
+  // due,
+  // notes,
+  // actions,
+  // invites,
+  // reminders
+  //     }
+  //   ];
+  //   setItemList(newTodoItems);
+  // };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   if (! title) return;
+  //   addTodoItem(title, priority, recur, due, notes, actions, invites, reminders);
+  //   setValue('');
+  //   // reset();
+  // };
+  // console.log('inputForm State for Title:', title);
+  // console.log('inputForm State for Priority:', priority);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -195,68 +267,63 @@ const WorkFlow = () => {
   };
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = todoItems.map((n) => n.id);
+      const newSelecteds = itemList.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-    if (selectedIndex === - 1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, - 1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
-  };
-  const handleExpandClick = () => {
-    setExpanded(! expanded);
-  };
-  const isSelected = (index) => selected.indexOf(index) !== - 1;
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, todoItems.length - page * rowsPerPage);
-
-  // console.log('Workflow Comp. State ->', name);
-  // console.log('Workflow State todoItems: ->', itemList);
+  // const handleClick = (event, index) => {
+  //   const selectedIndex = selected.indexOf(index);
+  //   let newSelected = [];
+  //   if (selectedIndex === - 1) {
+  //     newSelected = newSelected.concat(selected, index);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, - 1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1),
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
+  // const isSelected = (index) => selected.indexOf(index) !== - 1;
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
 
   return (
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>
         <InputForm
-          saveTodo={ (
-            title,
-            priority,
-            recur,
-            due,
-            notes,
-            actions,
-            invites,
-            reminders,
-            added,
-          ) => {
-            addTodoItem(
-              title,
-              priority,
-              recur,
-              due,
-              notes,
-              actions,
-              invites,
-              reminders,
-              added,
-            );
-          } }
+          showInput={ showInput }
+          handleShowInput={ handleShowInput }
+          tite={ title }
+          handleTitle={ handleTitle }
+          priority={ priority }
+          handlePriority={ handlePriority }
+          recur={ recur }
+          handleRecur={ handleRecur }
+          notes={ notes }
+          handleNotes={ handleNotes }
+          actions={ actions }
+          handleActions={ handleActions }
+          invites={ invites }
+          handleInvites={ handleInvites }
+          reminders={ reminders }
+          handleReminders={ handleReminders }
+          due={ due }
+          handleDue={ handleDue }
+          editing={ editing }
+          handleEditing={ handleEditing }
+          completed={ completed }
+          handleCompleted={ handleCompleted }
         />
         <EnhancedTableToolbar
           numSelected={ selected.length }
+          showInput={ showInput }
+          handleShowInput={ handleShowInput }
         />
         <TableContainer>
           <Table
@@ -272,10 +339,10 @@ const WorkFlow = () => {
               onSelectAllClick={ handleSelectAllClick }
               onRequestSort={ handleRequestSort }
               numSelected={ selected.length }
-              rowCount={ todoItems.length }
+              rowCount={ itemList.length }
             />
             <TableBody>
-              {todoItems.map((todoItem, index) => (
+              {itemList.map((todoItem, index) => (
                 <>
                   <TableRow
                     tabIndex={ - 1 }
@@ -287,9 +354,9 @@ const WorkFlow = () => {
                       <Checkbox
                         role='checkbox'
                         // onClick={ (event) => handleClick(event, todoItem.id) }
-                        // aria-checked={ isItemSelected }
-                        // selected={ isItemSelected }
-                        // checked={ isItemSelected }
+                        // aria-checked={ isSelected }
+                        // selected={ isSelected }
+                        // checked={ isSelected }
                       />
                     </TableCell>
                     <TableCell
@@ -361,7 +428,7 @@ const WorkFlow = () => {
         <TablePagination
           rowsPerPageOptions={ [10, 20, 50] }
           component='div'
-          count={ todoItems.length }
+          count={ itemList.length }
           rowsPerPage={ rowsPerPage }
           page={ page }
           onChangePage={ handleChangePage }

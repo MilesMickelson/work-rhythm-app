@@ -13,8 +13,6 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 
-import useShowInput from '../hooks/useShowInput';
-
 const useStyles = makeStyles((theme) => ({
   inputWrap: {
     width: '100%',
@@ -61,13 +59,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
+  const { numSelected, showInput, handleShowInput } = props;
   const classes = useStyles();
-  const [showInput, setShowInput] = useState(false);
-
-  const handleShowInput = () => {
-    setShowInput(! showInput);
-  };
 
   return (
     <Toolbar

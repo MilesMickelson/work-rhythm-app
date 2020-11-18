@@ -38,12 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ItemList = (todoItems) => {
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = () => {
-    setExpanded(! expanded);
-  };
-  // console.log('TodoItem item state:',);
 
   return (
     <>
