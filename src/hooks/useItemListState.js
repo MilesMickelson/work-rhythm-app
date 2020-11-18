@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
 export default (initialValue) => {
-  const [itemList, setItemList] = useState(initialValue);
+  const [todoItems, setTodoItems] = useState(initialValue);
 
   return {
-    itemList,
+    todoItems,
     addTodoItem: (
-      id,
       title,
       priority,
       recur,
@@ -17,9 +16,8 @@ export default (initialValue) => {
       reminders,
       added,
     ) => {
-      setItemList([
-        ...itemList,
-        id,
+      setTodoItems([
+        ...todoItems,
         title,
         priority,
         recur,

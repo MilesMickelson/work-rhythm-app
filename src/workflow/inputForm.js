@@ -12,7 +12,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
 import useOpenDialog from '../hooks/useOpenDialog';
-// import useShowInput from '../hooks/useShowInput';
+import useInputState from '../hooks/useInputState';
 import CalDialog from './dialog';
 
 // let newTodoItem = {
@@ -95,115 +95,120 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InputForm = (props) => {
+const InputForm = (saveTodoItem) => {
   const classes = useStyles();
-  // const { value, reset, onChange } = useInput();
-  const [value, setValue] = React.useState('');
-  // const [title, setTitle] = useInput('');
-  const [itemList, setItemList] = useState([
-    {
-      title: 'This is my first todo item',
-      priority: 'High',
-      recur: 'Bi-weekly',
-      due: '11-15-2021',
-      notes: 'these are some notes for my first todo item',
-      actions: 'email',
-      invites: 'Brad Pitt',
-      reminders: '1 day before',
-      added: '11-16-2020',
-    },
-    {
-      title: 'This is my second todo item',
-      priority: 'Medium',
-      recur: 'Weekly',
-      due: '11-16-2021',
-      notes: 'these are some notes for my second todo item',
-      actions: 'message',
-      invites: 'Ryan Reynolds',
-      reminders: '3 days before',
-      added: '11-16-2020',
-    },
-    {
-      title: 'This is my third todo item',
-      priority: 'Low',
-      recur: 'Everyday',
-      due: '11-18-2021',
-      notes: 'these are some notes for my third todo item',
-      actions: 'email',
-      invites: 'Brad Pitt',
-      reminders: '3 days before',
-      added: '11-16-2020',
-    },
-  ]);
-  const [title, setTitle] = useState('');
-  const [priority, setPriority] = useState(0);
-  const [recur, setRecur] = useState('');
-  const [due, setDue] = useState(new Date());
-  const [notes, setNotes] = useState('');
-  const [actions, setActions] = useState('');
-  const [invites, setInvites] = useState('');
-  const [reminders, setReminders] = useState('');
+  const { handleOpenDialog } = useOpenDialog([]);
+  const { value, reset, onChange } = useInputState(title);
+  // const { value: title, bind: bindtitle, reset: resettitle } = useInput('');
+  // const [itemList, setItemList] = useState([
+  //   {
+  //     title: 'This is my first todo item',
+  //     priority: 'High',
+  //     recur: 'Bi-weekly',
+  //     due: '11-15-2021',
+  //     notes: 'these are some notes for my first todo item',
+  //     actions: 'email',
+  //     invites: 'Brad Pitt',
+  //     reminders: '1 day before',
+  //     added: '11-16-2020',
+  //   },
+  //   {
+  //     title: 'This is my second todo item',
+  //     priority: 'Medium',
+  //     recur: 'Weekly',
+  //     due: '11-16-2021',
+  //     notes: 'these are some notes for my second todo item',
+  //     actions: 'message',
+  //     invites: 'Ryan Reynolds',
+  //     reminders: '3 days before',
+  //     added: '11-16-2020',
+  //   },
+  //   {
+  //     title: 'This is my third todo item',
+  //     priority: 'Low',
+  //     recur: 'Everyday',
+  //     due: '11-18-2021',
+  //     notes: 'these are some notes for my third todo item',
+  //     actions: 'email',
+  //     invites: 'Brad Pitt',
+  //     reminders: '3 days before',
+  //     added: '11-16-2020',
+  //   },
+  // ]);
+  // const [title, setTitle] = useState('');
+  // const [priority, setPriority] = useState(0);
+  // const [recur, setRecur] = useState('');
+  // const [due, setDue] = useState(new Date());
+  // const [notes, setNotes] = useState('');
+  // const [actions, setActions] = useState('');
+  // const [invites, setInvites] = useState('');
+  // const [reminders, setReminders] = useState('');
   // const [editing, setEditing] = useState(false);
   // const { showInput, useHandleShowInput } = useShowInput(false);
-  const { handleOpenDialog } = useOpenDialog([]);
-  const handleTitle = (event) => {
-    setTitle(event.target.value);
-  };
-  const handlePriority = (event) => {
-    setPriority(event.target.value);
-  };
-  const handleRecur = (event) => {
-    setRecur(event.target.value);
-  };
-  const handleDue = (event) => {
-    setDue(event.target.value);
-  };
-  const handleNotes = (event) => {
-    setNotes(event.target.value);
-  };
-  const handleActions = (event) => {
-    setActions(event.target.value);
-  };
-  const handleInvites = (event) => {
-    setInvites(event.target.value);
-  };
-  const handleReminders = (event) => {
-    setReminders(event.target.value);
-  };
+  // const handleTitle = (event) => {
+  //   setTitle(event.target.value);
+  // };
+  // const handlePriority = (event) => {
+  //   setPriority(event.target.value);
+  // };
+  // const handleRecur = (event) => {
+  //   setRecur(event.target.value);
+  // };
+  // const handleDue = (event) => {
+  //   setDue(event.target.value);
+  // };
+  // const handleNotes = (event) => {
+  //   setNotes(event.target.value);
+  // };
+  // const handleActions = (event) => {
+  //   setActions(event.target.value);
+  // };
+  // const handleInvites = (event) => {
+  //   setInvites(event.target.value);
+  // };
+  // const handleReminders = (event) => {
+  //   setReminders(event.target.value);
+  // };
   // const handleEditing = () => {
   //   setEditing(! editing);
   // };
   // const handleCompleted = () => {
   //   setCompleted(! completed);
   // };
-  const addTodoItem = (title, priority, recur, due, notes, actions, invites, reminders) => {
-    const newTodoItems = [
-      ...itemList,
-      {
-        title,
-        priority,
-        recur,
-        due,
-        notes,
-        actions,
-        invites,
-        reminders
-      }
-    ];
-    setItemList(newTodoItems);
-  };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (! title) return;
-    addTodoItem(title, priority, recur, due, notes, actions, invites, reminders);
-    setValue('');
-    // reset();
-  };
-  console.log('inputForm State for Title:', title);
-  console.log('inputForm State for Priority:', priority);
+  // const addTodoItem = (title, priority, recur, due, notes, actions, invites, reminders) => {
+  //   const newTodoItems = [
+  //     ...itemList,
+  //     {
+  // title,
+  // priority,
+  // recur,
+  // due,
+  // notes,
+  // actions,
+  // invites,
+  // reminders
+  //     }
+  //   ];
+  //   setItemList(newTodoItems);
+  // };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   if (! title) return;
+  //   addTodoItem(title, priority, recur, due, notes, actions, invites, reminders);
+  //   setValue('');
+  //   // reset();
+  // };
+  // console.log('inputForm State for Title:', title);
+  // console.log('inputForm State for Priority:', priority);
   return (
     <form
-      onSubmit={ handleSubmit }
+      onSubmit={
+        (event) => {
+          event.preventDefault();
+          saveTodoItem(value);
+          reset();
+        }
+      }
     >
       {/* <Collapse
         aria-label='show more'
@@ -219,20 +224,19 @@ const InputForm = (props) => {
             multiline
             margin='dense'
             variant='filled'
-            value={ title }
-            onChange={ handleTitle }
-            label='Title'
-            id='title'
+            value={ value }
+            onChange={ onChange }
+            // onKeyPress={ props.onInputKeyPress }
             // reset={ () => setValue='' }
+            label='Title'
           />
         </FormControl>
         <FormControl variant='filled' size='small' className={ classes.topMargin }>
           <InputLabel htmlFor='priority'>Priority</InputLabel>
           <Select
             native
-            onChange={ handlePriority }
-            value={ priority }
-            id='priority'
+            value={ value }
+            onChange={ onChange }
           >
             <option aria-label='none' value='' />
             <option value={ 1 }>Low</option>
@@ -245,9 +249,8 @@ const InputForm = (props) => {
           <InputLabel htmlFor='recur'>Recur</InputLabel>
           <Select
             native
-            onChange={ handleRecur }
-            value={ recur }
-            id='recur'
+            value={ value }
+            onChange={ onChange }
           >
             <option aria-label='none' value='' />
             <option value={ 12 }>Everyday</option>
@@ -268,9 +271,8 @@ const InputForm = (props) => {
           <InputLabel htmlFor='due'>Due Date</InputLabel>
           <Select
             native
-            onClick={ handleOpenDialog }
-            value={ due }
-            id='due'
+            value={ value }
+            onChange={ onChange }
           >
             <CalDialog />
           </Select>
@@ -282,17 +284,16 @@ const InputForm = (props) => {
             variant='filled'
             label='Notes'
             id='notes'
-            value={ notes }
-            onChange={ handleNotes }
+            value={ value }
+            onChange={ onChange }
           />
         </FormControl>
         <FormControl variant='filled' size='small' className={ classes.topMargin }>
           <InputLabel htmlFor='actions'>Actions</InputLabel>
           <Select
             native
-            onChange={ handleActions }
-            value={ actions }
-            id='actions'
+            value={ value }
+            onChange={ onChange }
           >
             <option aria-label='None' value='' />
             <option value={ 1 }>Call</option>
@@ -306,9 +307,8 @@ const InputForm = (props) => {
           <InputLabel htmlFor='invite'>Invites</InputLabel>
           <Select
             native
-            onChange={ handleInvites }
-            value={ invites }
-            id='invites'
+            value={ value }
+            onChange={ onChange }
           >
             <option aria-label='None' value='' />
             <option value={ 1 }>Brad Pitt</option>
@@ -321,9 +321,8 @@ const InputForm = (props) => {
           <InputLabel htmlFor='reminder'>Reminders</InputLabel>
           <Select
             native
-            onChange={ handleReminders }
-            value={ reminders }
-            id='reminders'
+            value={ value }
+            onChange={ onChange }
           >
             <option aria-label='None' value='' />
             <option value={ 8 }>Everyday at 9am</option>
