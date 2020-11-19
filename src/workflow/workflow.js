@@ -208,9 +208,16 @@ const WorkFlow = () => {
       }
     ];
     setItemList(newTodoItem);
+    setTitle('');
+    setPriority('');
+    setRecur('');
+    setNotes('');
+    setActions('');
+    setInvites('');
+    setReminders('');
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
+    // event.preventDefault();
     // if (! title) return;
     addTodoItem(title, priority, recur, notes, actions, invites, reminders);
     // setValue('');
@@ -370,8 +377,10 @@ const WorkFlow = () => {
                             <TableHead>
                               <TableRow>
                                 <TableCell align='right'>Notes</TableCell>
-                                <TableCell align='right'>Date Added</TableCell>
-                                <TableCell align='right'>Total Time</TableCell>
+                                <TableCell align='right'>Actions</TableCell>
+                                <TableCell align='right'>Invites</TableCell>
+                                <TableCell align='right'>Reminders</TableCell>
+                                <TableCell align='right'>Added</TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>

@@ -176,7 +176,6 @@ const InputForm = (props) => {
         aria-label='show more'
         aria-expanded={ showInput }
         in={ showInput }
-        onChange={ handleShowInput }
         timeout='auto'
         unmountOnExit
       >
@@ -335,7 +334,7 @@ const InputForm = (props) => {
             aria-label='cancel input'
             className={ classes.button }
             startIcon={ <CloseIcon /> }
-            // onClick={ useHandleShowInput }
+            onClick={ handleShowInput }
           >
             Cancel
           </Button>
