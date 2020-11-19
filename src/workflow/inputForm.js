@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Calendar from 'react-calendar';
 
@@ -11,8 +11,12 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
-
-import CalDialog from './dialog';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
 
 // let newTodoItem = {
 //   'key': key,
@@ -47,6 +51,49 @@ import CalDialog from './dialog';
 
 // createData(1, 7, 'Title of my todo', 1, 'Everyday', 20, '1-1-2021', 'these are my details for id 1', '11-1-20', 'Email', '3'),
 // const todoItems = [];
+
+const DialogContent = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+  },
+}))(MuiDialogActions);
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const DialogTitle = withStyles(styles)((props) => {
+  const {
+    children, classes, onClose,
+  } = props;
+  // const [value, setValue] = useInput('');
+  return (
+    <MuiDialogTitle disableTypography className={ classes.root }>
+      <Typography variant='h6'>{children}</Typography>
+      {onClose ? (
+        <IconButton aria-label='close' className={ classes.closeButton } onClick={ onClose }>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
 
 // ! TextField Input Component //
 const CssTextField = withStyles(() => ({
@@ -96,8 +143,7 @@ const useStyles = makeStyles((theme) => ({
 
 const InputForm = (props) => {
   const {
-    addNewItem,
-    reset,
+    // reset,
     showInput,
     handleShowInput,
     title,
@@ -114,23 +160,17 @@ const InputForm = (props) => {
     handleInvites,
     reminders,
     handleReminders,
-    due,
-    handleDue,
+    // due,
+    // handleDue,
+    open,
+    handleOpenDialog,
+    handleSubmit,
+    addTodoItem
   } = props;
   const classes = useStyles();
-  const [open, setOpenDialog] = useState(false);
-  const handleOpenDialog = () => {
-    setOpenDialog(! open);
-  };
   return (
     <form
-      onSubmit={
-        (event) => {
-          event.preventDefault();
-          addNewItem();
-          reset();
-        }
-      }
+      onSubmit={ handleSubmit }
     >
       <Collapse
         aria-label='show more'
@@ -146,11 +186,9 @@ const InputForm = (props) => {
               multiline
               margin='dense'
               variant='filled'
+              label='Title'
               value={ title }
               onChange={ handleTitle }
-              // onKeyPress={ props.onInputKeyPress }
-              // reset={ () => setValue='' }
-              label='Title'
             />
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
@@ -193,13 +231,32 @@ const InputForm = (props) => {
             <InputLabel htmlFor='due'>Due Date</InputLabel>
             <Select
               native
-              value={ due }
-              onChange={ handleDue }
+              // value={ due }
+              // onChange={ handleDue }
+              onClick={ handleOpenDialog }
+              style={ { width: 140 } }
             >
-              <CalDialog
+              <Dialog
+                onClose={ handleOpenDialog }
+                aria-labelledby='dueDate-dialog-title'
                 open={ open }
-                handleOpenDialog={ handleOpenDialog }
-              />
+              >
+                <DialogTitle id='dueDate-dialog-title' onClose={ handleOpenDialog }>
+                  Due Date
+                </DialogTitle>
+                <DialogContent dividers>
+                  {/* <Calendar
+                    id='dueDate-dialog'
+                    onChange={ handleDate }
+                    value={ date }
+                  /> */}
+                </DialogContent>
+                <DialogActions>
+                  <Button autoFocus>
+                    Save
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Select>
           </FormControl>
           <FormControl className={ classes.margin }>
@@ -208,7 +265,6 @@ const InputForm = (props) => {
               margin='dense'
               variant='filled'
               label='Notes'
-              id='notes'
               value={ notes }
               onChange={ handleNotes }
             />
@@ -268,8 +324,7 @@ const InputForm = (props) => {
             aria-label='save input'
             className={ classes.button }
             startIcon={ <SaveAltIcon /> }
-            // onClick={ () => { handleAddTodoItem(); handleShowInputClick(); } }
-            // onClick={ useHandleShowInput }
+            onClick={ { addTodoItem, handleShowInput } }
           >
             Save
           </Button>

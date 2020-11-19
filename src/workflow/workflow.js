@@ -136,7 +136,7 @@ const WorkFlow = () => {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState(0);
   const [recur, setRecur] = useState('');
-  const [due, setDue] = useState(new Date());
+  // const [due, setDue] = useState(new Date());
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
@@ -144,6 +144,7 @@ const WorkFlow = () => {
   const [editing, setEditing] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [showInput, setShowInput] = useState(false);
+  const [open, setOpenDialog] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState('');
   const [order, setOrder] = useState('asc');
@@ -151,44 +152,7 @@ const WorkFlow = () => {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [itemList, setItemList] = useState([
-    {
-      key: '345j543',
-      title: 'This is my first todo item',
-      priority: 'High',
-      recur: 'Bi-weekly',
-      due: '11-15-2021',
-      notes: 'these are some notes for my first todo item',
-      actions: 'email',
-      invites: 'Brad Pitt',
-      reminders: '1 day before',
-      added: '11-16-2020',
-    },
-    {
-      key: '345957',
-      title: 'This is my second todo item',
-      priority: 'Medium',
-      recur: 'Weekly',
-      due: '11-16-2021',
-      notes: 'these are some notes for my second todo item',
-      actions: 'message',
-      invites: 'Ryan Reynolds',
-      reminders: '3 days before',
-      added: '11-16-2020',
-    },
-    {
-      key: '3430982',
-      title: 'This is my third todo item',
-      priority: 'Low',
-      recur: 'Everyday',
-      due: '11-18-2021',
-      notes: 'these are some notes for my third todo item',
-      actions: 'email',
-      invites: 'Brad Pitt',
-      reminders: '3 days before',
-      added: '11-16-2020',
-    },
-  ]);
+  const [itemList, setItemList] = useState([]);
   const handleTitle = (event) => {
     setTitle(event.target.value);
   };
@@ -198,9 +162,9 @@ const WorkFlow = () => {
   const handleRecur = (event) => {
     setRecur(event.target.value);
   };
-  const handleDue = (event) => {
-    setDue(event.target.value);
-  };
+  // const handleDue = (event) => {
+  //   setDue(event.target.value);
+  // };
   const handleNotes = (event) => {
     setNotes(event.target.value);
   };
@@ -225,31 +189,36 @@ const WorkFlow = () => {
   const handleShowInput = () => {
     setShowInput(! showInput);
   };
-  // const addTodoItem = (title, priority, recur, due, notes, actions, invites, reminders) => {
-  //   const newTodoItems = [
-  //     ...itemList,
-  //     {
-  // title,
-  // priority,
-  // recur,
-  // due,
-  // notes,
-  // actions,
-  // invites,
-  // reminders
-  //     }
-  //   ];
-  //   setItemList(newTodoItems);
-  // };
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   if (! title) return;
-  //   addTodoItem(title, priority, recur, due, notes, actions, invites, reminders);
-  //   setValue('');
-  //   // reset();
-  // };
-  // console.log('inputForm State for Title:', title);
-  // console.log('inputForm State for Priority:', priority);
+  const handleOpenDialog = () => {
+    setOpenDialog(! open);
+  };
+  // title, priority, recur, due, notes, actions, invites, reminders
+  const addTodoItem = () => {
+    const newTodoItem = [
+      ...itemList,
+      {
+        title,
+        priority,
+        recur,
+        // due,
+        notes,
+        actions,
+        invites,
+        reminders
+      }
+    ];
+    setItemList(newTodoItem);
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // if (! title) return;
+    addTodoItem(title, priority, recur, notes, actions, invites, reminders);
+    // setValue('');
+    // reset();
+  };
+  console.log('inputForm State for Title:', title);
+  console.log('inputForm State for Priority:', priority);
+  console.log('inputForm State for itemList:', itemList);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -298,27 +267,31 @@ const WorkFlow = () => {
       <Paper className={ classes.tableWrap }>
         <InputForm
           showInput={ showInput }
-          handleShowInput={ handleShowInput }
           tite={ title }
-          handleTitle={ handleTitle }
           priority={ priority }
-          handlePriority={ handlePriority }
           recur={ recur }
-          handleRecur={ handleRecur }
           notes={ notes }
-          handleNotes={ handleNotes }
           actions={ actions }
-          handleActions={ handleActions }
           invites={ invites }
-          handleInvites={ handleInvites }
           reminders={ reminders }
-          handleReminders={ handleReminders }
-          due={ due }
-          handleDue={ handleDue }
+          // due={ due }
+          open={ open }
           editing={ editing }
-          handleEditing={ handleEditing }
           completed={ completed }
+          handleShowInput={ handleShowInput }
+          handleSubmit={ handleSubmit }
+          addTodoItem={ addTodoItem }
+          handleTitle={ handleTitle }
+          handlePriority={ handlePriority }
+          handleRecur={ handleRecur }
+          handleNotes={ handleNotes }
+          handleActions={ handleActions }
+          handleInvites={ handleInvites }
+          handleReminders={ handleReminders }
+          // handleDue={ handleDue }
+          handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
+          handleOpenDialog={ handleOpenDialog }
         />
         <EnhancedTableToolbar
           numSelected={ selected.length }
@@ -371,7 +344,7 @@ const WorkFlow = () => {
                     <TableCell align='right'>{todoItem.priority}</TableCell>
                     <TableCell align='right'>{todoItem.recur}</TableCell>
                     <TableCell align='right'>{todoItem.timer}</TableCell>
-                    <TableCell align='right'>{todoItem.due}</TableCell>
+                    {/* <TableCell align='right'>{todoItem.due}</TableCell> */}
                     <TableCell>
                       <IconButton
                         aria-label='show more'
