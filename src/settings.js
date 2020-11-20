@@ -25,7 +25,7 @@ const SettingSwitch = withStyles({
   track: {},
 })(Switch);
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
 }));
 

@@ -31,7 +31,7 @@ import Account from './account';
 
 function TabPanel(props) {
   const {
-    children, value, index, ...other
+    children, value, index
   } = props;
   return (
     <div
@@ -39,7 +39,6 @@ function TabPanel(props) {
       hidden={ value !== index }
       id={ `scrollable-force-nav-tabpanel-${index}` }
       aria-labelledby={ `scrollable-force-nav-tab-${index}` }
-      {...other}
     >
       {value === index && (
         <Box>{children}</Box>
@@ -68,7 +67,7 @@ function TabLink(props) {
       onClick={ (event) => {
         event.preventDefault();
       } }
-      {...props}
+      { ...props }
     />
   );
 }
@@ -126,7 +125,7 @@ const NavBar = () => {
               href='/Workflow'
               className={ classes.navLink }
               aria-label='workflow pane'
-              {...a11yProps(0)}
+              { ...a11yProps(0) }
             />
             <TabLink
               icon={ <VisionIcon /> }
@@ -134,7 +133,7 @@ const NavBar = () => {
               href='/Vision'
               className={ classes.navLink }
               aria-label='vision pane'
-              {...a11yProps(1)}
+              { ...a11yProps(1) }
             />
             <TabLink
               icon={ <PostureIcon /> }
@@ -142,7 +141,7 @@ const NavBar = () => {
               href='/Posture'
               className={ classes.navLink }
               aria-label='posture pane'
-              {...a11yProps(2)}
+              { ...a11yProps(2) }
             />
             <TabLink
               icon={ <AlarmIcon /> }
@@ -150,7 +149,7 @@ const NavBar = () => {
               href='/Custom'
               className={ classes.navLink }
               aria-label='custom pane'
-              {...a11yProps(3)}
+              { ...a11yProps(3) }
             />
             <TabLink
               icon={ <SettingsIcon /> }
@@ -158,7 +157,7 @@ const NavBar = () => {
               href='/Settings'
               className={ classes.navLink }
               aria-label='settings pane'
-              {...a11yProps(5)}
+              { ...a11yProps(5) }
             />
             <TabLink
               icon={ <AccountCircleIcon /> }
@@ -166,7 +165,7 @@ const NavBar = () => {
               label='Account'
               href='/Account'
               aria-label='account pane'
-              {...a11yProps(6)}
+              { ...a11yProps(6) }
             />
           </Tabs>
         </AppBar>

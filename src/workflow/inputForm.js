@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Calendar from 'react-calendar';
+// import Calendar from 'react-calendar';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
@@ -17,40 +17,6 @@ import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-
-// let newTodoItem = {
-//   'key': key,
-//   'title': title,
-//   'priority': priority,
-//   'recurring': recurring,
-//   'timer': timer,
-//   'due': due,
-//   'details': details,
-//   'invites': invites,
-//   'actions': actions,
-//   'reminders': reminders,
-// }
-
-// ! Old Mock Data+Creation //
-// function createData(key, id, title, priority, recur, timer, due) {
-//   return {
-//     key,
-//     id,
-//     title,
-//     priority,
-//     recur,
-//     timer,
-//     due,
-//     details: [
-//       {
-//         notes: '', added: '', actions: '', invites: ''
-//       },
-//     ],
-//   };
-// }
-
-// createData(1, 7, 'Title of my todo', 1, 'Everyday', 20, '1-1-2021', 'these are my details for id 1', '11-1-20', 'Email', '3'),
-// const todoItems = [];
 
 const DialogContent = withStyles((theme) => ({
   root: {
@@ -143,9 +109,7 @@ const useStyles = makeStyles((theme) => ({
 
 const InputForm = (props) => {
   const {
-    // reset,
     showInput,
-    handleShowInput,
     title,
     handleTitle,
     priority,
@@ -165,7 +129,8 @@ const InputForm = (props) => {
     open,
     handleOpenDialog,
     handleSubmit,
-    addTodoItem
+    addTodoItem,
+    handleCancelInput
   } = props;
   const classes = useStyles();
   return (
@@ -323,7 +288,7 @@ const InputForm = (props) => {
             aria-label='save input'
             className={ classes.button }
             startIcon={ <SaveAltIcon /> }
-            onClick={ { addTodoItem, handleShowInput } }
+            onClick={ addTodoItem }
           >
             Save
           </Button>
@@ -334,7 +299,7 @@ const InputForm = (props) => {
             aria-label='cancel input'
             className={ classes.button }
             startIcon={ <CloseIcon /> }
-            onClick={ handleShowInput }
+            onClick={ handleCancelInput }
           >
             Cancel
           </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
 
@@ -25,33 +25,31 @@ import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
 import EnhancedTableHead from './tableHead';
 
-const idKey = nanoid();
+// function descendingComparator(a, b, orderBy) {
+//   if (b[orderBy] < a[orderBy]) {
+//     return - 1;
+//   }
+//   if (b[orderBy] > a[orderBy]) {
+//     return 1;
+//   }
+//   return 0;
+// }
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return - 1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+// function getComparator(order, orderBy) {
+//   return order === 'desc'
+//     ? (a, b) => descendingComparator(a, b, orderBy)
+//     : (a, b) => - descendingComparator(a, b, orderBy);
+// }
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => - descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+// function stableSort(array, comparator) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   return stabilizedThis.map((el) => el[0]);
+// }
 
 const useStyles = makeStyles((theme) => ({
   fragContainer: {
@@ -133,6 +131,8 @@ const useStyles = makeStyles((theme) => ({
 
 const WorkFlow = () => {
   const classes = useStyles();
+  const [id, setId] = useState();
+  const [key, setKey] = useState('');
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState(0);
   const [recur, setRecur] = useState('');
@@ -153,6 +153,21 @@ const WorkFlow = () => {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [itemList, setItemList] = useState([]);
+
+  useEffect(() => {
+    setItemList(itemList);
+  }, [itemList]);
+
+  console.log('WORKFLOW STATE ID:', id);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE KEY:', key);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Title:', title);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Priority:', priority);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE itemList:', itemList);
+
   const handleTitle = (event) => {
     setTitle(event.target.value);
   };
@@ -215,11 +230,35 @@ const WorkFlow = () => {
     }
     setSelected([]);
   };
+  // const handleClick = (event, index) => {
+  //   const selectedIndex = selected.indexOf(index);
+  //   let newSelected = [];
+  //   if (selectedIndex === - 1) {
+  //     newSelected = newSelected.concat(selected, index);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, - 1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1),
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
+  const handleSetKey = () => {
+    const iKey = nanoid();
+    setKey(iKey);
+  };
 
   const addTodoItem = () => {
+    handleSetKey();
     const newTodoItem = [
       ...itemList,
       {
+        key,
+        id,
         title,
         priority,
         recur,
@@ -231,6 +270,12 @@ const WorkFlow = () => {
       }
     ];
     setItemList(newTodoItem);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    addTodoItem(key, id, title, priority, recur, notes, actions, invites, reminders);
+    setShowInput(! showInput);
     setTitle('');
     setPriority('');
     setRecur('');
@@ -240,30 +285,19 @@ const WorkFlow = () => {
     setReminders('');
   };
 
-  const handleSubmit = () => {
-    addTodoItem(title, priority, recur, notes, actions, invites, reminders);
+  const handleCancelInput = (event) => {
+    event.preventDefault();
+    setShowInput(! showInput);
+    setTitle('');
+    setPriority('');
+    setRecur('');
+    setNotes('');
+    setActions('');
+    setInvites('');
+    setReminders('');
   };
-  console.log('inputForm State for Title:', title);
-  console.log('inputForm State for Priority:', priority);
-  console.log('inputForm State for itemList:', itemList);
-  const handleClick = (event, index) => {
-    const selectedIndex = selected.indexOf(index);
-    let newSelected = [];
-    if (selectedIndex === - 1) {
-      newSelected = newSelected.concat(selected, index);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, - 1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
-  };
-  const isSelected = (index) => selected.indexOf(index) !== - 1;
+  // const isSelected = (index) => selected.indexOf(index) !== - 1;
+  // const isItemSelected = isSelected(todoItem.index);
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
 
   return (
@@ -282,7 +316,7 @@ const WorkFlow = () => {
           open={ open }
           editing={ editing }
           completed={ completed }
-          handleShowInput={ handleShowInput }
+          handleCancelInput={ handleCancelInput }
           handleSubmit={ handleSubmit }
           addTodoItem={ addTodoItem }
           handleTitle={ handleTitle }
@@ -319,85 +353,90 @@ const WorkFlow = () => {
               rowCount={ itemList.length }
             />
             <TableBody>
-              {stableSort(itemList, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((todoItem, index) => (
-                  <>
-                    <TableRow
-                      tabIndex={ - 1 }
-                      key={ idKey }
-                      index={ index }
-                      className={ classes.border }
+              {itemList.map((todoItem, index) => (
+                <>
+                  <TableRow
+                    key={ key }
+                    id={ id }
+                    index={ index }
+                    tabIndex={ - 1 }
+                    // aria-checked={ isItemSelected }
+                    // selected={ isItemSelected }
+                    className={ classes.border }
+                  >
+                    <TableCell padding='checkbox'>
+                      <Checkbox
+                        role='checkbox'
+                        // onClick={ (event) => handleClick(event, todoItem.id) }
+                        // checked={ isItemSelected }
+                      />
+                    </TableCell>
+                    <TableCell
+                      // style={ { textDecoration: todoItem.isCompleted ? 'line-through' : '' } }
+                      align='left'
+                      component='th'
+                      scope='row'
+                      padding='none'
                     >
-                      <TableCell padding='checkbox'>
-                        <Checkbox
-                          role='checkbox'
-                          onClick={ (event) => handleClick(event, todoItem.id) }
-                          aria-checked={ isSelected }
-                          selected={ isSelected }
-                          checked={ isSelected }
-                        />
-                      </TableCell>
-                      <TableCell
-                        // style={ { textDecoration: todoItem.isCompleted ? 'line-through' : '' } }
-                        align='left'
-                        component='th'
-                        scope='row'
-                        padding='none'
+                      {todoItem.title}
+                    </TableCell>
+                    <TableCell align='right'>{todoItem.priority}</TableCell>
+                    <TableCell align='right'>{todoItem.recur}</TableCell>
+                    <TableCell align='right'>{todoItem.timer}</TableCell>
+                    {/* <TableCell align='right'>{todoItem.due}</TableCell> */}
+                    <TableCell>
+                      <IconButton
+                        aria-label='show more'
+                        aria-expanded={ expanded }
+                        size='small'
+                        onClick={ handleExpandClick }
+                        className={ clsx(classes.expand, {
+                          [classes.expandOpen]: expanded,
+                        }) }
                       >
-                        {todoItem.title}
-                      </TableCell>
-                      <TableCell align='right'>{todoItem.priority}</TableCell>
-                      <TableCell align='right'>{todoItem.recur}</TableCell>
-                      <TableCell align='right'>{todoItem.timer}</TableCell>
-                      {/* <TableCell align='right'>{todoItem.due}</TableCell> */}
-                      <TableCell>
-                        <IconButton
-                          aria-label='show more'
-                          aria-expanded={ expanded }
-                          size='small'
-                          onClick={ handleExpandClick }
-                          className={ clsx(classes.expand, {
-                            [classes.expandOpen]: expanded,
-                          }) }
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
-                        <Collapse in={ expanded } timeout='auto' unmountOnExit>
-                          <Box margin={ 1 }>
-                            <Typography variant='h6' gutterBottom component='div'>
-                              Details
-                            </Typography>
-                            <Table size='small' aria-label='purchases'>
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell align='right'>Notes</TableCell>
-                                  <TableCell align='right'>Actions</TableCell>
-                                  <TableCell align='right'>Invites</TableCell>
-                                  <TableCell align='right'>Reminders</TableCell>
-                                  <TableCell align='right'>Added</TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                <TableRow>
-                                  <TableCell align='right'>{todoItem.notes}</TableCell>
-                                  <TableCell align='right'>{todoItem.actions}</TableCell>
-                                  <TableCell align='right'>{todoItem.invites}</TableCell>
-                                  <TableCell align='right'>{todoItem.reminders}</TableCell>
-                                  <TableCell align='right'>{todoItem.added}</TableCell>
-                                </TableRow>
-                              </TableBody>
-                            </Table>
-                          </Box>
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  </>
-                ))}
+                        <ExpandMoreIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow
+                    // key={ key }
+                    // id={ id }
+                    // index={ index }
+                    tabIndex={ - 1 }
+                    className={ classes.border }
+                  >
+                    <TableCell style={ { paddingBottom: 0, paddingTop: 0 } }>
+                      <Collapse in={ expanded } timeout='auto' unmountOnExit>
+                        <Box margin={ 1 }>
+                          <Typography variant='h6' gutterBottom component='div'>
+                            Details
+                          </Typography>
+                          <Table size='small' aria-label='purchases'>
+                            <TableHead>
+                              <TableRow>
+                                <TableCell align='right'>Notes</TableCell>
+                                <TableCell align='right'>Actions</TableCell>
+                                <TableCell align='right'>Invites</TableCell>
+                                <TableCell align='right'>Reminders</TableCell>
+                                <TableCell align='right'>Added</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              <TableRow>
+                                <TableCell align='right'>{todoItem.notes}</TableCell>
+                                <TableCell align='right'>{todoItem.actions}</TableCell>
+                                <TableCell align='right'>{todoItem.invites}</TableCell>
+                                <TableCell align='right'>{todoItem.reminders}</TableCell>
+                                <TableCell align='right'>{todoItem.added}</TableCell>
+                              </TableRow>
+                            </TableBody>
+                          </Table>
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </>
+              ))}
             </TableBody>
             {emptyRows > 0 && (
               <TableBody>
@@ -425,5 +464,6 @@ const WorkFlow = () => {
     </div>
   );
 };
-
+// {stableSort(itemList, getComparator(order, orderBy))
+// .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 export default WorkFlow;
