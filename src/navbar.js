@@ -14,7 +14,6 @@ import {
   FormatListBulleted as ListIcon,
   Visibility as VisionIcon,
   AccessibilityNew as PostureIcon,
-  Equalizer as StatsIcon,
   Alarm as AlarmIcon,
   Settings as SettingsIcon,
 } from '@material-ui/icons';
@@ -153,14 +152,6 @@ const NavBar = () => {
               aria-label='custom pane'
               {...a11yProps(3)}
             />
-            {/* <TabLink
-              icon={ <StatsIcon /> }
-              label='Statistics'
-              href='/Stats'
-              className={ classes.navLink }
-              aria-label='statistics pane'
-              {...a11yProps(4)}
-            /> */}
             <TabLink
               icon={ <SettingsIcon /> }
               label='Settings'

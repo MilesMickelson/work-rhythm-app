@@ -192,40 +192,6 @@ const WorkFlow = () => {
   const handleOpenDialog = () => {
     setOpenDialog(! open);
   };
-  // title, priority, recur, due, notes, actions, invites, reminders
-  const addTodoItem = () => {
-    const newTodoItem = [
-      ...itemList,
-      {
-        title,
-        priority,
-        recur,
-        // due,
-        notes,
-        actions,
-        invites,
-        reminders
-      }
-    ];
-    setItemList(newTodoItem);
-    setTitle('');
-    setPriority('');
-    setRecur('');
-    setNotes('');
-    setActions('');
-    setInvites('');
-    setReminders('');
-  };
-  const handleSubmit = () => {
-    // event.preventDefault();
-    // if (! title) return;
-    addTodoItem(title, priority, recur, notes, actions, invites, reminders);
-    // setValue('');
-    // reset();
-  };
-  console.log('inputForm State for Title:', title);
-  console.log('inputForm State for Priority:', priority);
-  console.log('inputForm State for itemList:', itemList);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -249,24 +215,55 @@ const WorkFlow = () => {
     }
     setSelected([]);
   };
-  // const handleClick = (event, index) => {
-  //   const selectedIndex = selected.indexOf(index);
-  //   let newSelected = [];
-  //   if (selectedIndex === - 1) {
-  //     newSelected = newSelected.concat(selected, index);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, - 1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1),
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
-  // const isSelected = (index) => selected.indexOf(index) !== - 1;
+
+  const addTodoItem = () => {
+    const newTodoItem = [
+      ...itemList,
+      {
+        title,
+        priority,
+        recur,
+        // due,
+        notes,
+        actions,
+        invites,
+        reminders
+      }
+    ];
+    setItemList(newTodoItem);
+    setTitle('');
+    setPriority('');
+    setRecur('');
+    setNotes('');
+    setActions('');
+    setInvites('');
+    setReminders('');
+  };
+
+  const handleSubmit = () => {
+    addTodoItem(title, priority, recur, notes, actions, invites, reminders);
+  };
+  console.log('inputForm State for Title:', title);
+  console.log('inputForm State for Priority:', priority);
+  console.log('inputForm State for itemList:', itemList);
+  const handleClick = (event, index) => {
+    const selectedIndex = selected.indexOf(index);
+    let newSelected = [];
+    if (selectedIndex === - 1) {
+      newSelected = newSelected.concat(selected, index);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, - 1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+    setSelected(newSelected);
+  };
+  const isSelected = (index) => selected.indexOf(index) !== - 1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
 
   return (
@@ -322,88 +319,92 @@ const WorkFlow = () => {
               rowCount={ itemList.length }
             />
             <TableBody>
-              {itemList.map((todoItem, index) => (
-                <>
-                  <TableRow
-                    tabIndex={ - 1 }
-                    key={ idKey }
-                    index={ index }
-                    className={ classes.border }
-                  >
-                    <TableCell padding='checkbox'>
-                      <Checkbox
-                        role='checkbox'
-                        // onClick={ (event) => handleClick(event, todoItem.id) }
-                        // aria-checked={ isSelected }
-                        // selected={ isSelected }
-                        // checked={ isSelected }
-                      />
-                    </TableCell>
-                    <TableCell
-                      // style={ { textDecoration: todoItem.isCompleted ? 'line-through' : '' } }
-                      align='left'
-                      component='th'
-                      scope='row'
-                      padding='none'
+              {stableSort(itemList, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((todoItem, index) => (
+                  <>
+                    <TableRow
+                      tabIndex={ - 1 }
+                      key={ idKey }
+                      index={ index }
+                      className={ classes.border }
                     >
-                      {todoItem.title}
-                    </TableCell>
-                    <TableCell align='right'>{todoItem.priority}</TableCell>
-                    <TableCell align='right'>{todoItem.recur}</TableCell>
-                    <TableCell align='right'>{todoItem.timer}</TableCell>
-                    {/* <TableCell align='right'>{todoItem.due}</TableCell> */}
-                    <TableCell>
-                      <IconButton
-                        aria-label='show more'
-                        aria-expanded={ expanded }
-                        size='small'
-                        onClick={ handleExpandClick }
-                        className={ clsx(classes.expand, {
-                          [classes.expandOpen]: expanded,
-                        }) }
+                      <TableCell padding='checkbox'>
+                        <Checkbox
+                          role='checkbox'
+                          onClick={ (event) => handleClick(event, todoItem.id) }
+                          aria-checked={ isSelected }
+                          selected={ isSelected }
+                          checked={ isSelected }
+                        />
+                      </TableCell>
+                      <TableCell
+                        // style={ { textDecoration: todoItem.isCompleted ? 'line-through' : '' } }
+                        align='left'
+                        component='th'
+                        scope='row'
+                        padding='none'
                       >
-                        <ExpandMoreIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
-                      <Collapse in={ expanded } timeout='auto' unmountOnExit>
-                        <Box margin={ 1 }>
-                          <Typography variant='h6' gutterBottom component='div'>
-                            Details
-                          </Typography>
-                          <Table size='small' aria-label='purchases'>
-                            <TableHead>
-                              <TableRow>
-                                <TableCell align='right'>Notes</TableCell>
-                                <TableCell align='right'>Actions</TableCell>
-                                <TableCell align='right'>Invites</TableCell>
-                                <TableCell align='right'>Reminders</TableCell>
-                                <TableCell align='right'>Added</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              <TableRow>
-                                <TableCell align='right'>{todoItem.notes}</TableCell>
-                                <TableCell align='right'>{todoItem.actions}</TableCell>
-                                <TableCell align='right'>{todoItem.invites}</TableCell>
-                                <TableCell align='right'>{todoItem.reminders}</TableCell>
-                                <TableCell align='right'>{todoItem.added}</TableCell>
-                              </TableRow>
-                            </TableBody>
-                          </Table>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
+                        {todoItem.title}
+                      </TableCell>
+                      <TableCell align='right'>{todoItem.priority}</TableCell>
+                      <TableCell align='right'>{todoItem.recur}</TableCell>
+                      <TableCell align='right'>{todoItem.timer}</TableCell>
+                      {/* <TableCell align='right'>{todoItem.due}</TableCell> */}
+                      <TableCell>
+                        <IconButton
+                          aria-label='show more'
+                          aria-expanded={ expanded }
+                          size='small'
+                          onClick={ handleExpandClick }
+                          className={ clsx(classes.expand, {
+                            [classes.expandOpen]: expanded,
+                          }) }
+                        >
+                          <ExpandMoreIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
+                        <Collapse in={ expanded } timeout='auto' unmountOnExit>
+                          <Box margin={ 1 }>
+                            <Typography variant='h6' gutterBottom component='div'>
+                              Details
+                            </Typography>
+                            <Table size='small' aria-label='purchases'>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell align='right'>Notes</TableCell>
+                                  <TableCell align='right'>Actions</TableCell>
+                                  <TableCell align='right'>Invites</TableCell>
+                                  <TableCell align='right'>Reminders</TableCell>
+                                  <TableCell align='right'>Added</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                <TableRow>
+                                  <TableCell align='right'>{todoItem.notes}</TableCell>
+                                  <TableCell align='right'>{todoItem.actions}</TableCell>
+                                  <TableCell align='right'>{todoItem.invites}</TableCell>
+                                  <TableCell align='right'>{todoItem.reminders}</TableCell>
+                                  <TableCell align='right'>{todoItem.added}</TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </>
+                ))}
             </TableBody>
             {emptyRows > 0 && (
-              <TableRow style={ { height: (dense ? 33 : 53) * emptyRows } }>
-                <TableCell colSpan={ 6 } />
-              </TableRow>
+              <TableBody>
+                <TableRow style={ { height: (dense ? 33 : 53) * emptyRows } }>
+                  <TableCell colSpan={ 6 } />
+                </TableRow>
+              </TableBody>
             )}
           </Table>
         </TableContainer>
@@ -424,8 +425,5 @@ const WorkFlow = () => {
     </div>
   );
 };
-
-// {stableSort(itemList, getComparator(order, orderBy))
-//   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
 export default WorkFlow;
