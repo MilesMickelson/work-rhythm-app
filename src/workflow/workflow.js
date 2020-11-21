@@ -20,6 +20,16 @@ import IconButton from '@material-ui/core/IconButton';
 import TableHead from '@material-ui/core/TableHead';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Draggable from 'react-draggable';
+import {
+  Alarm as AlarmIcon,
+} from '@material-ui/icons';
 
 import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
@@ -50,6 +60,14 @@ import EnhancedTableHead from './tableHead';
 //   });
 //   return stabilizedThis.map((el) => el[0]);
 // }
+
+function PaperComponent(props) {
+  return (
+    <Draggable handle='#draggable-dialog-title' cancel={ '[class*="MuiDialogContent-root"]' }>
+      <Paper { ...props } />
+    </Draggable>
+  );
+}
 
 const useStyles = makeStyles((theme) => ({
   fragContainer: {
@@ -131,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
 
 const WorkFlow = () => {
   const classes = useStyles();
-  const [id, setId] = useState();
+  const [id, setId] = useState(0);
   const [key, setKey] = useState('');
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState(0);
@@ -146,13 +164,26 @@ const WorkFlow = () => {
   const [showInput, setShowInput] = useState(false);
   const [open, setOpenDialog] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [drag, setDrag] = React.useState(false);
   const [selected, setSelected] = useState('');
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('');
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [itemList, setItemList] = useState([]);
+  const [itemList, setItemList] = useState([
+    {
+      actions: '4',
+      id: 0,
+      invites: '1',
+      key: 'fbYIr0QZWcPbY2FBN6pHP',
+      notes: 'These are my notes for my first todo item!',
+      priority: '2',
+      recur: '5',
+      reminders: '1',
+      title: 'Hi this is my first todo item!',
+    },
+  ]);
 
   useEffect(() => {
     setItemList(itemList);
@@ -207,6 +238,9 @@ const WorkFlow = () => {
   const handleOpenDialog = () => {
     setOpenDialog(! open);
   };
+  const handleDrag = () => {
+    setDrag(! drag);
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -252,8 +286,14 @@ const WorkFlow = () => {
     setKey(iKey);
   };
 
+  const handleSetId = () => {
+    const iD = nanoid();
+    setId(iD);
+  };
+
   const addTodoItem = () => {
     handleSetKey();
+    handleSetId();
     const newTodoItem = [
       ...itemList,
       {
@@ -270,6 +310,7 @@ const WorkFlow = () => {
       }
     ];
     setItemList(newTodoItem);
+    console.count('My duplication console test');
   };
 
   const handleSubmit = (event) => {
@@ -380,11 +421,44 @@ const WorkFlow = () => {
                     >
                       {todoItem.title}
                     </TableCell>
-                    <TableCell align='right'>{todoItem.priority}</TableCell>
-                    <TableCell align='right'>{todoItem.recur}</TableCell>
-                    <TableCell align='right'>{todoItem.timer}</TableCell>
-                    {/* <TableCell align='right'>{todoItem.due}</TableCell> */}
-                    <TableCell>
+                    <TableCell align='right'>Very High</TableCell>
+                    <TableCell align='right'>Everyday</TableCell>
+                    <TableCell align='right'>
+                      <IconButton
+                        size='small'
+                        aria-label='show timer set'
+                        aria-expanded={ drag }
+                        onClick={ handleDrag }
+                      >
+                        <AlarmIcon />
+                      </IconButton>
+                      <Dialog
+                        open={ drag }
+                        onClose={ handleDrag }
+                        PaperComponent={ PaperComponent }
+                        aria-labelledby='draggable-dialog-title'
+                      >
+                        <DialogTitle style={ { cursor: 'move' } } id='draggable-dialog-title'>
+                          Subscribe
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText>
+                            To subscribe to this website, please enter your email address here. We will send updates
+                            occasionally.
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button autoFocus onClick={ handleDrag } color='primary'>
+                            Cancel
+                          </Button>
+                          <Button onClick={ handleDrag } color='primary'>
+                            Subscribe
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    </TableCell>
+                    <TableCell align='right'>11-20-2020</TableCell>
+                    <TableCell align='left'>
                       <IconButton
                         aria-label='show more'
                         aria-expanded={ expanded }
@@ -399,9 +473,9 @@ const WorkFlow = () => {
                     </TableCell>
                   </TableRow>
                   <TableRow
-                    // key={ key }
-                    // id={ id }
-                    // index={ index }
+                    key={ key }
+                    id={ id }
+                    index={ index }
                     tabIndex={ - 1 }
                     className={ classes.border }
                   >
