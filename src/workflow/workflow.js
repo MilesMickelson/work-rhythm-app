@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { nanoid } from 'nanoid';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import EditIcon from '@material-ui/icons/Edit';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -90,6 +91,12 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
+  textInput: {
+    width: 300,
+  },
+  menuInput: {
+    width: 90,
+  },
   visuallyHidden: {
     border: 0,
     clip: 'rect(0 0 0 0)',
@@ -135,6 +142,15 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: 'unset',
     },
   },
+  expandRow: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+    marginLeft: 100,
+  },
+  checkbox: {
+    width: 50,
+  },
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
@@ -174,7 +190,7 @@ const WorkFlow = () => {
   const [itemList, setItemList] = useState([
     {
       actions: '4',
-      id: 0,
+      id: 1,
       invites: '1',
       key: 'fbYIr0QZWcPbY2FBN6pHP',
       notes: 'These are my notes for my first todo item!',
@@ -393,16 +409,17 @@ const WorkFlow = () => {
               numSelected={ selected.length }
               rowCount={ itemList.length }
             />
-            <TableBody>
+            <>
               {itemList.map((todoItem, index) => (
-                <>
+                <TableBody
+                  key={ key }
+                  id={ id }
+                  index={ index }
+                  tabIndex={ - 1 }
+                  // aria-checked={ isItemSelected }
+                  // selected={ isItemSelected }
+                >
                   <TableRow
-                    key={ key }
-                    id={ id }
-                    index={ index }
-                    tabIndex={ - 1 }
-                    // aria-checked={ isItemSelected }
-                    // selected={ isItemSelected }
                     className={ classes.border }
                   >
                     <TableCell padding='checkbox'>
@@ -418,12 +435,14 @@ const WorkFlow = () => {
                       component='th'
                       scope='row'
                       padding='none'
+                      className='textInput'
                     >
                       {todoItem.title}
                     </TableCell>
-                    <TableCell align='right'>Very High</TableCell>
-                    <TableCell align='right'>Everyday</TableCell>
-                    <TableCell align='right'>
+                    <TableCell className='menuInput' align='right'>Very High</TableCell>
+                    <TableCell className='menuInput' align='right'>Everyday</TableCell>
+                    <TableCell align='right'>11-20-2020</TableCell>
+                    <TableCell className='menuInput' align='right'>
                       <IconButton
                         size='small'
                         aria-label='show timer set'
@@ -439,26 +458,32 @@ const WorkFlow = () => {
                         aria-labelledby='draggable-dialog-title'
                       >
                         <DialogTitle style={ { cursor: 'move' } } id='draggable-dialog-title'>
-                          Subscribe
+                          Task Timer
                         </DialogTitle>
                         <DialogContent>
                           <DialogContentText>
-                            To subscribe to this website, please enter your email address here. We will send updates
-                            occasionally.
+                            To start a timer please upon adding task please enter your inputs and info here.
                           </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                           <Button autoFocus onClick={ handleDrag } color='primary'>
-                            Cancel
+                            Save
                           </Button>
                           <Button onClick={ handleDrag } color='primary'>
-                            Subscribe
+                            Cancel
                           </Button>
                         </DialogActions>
                       </Dialog>
                     </TableCell>
-                    <TableCell align='right'>11-20-2020</TableCell>
-                    <TableCell align='left'>
+                    <TableCell align='right'>
+                      <IconButton
+                        aria-label='edit item'
+                        size='small'
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell align='right'>
                       <IconButton
                         aria-label='show more'
                         aria-expanded={ expanded }
@@ -473,13 +498,13 @@ const WorkFlow = () => {
                     </TableCell>
                   </TableRow>
                   <TableRow
-                    key={ key }
-                    id={ id }
-                    index={ index }
-                    tabIndex={ - 1 }
-                    className={ classes.border }
+                    // key={ key }
+                    // id={ id }
+                    // index={ index }
+                    // tabIndex={ - 1 }
+                    className={ classes.expandRow }
                   >
-                    <TableCell style={ { paddingBottom: 0, paddingTop: 0 } }>
+                    <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
                       <Collapse in={ expanded } timeout='auto' unmountOnExit>
                         <Box margin={ 1 }>
                           <Typography variant='h6' gutterBottom component='div'>
@@ -488,7 +513,7 @@ const WorkFlow = () => {
                           <Table size='small' aria-label='purchases'>
                             <TableHead>
                               <TableRow>
-                                <TableCell align='right'>Notes</TableCell>
+                                <TableCell align='left'>Notes</TableCell>
                                 <TableCell align='right'>Actions</TableCell>
                                 <TableCell align='right'>Invites</TableCell>
                                 <TableCell align='right'>Reminders</TableCell>
@@ -497,7 +522,7 @@ const WorkFlow = () => {
                             </TableHead>
                             <TableBody>
                               <TableRow>
-                                <TableCell align='right'>{todoItem.notes}</TableCell>
+                                <TableCell align='left'>{todoItem.notes}</TableCell>
                                 <TableCell align='right'>{todoItem.actions}</TableCell>
                                 <TableCell align='right'>{todoItem.invites}</TableCell>
                                 <TableCell align='right'>{todoItem.reminders}</TableCell>
@@ -509,13 +534,13 @@ const WorkFlow = () => {
                       </Collapse>
                     </TableCell>
                   </TableRow>
-                </>
+                </TableBody>
               ))}
-            </TableBody>
+            </>
             {emptyRows > 0 && (
               <TableBody>
                 <TableRow style={ { height: (dense ? 33 : 53) * emptyRows } }>
-                  <TableCell colSpan={ 6 } />
+                  <TableCell />
                 </TableRow>
               </TableBody>
             )}

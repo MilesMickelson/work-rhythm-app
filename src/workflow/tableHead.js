@@ -29,20 +29,26 @@ const headCells = [
     label: 'Recur'
   },
   {
-    id: 'timer',
-    numeric: true,
-    disablePadding: false,
-    label: 'Timer'
-  },
-  {
     id: 'due',
     numeric: true,
     disablePadding: false,
     label: 'Due'
   },
   {
+    id: 'timer',
+    numeric: true,
+    disablePadding: false,
+    label: 'Timer'
+  },
+  {
+    id: 'edit',
+    numeric: true,
+    disablePadding: false,
+    label: 'Edit'
+  },
+  {
     id: 'expand',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Expand'
   },
