@@ -170,7 +170,8 @@ const WorkFlow = () => {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState(0);
   const [recur, setRecur] = useState('');
-  // const [due, setDue] = useState(new Date());
+  const [added, setAdded] = useState(new Date());
+  const [due, setDue] = useState(new Date());
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
@@ -190,6 +191,7 @@ const WorkFlow = () => {
   const [itemList, setItemList] = useState([
     {
       actions: '4',
+      added: 'Mon Nov 23',
       id: 1,
       invites: '1',
       key: 'fbYIr0QZWcPbY2FBN6pHP',
@@ -224,9 +226,20 @@ const WorkFlow = () => {
   const handleRecur = (event) => {
     setRecur(event.target.value);
   };
-  // const handleDue = (event) => {
-  //   setDue(event.target.value);
-  // };
+  const handleAdded = () => {
+    const obj = new Date();
+    const day = obj.String(0, 3);
+    const month = obj.String(5, 10);
+    const addToday = {day} + ',' + {month};
+    setAdded(addToday);
+  };
+  const handleDue = (event) => {
+    const obj = (event.target.value);
+    const day = obj.String(0, 3);
+    const month = obj.String(5, 10);
+    const dueDate = {day} + ',' + {month};
+    setDue(dueDate);
+  };
   const handleNotes = (event) => {
     setNotes(event.target.value);
   };
@@ -310,6 +323,7 @@ const WorkFlow = () => {
   const addTodoItem = () => {
     handleSetKey();
     handleSetId();
+    handleAdded();
     const newTodoItem = [
       ...itemList,
       {
@@ -318,7 +332,8 @@ const WorkFlow = () => {
         title,
         priority,
         recur,
-        // due,
+        added,
+        due,
         notes,
         actions,
         invites,
@@ -365,11 +380,11 @@ const WorkFlow = () => {
           tite={ title }
           priority={ priority }
           recur={ recur }
+          due={ due }
           notes={ notes }
           actions={ actions }
           invites={ invites }
           reminders={ reminders }
-          // due={ due }
           open={ open }
           editing={ editing }
           completed={ completed }
@@ -379,11 +394,11 @@ const WorkFlow = () => {
           handleTitle={ handleTitle }
           handlePriority={ handlePriority }
           handleRecur={ handleRecur }
+          handleDue={ handleDue }
           handleNotes={ handleNotes }
           handleActions={ handleActions }
           handleInvites={ handleInvites }
           handleReminders={ handleReminders }
-          // handleDue={ handleDue }
           handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
           handleOpenDialog={ handleOpenDialog }
@@ -441,7 +456,7 @@ const WorkFlow = () => {
                     </TableCell>
                     <TableCell className='menuInput' align='right'>Very High</TableCell>
                     <TableCell className='menuInput' align='right'>Everyday</TableCell>
-                    <TableCell align='right'>11-20-2020</TableCell>
+                    <TableCell className='menuInput' align='right'>11-20-2020</TableCell>
                     <TableCell className='menuInput' align='right'>
                       <IconButton
                         size='small'

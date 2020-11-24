@@ -26,7 +26,7 @@ const headCells = [
     id: 'recur',
     numeric: true,
     disablePadding: false,
-    label: 'Recur'
+    label: 'Repeat'
   },
   {
     id: 'due',

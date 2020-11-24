@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import Calendar from 'react-calendar';
+import Calendar from 'react-calendar';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
@@ -124,8 +124,8 @@ const InputForm = (props) => {
     handleInvites,
     reminders,
     handleReminders,
-    // due,
-    // handleDue,
+    due,
+    handleDue,
     open,
     handleOpenDialog,
     handleSubmit,
@@ -195,8 +195,7 @@ const InputForm = (props) => {
             <InputLabel htmlFor='due'>Due Date</InputLabel>
             <Select
               native
-              // value={ due }
-              // onChange={ handleDue }
+              value={ due }
               onClick={ handleOpenDialog }
               style={ { width: 140 } }
             >
@@ -209,14 +208,17 @@ const InputForm = (props) => {
                   Due Date
                 </DialogTitle>
                 <DialogContent dividers>
-                  {/* <Calendar
+                  <Calendar
                     id='dueDate-dialog'
-                    onChange={ handleDate }
-                    value={ date }
-                  /> */}
+                    onChange={ handleDue }
+                    value={ due }
+                  />
                 </DialogContent>
                 <DialogActions>
-                  <Button autoFocus>
+                  <Button
+                    onClick={ handleOpenDialog }
+                    autoFocus
+                  >
                     Save
                   </Button>
                 </DialogActions>
