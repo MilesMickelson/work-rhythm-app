@@ -69,8 +69,10 @@ const InputForm = (props) => {
     handleTitle,
     priority,
     handlePriority,
-    due,
-    handleDue,
+    dueDate,
+    handleDueDate,
+    dueTime,
+    handleDueTime,
     recur,
     handleRecur,
     notes,
@@ -86,6 +88,7 @@ const InputForm = (props) => {
     handleCancelInput
   } = props;
   const classes = useStyles();
+  const today = new Date().toLocaleString().replace(',', '');
   return (
     <form
       onSubmit={ handleSubmit }
@@ -106,6 +109,16 @@ const InputForm = (props) => {
               label='Title'
               value={ title || '' }
               onChange={ handleTitle }
+            />
+          </FormControl>
+          <FormControl className={ classes.margin }>
+            <CssTextField
+              multiline
+              margin='dense'
+              variant='filled'
+              label='Notes'
+              value={ notes || '' }
+              onChange={ handleNotes }
             />
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
@@ -144,28 +157,23 @@ const InputForm = (props) => {
               <option value={ 1 }>Annually</option>
             </Select>
           </FormControl>
-          <FormControl className={ classes.topMargin }>
-            <TextField
-              variant='filled'
-              size='small'
-              id='date'
-              label='Due Date'
-              type='date'
-              value={ due || '' }
-              onChange={ handleDue }
-              className={ classes.textField }
-              InputLabelProps={ { shrink: true } }
-            />
-          </FormControl>
-          <FormControl className={ classes.margin }>
-            <CssTextField
-              multiline
-              margin='dense'
-              variant='filled'
-              label='Notes'
-              value={ notes || '' }
-              onChange={ handleNotes }
-            />
+          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+            <InputLabel htmlFor='reminder'>Reminders</InputLabel>
+            <Select
+              native
+              value={ reminders || '' }
+              onChange={ handleReminders }
+            >
+              <option aria-label='None' value='' />
+              <option value={ 8 }>Everyday at 9am</option>
+              <option value={ 7 }>1 day before</option>
+              <option value={ 6 }>3 days before</option>
+              <option value={ 5 }>1 week before</option>
+              <option value={ 4 }>2 weeks before</option>
+              <option value={ 3 }>1 month before</option>
+              <option value={ 2 }>2 months before</option>
+              <option value={ 1 }>3 months before</option>
+            </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
             <InputLabel htmlFor='actions'>Actions</InputLabel>
@@ -196,23 +204,32 @@ const InputForm = (props) => {
               <option value={ 4 }>Robert Downey Jr.</option>
             </Select>
           </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='reminder'>Reminders</InputLabel>
-            <Select
-              native
-              value={ reminders || '' }
-              onChange={ handleReminders }
-            >
-              <option aria-label='None' value='' />
-              <option value={ 8 }>Everyday at 9am</option>
-              <option value={ 7 }>1 day before</option>
-              <option value={ 6 }>3 days before</option>
-              <option value={ 5 }>1 week before</option>
-              <option value={ 4 }>2 weeks before</option>
-              <option value={ 3 }>1 month before</option>
-              <option value={ 2 }>2 months before</option>
-              <option value={ 1 }>3 months before</option>
-            </Select>
+          <FormControl className={ classes.topMargin }>
+            <TextField
+              type='date'
+              label='Due Date'
+              size='small'
+              variant='filled'
+              defaultValue={ today }
+              value={ dueDate || '' }
+              onChange={ handleDueDate }
+              className={ classes.textField }
+              InputLabelProps={ { shrink: true } }
+            />
+          </FormControl>
+          <FormControl className={ classes.topMargin }>
+            <TextField
+              type='time'
+              label='Time of Event(opt.)'
+              size='small'
+              variant='filled'
+              defaultValue={ today }
+              value={ dueTime || '' }
+              onChange={ handleDueTime }
+              className={ classes.textField }
+              InputLabelProps={ { shrink: true } }
+              // inputProps={ { step: 300 } }
+            />
           </FormControl>
           <Button
             type='submit'

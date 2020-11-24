@@ -171,7 +171,8 @@ const WorkFlow = () => {
   const [priority, setPriority] = useState(0);
   const [recur, setRecur] = useState('');
   const [added, setAdded] = useState('');
-  const [due, setDue] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [dueTime, setDueTime] = useState('');
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
@@ -193,6 +194,7 @@ const WorkFlow = () => {
     setItemList(itemList);
   }, [itemList]);
 
+  const today = new Date().toLocaleString().replace(',', '');
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE ID:', id);
   // eslint-disable-next-line no-console
@@ -200,7 +202,7 @@ const WorkFlow = () => {
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Title:', title);
   // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Due:', due);
+  console.log('WORKFLOW STATE Date Due:', dueDate);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Priority:', priority);
   // eslint-disable-next-line no-console
@@ -216,14 +218,15 @@ const WorkFlow = () => {
     setRecur(event.target.value);
   };
   const handleAdded = () => {
-    const obj = new Date().toLocaleString().replace(',', '');
-    const addToday = obj.toString();
-    setAdded(addToday);
+    setAdded(today);
   };
-  const handleDue = (event) => {
+  const handleDueDate = (event) => {
     const obj = event.target.value;
-    const dueDate = obj.toString();
-    setDue(dueDate);
+    const newDueDate = obj.toString();
+    setDueDate(newDueDate);
+  };
+  const handleDueTime = (event) => {
+    setDueTime(event.target.value);
   };
   const handleNotes = (event) => {
     setNotes(event.target.value);
@@ -315,7 +318,8 @@ const WorkFlow = () => {
         priority,
         recur,
         added,
-        due,
+        dueDate,
+        dueTime,
         notes,
         actions,
         invites,
@@ -328,7 +332,7 @@ const WorkFlow = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addTodoItem(key, id, title, priority, due, recur, notes, actions, invites, reminders);
+    addTodoItem(key, id, title, priority, dueDate, dueTime, recur, notes, actions, invites, reminders);
     setShowInput(! showInput);
     setTitle('');
     setPriority('');
@@ -345,7 +349,8 @@ const WorkFlow = () => {
     setTitle('');
     setPriority('');
     setRecur('');
-    setDue('');
+    setDueDate('');
+    setDueTime('');
     setAdded('');
     setNotes('');
     setActions('');
@@ -364,7 +369,8 @@ const WorkFlow = () => {
           tite={ title }
           priority={ priority }
           recur={ recur }
-          due={ due }
+          dueDate={ dueDate }
+          dueTime={ dueTime }
           notes={ notes }
           actions={ actions }
           invites={ invites }
@@ -377,7 +383,8 @@ const WorkFlow = () => {
           handleTitle={ handleTitle }
           handlePriority={ handlePriority }
           handleRecur={ handleRecur }
-          handleDue={ handleDue }
+          handleDueDate={ handleDueDate }
+          handleDueTime={ handleDueTime }
           handleNotes={ handleNotes }
           handleActions={ handleActions }
           handleInvites={ handleInvites }
@@ -438,7 +445,8 @@ const WorkFlow = () => {
                     </TableCell>
                     <TableCell className='menuInput' align='right'>{todoItem.priority}</TableCell>
                     <TableCell className='menuInput' align='right'>{todoItem.recur}</TableCell>
-                    <TableCell className='menuInput' align='right'>{todoItem.due}</TableCell>
+                    <TableCell className='menuInput' align='right'>{todoItem.dueDate}</TableCell>
+                    <TableCell className='menuInput' align='right'>{todoItem.dueTime}</TableCell>
                     <TableCell className='menuInput' align='right'>
                       <IconButton
                         size='small'
@@ -495,10 +503,6 @@ const WorkFlow = () => {
                     </TableCell>
                   </TableRow>
                   <TableRow
-                    // key={ key }
-                    // id={ id }
-                    // index={ index }
-                    // tabIndex={ - 1 }
                     className={ classes.expandRow }
                   >
                     <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
@@ -557,6 +561,7 @@ const WorkFlow = () => {
         control={ <Switch checked={ dense } onChange={ handleChangeDense } /> }
         label='Condense'
       />
+      <Paper>{today}</Paper>
     </div>
   );
 };
