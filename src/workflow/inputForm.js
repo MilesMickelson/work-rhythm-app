@@ -73,8 +73,8 @@ const InputForm = (props) => {
     handleDueDate,
     dueTime,
     handleDueTime,
-    recur,
-    handleRecur,
+    repeat,
+    handleRepeat,
     notes,
     handleNotes,
     actions,
@@ -136,11 +136,11 @@ const InputForm = (props) => {
             </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='recur'>Recur</InputLabel>
+            <InputLabel htmlFor='repeat'>Repeat</InputLabel>
             <Select
               native
-              value={ recur || '' }
-              onChange={ handleRecur }
+              value={ repeat || '' }
+              onChange={ handleRepeat }
             >
               <option aria-label='none' value='' />
               <option value={ 12 }>Everyday</option>
@@ -210,7 +210,6 @@ const InputForm = (props) => {
               label='Due Date'
               size='small'
               variant='filled'
-              defaultValue={ today }
               value={ dueDate || '' }
               onChange={ handleDueDate }
               className={ classes.textField }
@@ -223,7 +222,6 @@ const InputForm = (props) => {
               label='Time of Event(opt.)'
               size='small'
               variant='filled'
-              defaultValue={ today }
               value={ dueTime || '' }
               onChange={ handleDueTime }
               className={ classes.textField }

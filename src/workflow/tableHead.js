@@ -23,7 +23,7 @@ const headCells = [
     label: 'Priority'
   },
   {
-    id: 'recur',
+    id: 'repeat',
     numeric: true,
     disablePadding: false,
     label: 'Repeat'

@@ -169,7 +169,7 @@ const WorkFlow = () => {
   const [key, setKey] = useState('');
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState(0);
-  const [recur, setRecur] = useState('');
+  const [repeat, setRepeat] = useState('');
   const [added, setAdded] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [dueTime, setDueTime] = useState('');
@@ -214,8 +214,8 @@ const WorkFlow = () => {
   const handlePriority = (event) => {
     setPriority(event.target.value);
   };
-  const handleRecur = (event) => {
-    setRecur(event.target.value);
+  const handleRepeat = (event) => {
+    setRepeat(event.target.value);
   };
   const handleAdded = () => {
     setAdded(today);
@@ -316,7 +316,7 @@ const WorkFlow = () => {
         id,
         title,
         priority,
-        recur,
+        repeat,
         added,
         dueDate,
         dueTime,
@@ -332,11 +332,11 @@ const WorkFlow = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addTodoItem(key, id, title, priority, dueDate, dueTime, recur, notes, actions, invites, reminders);
+    addTodoItem(key, id, title, priority, dueDate, dueTime, repeat, notes, actions, invites, reminders);
     setShowInput(! showInput);
     setTitle('');
     setPriority('');
-    setRecur('');
+    setRepeat('');
     setNotes('');
     setActions('');
     setInvites('');
@@ -348,7 +348,7 @@ const WorkFlow = () => {
     setShowInput(! showInput);
     setTitle('');
     setPriority('');
-    setRecur('');
+    setRepeat('');
     setDueDate('');
     setDueTime('');
     setAdded('');
@@ -368,7 +368,7 @@ const WorkFlow = () => {
           showInput={ showInput }
           tite={ title }
           priority={ priority }
-          recur={ recur }
+          repeat={ repeat }
           dueDate={ dueDate }
           dueTime={ dueTime }
           notes={ notes }
@@ -382,7 +382,7 @@ const WorkFlow = () => {
           addTodoItem={ addTodoItem }
           handleTitle={ handleTitle }
           handlePriority={ handlePriority }
-          handleRecur={ handleRecur }
+          handleRepeat={ handleRepeat }
           handleDueDate={ handleDueDate }
           handleDueTime={ handleDueTime }
           handleNotes={ handleNotes }
@@ -444,9 +444,11 @@ const WorkFlow = () => {
                       {todoItem.title}
                     </TableCell>
                     <TableCell className='menuInput' align='right'>{todoItem.priority}</TableCell>
-                    <TableCell className='menuInput' align='right'>{todoItem.recur}</TableCell>
-                    <TableCell className='menuInput' align='right'>{todoItem.dueDate}</TableCell>
-                    <TableCell className='menuInput' align='right'>{todoItem.dueTime}</TableCell>
+                    <TableCell className='menuInput' align='right'>{todoItem.repeat}</TableCell>
+                    <TableCell className='menuInput' align='right'>
+                      {todoItem.dueDate}
+                      {todoItem.dueTime}
+                    </TableCell>
                     <TableCell className='menuInput' align='right'>
                       <IconButton
                         size='small'
