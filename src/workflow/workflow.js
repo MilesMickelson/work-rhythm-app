@@ -170,8 +170,8 @@ const WorkFlow = () => {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState(0);
   const [recur, setRecur] = useState('');
-  const [added, setAdded] = useState(new Date());
-  const [due, setDue] = useState(new Date());
+  const [added, setAdded] = useState();
+  const [due, setDue] = useState();
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
@@ -192,6 +192,7 @@ const WorkFlow = () => {
     {
       actions: '4',
       added: 'Mon Nov 23',
+      due: '11-21-2021',
       id: 1,
       invites: '1',
       key: 'fbYIr0QZWcPbY2FBN6pHP',
@@ -213,6 +214,8 @@ const WorkFlow = () => {
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Title:', title);
   // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Due:', due);
+  // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Priority:', priority);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE itemList:', itemList);
@@ -228,17 +231,23 @@ const WorkFlow = () => {
   };
   const handleAdded = () => {
     const obj = new Date();
-    const day = obj.String(0, 3);
-    const month = obj.String(5, 10);
-    const addToday = {day} + ',' + {month};
+    const addToday = obj.toString();
+    // const day = obj.toString(0, 3);
+    // const seperate = ',';
+    // const month = obj.toString(5, 10);
+    // const addToday = day + seperate + month;
     setAdded(addToday);
   };
-  const handleDue = (event) => {
-    const obj = (event.target.value);
-    const day = obj.String(0, 3);
-    const month = obj.String(5, 10);
-    const dueDate = {day} + ',' + {month};
+  const handleDue = (date) => {
+    const obj = date;
+    const dueDate = obj.toString();
+    console.log('handleDue dueDate PreSet:', dueDate);
+    // const day = obj.toString(0, 3);
+    // const seperate = ',';
+    // const month = obj.toString(5, 10);
+    // const dueDate = day + seperate + month;
     setDue(dueDate);
+    console.log('handleDue dueDate PostSet:', dueDate);
   };
   const handleNotes = (event) => {
     setNotes(event.target.value);
@@ -341,7 +350,7 @@ const WorkFlow = () => {
       }
     ];
     setItemList(newTodoItem);
-    console.count('My duplication console test');
+    console.count('addTodoItem Run Count(for dupes):');
   };
 
   const handleSubmit = (event) => {
@@ -454,9 +463,9 @@ const WorkFlow = () => {
                     >
                       {todoItem.title}
                     </TableCell>
-                    <TableCell className='menuInput' align='right'>Very High</TableCell>
-                    <TableCell className='menuInput' align='right'>Everyday</TableCell>
-                    <TableCell className='menuInput' align='right'>11-20-2020</TableCell>
+                    <TableCell className='menuInput' align='right'>{todoItem.priority}</TableCell>
+                    <TableCell className='menuInput' align='right'>{todoItem.recur}</TableCell>
+                    <TableCell className='menuInput' align='right'>{todoItem.due}</TableCell>
                     <TableCell className='menuInput' align='right'>
                       <IconButton
                         size='small'

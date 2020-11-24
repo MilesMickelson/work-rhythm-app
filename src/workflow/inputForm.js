@@ -61,7 +61,6 @@ const DialogTitle = withStyles(styles)((props) => {
   );
 });
 
-// ! TextField Input Component //
 const CssTextField = withStyles(() => ({
   root: {
     '& label.Select': {
@@ -196,6 +195,7 @@ const InputForm = (props) => {
             <Select
               native
               value={ due }
+              onChange={ handleDue }
               onClick={ handleOpenDialog }
               style={ { width: 140 } }
             >
@@ -204,14 +204,22 @@ const InputForm = (props) => {
                 aria-labelledby='dueDate-dialog-title'
                 open={ open }
               >
-                <DialogTitle id='dueDate-dialog-title' onClose={ handleOpenDialog }>
+                <DialogTitle
+                  id='dueDate-dialog-title'
+                  onClose={ handleOpenDialog }
+                >
                   Due Date
                 </DialogTitle>
                 <DialogContent dividers>
                   <Calendar
+                    hover
                     id='dueDate-dialog'
                     onChange={ handleDue }
                     value={ due }
+                    // allowPartialRange={ true }
+                    calendarType='US'
+                    minDetail='month'
+                    maxDetail='month'
                   />
                 </DialogContent>
                 <DialogActions>
