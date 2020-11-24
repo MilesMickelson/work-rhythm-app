@@ -274,7 +274,10 @@ const WorkFlow = () => {
     setShowInput(! showInput);
   };
   const handleOpenDialog = () => {
-    setOpenDialog(! open);
+    setOpenDialog(true);
+  };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
   const handleDrag = () => {
     setDrag(! drag);
@@ -411,6 +414,7 @@ const WorkFlow = () => {
           handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
           handleOpenDialog={ handleOpenDialog }
+          handleCloseDialog={ handleCloseDialog }
         />
         <EnhancedTableToolbar
           numSelected={ selected.length }

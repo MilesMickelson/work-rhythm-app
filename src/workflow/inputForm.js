@@ -1,5 +1,6 @@
 import React from 'react';
 
+import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -127,6 +128,7 @@ const InputForm = (props) => {
     handleDue,
     open,
     handleOpenDialog,
+    handleCloseDialog,
     handleSubmit,
     addTodoItem,
     handleCancelInput
@@ -194,19 +196,15 @@ const InputForm = (props) => {
             <InputLabel htmlFor='due'>Due Date</InputLabel>
             <Select
               native
-              value={ due }
-              onChange={ handleDue }
               onClick={ handleOpenDialog }
               style={ { width: 140 } }
             >
               <Dialog
-                onClose={ handleOpenDialog }
                 aria-labelledby='dueDate-dialog-title'
                 open={ open }
               >
                 <DialogTitle
                   id='dueDate-dialog-title'
-                  onClose={ handleOpenDialog }
                 >
                   Due Date
                 </DialogTitle>
@@ -217,14 +215,14 @@ const InputForm = (props) => {
                     onChange={ handleDue }
                     value={ due }
                     // allowPartialRange={ true }
-                    calendarType='US'
-                    minDetail='month'
-                    maxDetail='month'
+                    // calendarType='US'
+                    // minDetail='month'
+                    // maxDetail='month'
                   />
                 </DialogContent>
                 <DialogActions>
                   <Button
-                    onClick={ handleOpenDialog }
+                    onClick={ handleCloseDialog }
                     autoFocus
                   >
                     Save
