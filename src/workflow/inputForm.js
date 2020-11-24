@@ -1,16 +1,20 @@
 import React from 'react';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Input from '@material-ui/core/Input';
 import Collapse from '@material-ui/core/Collapse';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
-const CssTextField = withStyles(() => ({
+const CssTextField = withStyles((theme) => ({
   root: {
     '& label.Select': {
       color: '#262626',
@@ -60,7 +64,35 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     marginLeft: theme.spacing(1),
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+  },
 }));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const reminderOptions = [
+  'Everyday at 9am',
+  '1 hour before',
+  '3 hours before',
+  '12 hours before',
+  '1 day before',
+  '3 days before',
+  '1 week before',
+  '1 month before',
+  '3 months before',
+];
 
 const InputForm = (props) => {
   const {
@@ -128,10 +160,9 @@ const InputForm = (props) => {
               onChange={ handlePriority }
             >
               <option aria-label='none' value='' />
-              <option value={ 1 }>Low</option>
-              <option value={ 2 }>Medium</option>
               <option value={ 3 }>High</option>
-              <option value={ 4 }>Very high</option>
+              <option value={ 2 }>Medium</option>
+              <option value={ 1 }>Low</option>
             </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
@@ -142,36 +173,41 @@ const InputForm = (props) => {
               onChange={ handleRepeat }
             >
               <option aria-label='none' value='' />
-              <option value={ 12 }>Everyday</option>
-              <option value={ 11 }>Mon-Fri</option>
-              <option value={ 10 }>Weekends</option>
-              <option value={ 9 }>Weekly</option>
-              <option value={ 8 }>Bi-Weekly</option>
-              <option value={ 7 }>Tri-Weekly</option>
-              <option value={ 6 }>Monthly</option>
-              <option value={ 5 }>Bi-Monthly</option>
-              <option value={ 4 }>Tri-Monthly</option>
-              <option value={ 3 }>Monthly</option>
+              <option value={ 15 }>Everyday</option>
+              <option value={ 14 }>Every 2 days</option>
+              <option value={ 13 }>Every 3 days</option>
+              <option value={ 12 }>Every 4 days</option>
+              <option value={ 11 }>Every 5 days</option>
+              <option value={ 10 }>Mon-Fri</option>
+              <option value={ 9 }>Weekends</option>
+              <option value={ 8 }>Weekly</option>
+              <option value={ 7 }>Bi-Weekly</option>
+              <option value={ 6 }>Tri-Weekly</option>
+              <option value={ 5 }>Monthly</option>
+              <option value={ 4 }>Bi-Monthly</option>
+              <option value={ 3 }>Tri-Monthly</option>
               <option value={ 2 }>Bi-Annually</option>
               <option value={ 1 }>Annually</option>
             </Select>
           </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+          <FormControl variant='filled' size='small' className={ classes.formControl }>
             <InputLabel htmlFor='reminder'>Reminders</InputLabel>
             <Select
+              id='reminders'
+              multiple
               native
               value={ reminders || '' }
               onChange={ handleReminders }
+              MenuProps={ MenuProps }
+              input={ <Input /> }
+              renderValue={ (selected) => selected.join(', ') }
             >
-              <option aria-label='None' value='' />
-              <option value={ 8 }>Everyday at 9am</option>
-              <option value={ 7 }>1 day before</option>
-              <option value={ 6 }>3 days before</option>
-              <option value={ 5 }>1 week before</option>
-              <option value={ 4 }>2 weeks before</option>
-              <option value={ 3 }>1 month before</option>
-              <option value={ 2 }>2 months before</option>
-              <option value={ 1 }>3 months before</option>
+              {reminderOptions.map((reminderOption) => (
+                <MenuItem key={ reminderOption } value={ reminderOption }>
+                  <Checkbox checked={ reminderOptions.indexOf(reminderOption) > - 1 } />
+                  <ListItemText primary={ reminderOption } />
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.topMargin }>
@@ -200,7 +236,7 @@ const InputForm = (props) => {
               <option value={ 1 }>Brad Pitt</option>
               <option value={ 2 }>Ryan Reynolds</option>
               <option value={ 3 }>Ryan Gosling</option>
-              <option value={ 4 }>Robert Downey Jr.</option>
+              <option value={ 4 }>Robert Downey</option>
             </Select>
           </FormControl>
           <FormControl className={ classes.topMargin }>

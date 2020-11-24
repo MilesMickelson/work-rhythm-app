@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
 import LoopIcon from '@material-ui/icons/Loop';
+import AlarmIcon from '@material-ui/icons/Alarm';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -28,10 +29,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Chip from '@material-ui/core/Chip';
+
 import Draggable from 'react-draggable';
-import {
-  Alarm as AlarmIcon,
-} from '@material-ui/icons';
 
 import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
@@ -238,8 +238,18 @@ const WorkFlow = () => {
   const handleInvites = (event) => {
     setInvites(event.target.value);
   };
+  // const handleReminders = (event) => {
+  //   setReminders(event.target.value);
+  // };
   const handleReminders = (event) => {
-    setReminders(event.target.value);
+    const { options } = event.target;
+    const value = [];
+    for (let i = 0, l = options.length; i < l; i += 1) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    setReminders(value);
   };
   const handleEditing = () => {
     setEditing(! editing);
