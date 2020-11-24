@@ -88,7 +88,6 @@ const InputForm = (props) => {
     handleCancelInput
   } = props;
   const classes = useStyles();
-  const today = new Date().toLocaleString().replace(',', '');
   return (
     <form
       onSubmit={ handleSubmit }

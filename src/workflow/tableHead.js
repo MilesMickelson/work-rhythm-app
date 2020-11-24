@@ -23,28 +23,22 @@ const headCells = [
     label: 'Priority'
   },
   {
-    id: 'repeat',
-    numeric: true,
-    disablePadding: false,
-    label: 'Repeat'
-  },
-  {
     id: 'due',
     numeric: true,
     disablePadding: false,
     label: 'Due'
   },
   {
+    id: 'repeat',
+    numeric: true,
+    disablePadding: false,
+    label: 'Repeat'
+  },
+  {
     id: 'timer',
     numeric: true,
     disablePadding: false,
     label: 'Timer'
-  },
-  {
-    id: 'edit',
-    numeric: true,
-    disablePadding: false,
-    label: 'Edit'
   },
   {
     id: 'expand',

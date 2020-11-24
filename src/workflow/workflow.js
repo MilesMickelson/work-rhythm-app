@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid';
 
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
+import LoopIcon from '@material-ui/icons/Loop';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -444,7 +445,6 @@ const WorkFlow = () => {
                       {todoItem.title}
                     </TableCell>
                     <TableCell className='menuInput' align='right'>{todoItem.priority}</TableCell>
-                    <TableCell className='menuInput' align='right'>{todoItem.repeat}</TableCell>
                     <TableCell className='menuInput' align='right'>
                       {todoItem.dueDate}
                       {todoItem.dueTime}
@@ -452,7 +452,17 @@ const WorkFlow = () => {
                     <TableCell className='menuInput' align='right'>
                       <IconButton
                         size='small'
-                        aria-label='show timer set'
+                        aria-label='show set repeat'
+                        // aria-expanded={ drag }
+                        // onClick={ handleDrag }
+                      >
+                        <LoopIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell className='menuInput' align='right'>
+                      <IconButton
+                        size='small'
+                        aria-label='show set timer'
                         aria-expanded={ drag }
                         onClick={ handleDrag }
                       >
@@ -481,14 +491,6 @@ const WorkFlow = () => {
                           </Button>
                         </DialogActions>
                       </Dialog>
-                    </TableCell>
-                    <TableCell align='right'>
-                      <IconButton
-                        aria-label='edit item'
-                        size='small'
-                      >
-                        <EditIcon />
-                      </IconButton>
                     </TableCell>
                     <TableCell align='right'>
                       <IconButton
@@ -521,6 +523,7 @@ const WorkFlow = () => {
                                 <TableCell align='right'>Invites</TableCell>
                                 <TableCell align='right'>Reminders</TableCell>
                                 <TableCell align='right'>Added</TableCell>
+                                <TableCell align='right'>Edit</TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
@@ -530,6 +533,14 @@ const WorkFlow = () => {
                                 <TableCell align='right'>{todoItem.invites}</TableCell>
                                 <TableCell align='right'>{todoItem.reminders}</TableCell>
                                 <TableCell align='right'>{todoItem.added}</TableCell>
+                                <TableCell align='right'>
+                                  <IconButton
+                                    aria-label='edit item'
+                                    size='small'
+                                  >
+                                    <EditIcon />
+                                  </IconButton>
+                                </TableCell>
                               </TableRow>
                             </TableBody>
                           </Table>
