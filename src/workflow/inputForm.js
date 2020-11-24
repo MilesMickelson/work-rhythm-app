@@ -1,8 +1,5 @@
 import React from 'react';
 
-import 'react-calendar/dist/Calendar.css';
-import Calendar from 'react-calendar';
-
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -12,55 +9,6 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-
-const DialogContent = withStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-  },
-}))(MuiDialogContent);
-
-const DialogActions = withStyles((theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions);
-
-const styles = (theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-const DialogTitle = withStyles(styles)((props) => {
-  const {
-    children, classes, onClose,
-  } = props;
-  // const [value, setValue] = useInput('');
-  return (
-    <MuiDialogTitle disableTypography className={ classes.root }>
-      <Typography variant='h6'>{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label='close' className={ classes.closeButton } onClick={ onClose }>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
 
 const CssTextField = withStyles(() => ({
   root: {
@@ -90,7 +38,14 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     borderRadiusTopLeft: 4,
     borderRadiusTopRight: 4,
-    borderBottom: '2px solid #005269'
+    borderBottom: '2px solid #005269',
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
   },
   button: {
     marginLeft: theme.spacing(1),
@@ -114,6 +69,8 @@ const InputForm = (props) => {
     handleTitle,
     priority,
     handlePriority,
+    due,
+    handleDue,
     recur,
     handleRecur,
     notes,
@@ -124,11 +81,6 @@ const InputForm = (props) => {
     handleInvites,
     reminders,
     handleReminders,
-    due,
-    handleDue,
-    open,
-    handleOpenDialog,
-    handleCloseDialog,
     handleSubmit,
     addTodoItem,
     handleCancelInput
@@ -152,7 +104,7 @@ const InputForm = (props) => {
               margin='dense'
               variant='filled'
               label='Title'
-              value={ title }
+              value={ title || '' }
               onChange={ handleTitle }
             />
           </FormControl>
@@ -160,7 +112,7 @@ const InputForm = (props) => {
             <InputLabel htmlFor='priority'>Priority</InputLabel>
             <Select
               native
-              value={ priority }
+              value={ priority || '' }
               onChange={ handlePriority }
             >
               <option aria-label='none' value='' />
@@ -174,7 +126,7 @@ const InputForm = (props) => {
             <InputLabel htmlFor='recur'>Recur</InputLabel>
             <Select
               native
-              value={ recur }
+              value={ recur || '' }
               onChange={ handleRecur }
             >
               <option aria-label='none' value='' />
@@ -192,44 +144,18 @@ const InputForm = (props) => {
               <option value={ 1 }>Annually</option>
             </Select>
           </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
-            <InputLabel htmlFor='due'>Due Date</InputLabel>
-            <Select
-              native
-              onClick={ handleOpenDialog }
-              style={ { width: 140 } }
-            >
-              <Dialog
-                aria-labelledby='dueDate-dialog-title'
-                open={ open }
-              >
-                <DialogTitle
-                  id='dueDate-dialog-title'
-                >
-                  Due Date
-                </DialogTitle>
-                <DialogContent dividers>
-                  <Calendar
-                    hover
-                    id='dueDate-dialog'
-                    onChange={ handleDue }
-                    value={ due }
-                    // allowPartialRange={ true }
-                    // calendarType='US'
-                    // minDetail='month'
-                    // maxDetail='month'
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    onClick={ handleCloseDialog }
-                    autoFocus
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </Select>
+          <FormControl className={ classes.topMargin }>
+            <TextField
+              variant='filled'
+              size='small'
+              id='date'
+              label='Due Date'
+              type='date'
+              value={ due || '' }
+              onChange={ handleDue }
+              className={ classes.textField }
+              InputLabelProps={ { shrink: true } }
+            />
           </FormControl>
           <FormControl className={ classes.margin }>
             <CssTextField
@@ -237,7 +163,7 @@ const InputForm = (props) => {
               margin='dense'
               variant='filled'
               label='Notes'
-              value={ notes }
+              value={ notes || '' }
               onChange={ handleNotes }
             />
           </FormControl>
@@ -245,7 +171,7 @@ const InputForm = (props) => {
             <InputLabel htmlFor='actions'>Actions</InputLabel>
             <Select
               native
-              value={ actions }
+              value={ actions || '' }
               onChange={ handleActions }
             >
               <option aria-label='None' value='' />
@@ -260,7 +186,7 @@ const InputForm = (props) => {
             <InputLabel htmlFor='invite'>Invites</InputLabel>
             <Select
               native
-              value={ invites }
+              value={ invites || '' }
               onChange={ handleInvites }
             >
               <option aria-label='None' value='' />
@@ -274,7 +200,7 @@ const InputForm = (props) => {
             <InputLabel htmlFor='reminder'>Reminders</InputLabel>
             <Select
               native
-              value={ reminders }
+              value={ reminders || '' }
               onChange={ handleReminders }
             >
               <option aria-label='None' value='' />

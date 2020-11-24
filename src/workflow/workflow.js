@@ -170,8 +170,8 @@ const WorkFlow = () => {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState(0);
   const [recur, setRecur] = useState('');
-  const [added, setAdded] = useState();
-  const [due, setDue] = useState();
+  const [added, setAdded] = useState('');
+  const [due, setDue] = useState('');
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
@@ -179,7 +179,6 @@ const WorkFlow = () => {
   const [editing, setEditing] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [open, setOpenDialog] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [drag, setDrag] = React.useState(false);
   const [selected, setSelected] = useState('');
@@ -188,26 +187,13 @@ const WorkFlow = () => {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [itemList, setItemList] = useState([
-    {
-      actions: '4',
-      added: 'Mon Nov 23',
-      due: '11-21-2021',
-      id: 1,
-      invites: '1',
-      key: 'fbYIr0QZWcPbY2FBN6pHP',
-      notes: 'These are my notes for my first todo item!',
-      priority: '2',
-      recur: '5',
-      reminders: '1',
-      title: 'Hi this is my first todo item!',
-    },
-  ]);
+  const [itemList, setItemList] = useState([]);
 
   useEffect(() => {
     setItemList(itemList);
   }, [itemList]);
 
+  // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE ID:', id);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE KEY:', key);
@@ -230,24 +216,14 @@ const WorkFlow = () => {
     setRecur(event.target.value);
   };
   const handleAdded = () => {
-    const obj = new Date();
+    const obj = new Date().toLocaleString().replace(',', '');
     const addToday = obj.toString();
-    // const day = obj.toString(0, 3);
-    // const seperate = ',';
-    // const month = obj.toString(5, 10);
-    // const addToday = day + seperate + month;
     setAdded(addToday);
   };
-  const handleDue = (date) => {
-    const obj = date;
+  const handleDue = (event) => {
+    const obj = event.target.value;
     const dueDate = obj.toString();
-    console.log('handleDue dueDate PreSet:', dueDate);
-    // const day = obj.toString(0, 3);
-    // const seperate = ',';
-    // const month = obj.toString(5, 10);
-    // const dueDate = day + seperate + month;
     setDue(dueDate);
-    console.log('handleDue dueDate PostSet:', dueDate);
   };
   const handleNotes = (event) => {
     setNotes(event.target.value);
@@ -272,12 +248,6 @@ const WorkFlow = () => {
   };
   const handleShowInput = () => {
     setShowInput(! showInput);
-  };
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
   };
   const handleDrag = () => {
     setDrag(! drag);
@@ -358,7 +328,7 @@ const WorkFlow = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addTodoItem(key, id, title, priority, recur, notes, actions, invites, reminders);
+    addTodoItem(key, id, title, priority, due, recur, notes, actions, invites, reminders);
     setShowInput(! showInput);
     setTitle('');
     setPriority('');
@@ -375,6 +345,8 @@ const WorkFlow = () => {
     setTitle('');
     setPriority('');
     setRecur('');
+    setDue('');
+    setAdded('');
     setNotes('');
     setActions('');
     setInvites('');
@@ -397,7 +369,6 @@ const WorkFlow = () => {
           actions={ actions }
           invites={ invites }
           reminders={ reminders }
-          open={ open }
           editing={ editing }
           completed={ completed }
           handleCancelInput={ handleCancelInput }
@@ -413,8 +384,6 @@ const WorkFlow = () => {
           handleReminders={ handleReminders }
           handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
-          handleOpenDialog={ handleOpenDialog }
-          handleCloseDialog={ handleCloseDialog }
         />
         <EnhancedTableToolbar
           numSelected={ selected.length }
