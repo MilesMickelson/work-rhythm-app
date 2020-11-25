@@ -6,6 +6,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
 import LoopIcon from '@material-ui/icons/Loop';
 import AlarmIcon from '@material-ui/icons/Alarm';
+import LabelImportantIcon from '@material-ui/icons/LabelImportant';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -204,9 +205,23 @@ const WorkFlow = () => {
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Title:', title);
   // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Priority:', priority);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Repeat:', repeat);
+  // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Date Due:', dueDate);
   // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Priority:', priority);
+  console.log('WORKFLOW STATE Time Due:', dueTime);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Notes:', notes);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Invites:', invites);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Actions:', actions);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Reminders:', reminders);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Added:', added);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE itemList:', itemList);
 
@@ -223,13 +238,14 @@ const WorkFlow = () => {
     setAdded(today);
   };
   const handleDueDate = (date) => {
-    // const timeOnly = date.splice(0, 10);
     console.log('handleDueDate date arguement:', date);
-    const newDueDate = date.toLocaleString().replace(',', '');
+    const dateToString = date.toLocaleString().replace(',', '');
+    const newDueDate = dateToString.slice(0, 10);
     setDueDate(newDueDate);
   };
   const handleDueTime = (date) => {
-    const newDueTime = date.toLocaleString().replace(',', '');
+    const timeToString = date.toLocaleString().replace(',', '');
+    const newDueTime = timeToString.slice(10, 23);
     setDueTime(newDueTime);
   };
   const handleNotes = (event) => {

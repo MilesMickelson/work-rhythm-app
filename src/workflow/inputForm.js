@@ -261,8 +261,8 @@ const InputForm = (props) => {
                   id='date-picker-dialog'
                   label='Due Date'
                   views={ ['year', 'month', 'date'] }
-                  format='dd/MM/yyyy'
-                  value={ dueDate }
+                  format='MM/dd/yyyy'
+                  value={ dueDate || '' }
                   onChange={ handleDueDate }
                   KeyboardButtonProps={ { 'aria-label': 'change date' } }
                   InputLabelProps={ { shrink: true } }
@@ -277,10 +277,12 @@ const InputForm = (props) => {
                   margin='normal'
                   id='dueTime-dialog'
                   label='Set Time'
-                  value={ dueTime }
                   onChange={ handleDueTime }
+                  value={ dueTime || '' }
+                  placeholder={ dueTime || '' }
                   KeyboardButtonProps={ { 'aria-label': 'change time' } }
                   InputLabelProps={ { shrink: true } }
+                  inputProps={ { step: 300 } } // 5 min
                 />
               </Grid>
             </MuiPickersUtilsProvider>
