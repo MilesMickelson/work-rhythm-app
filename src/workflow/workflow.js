@@ -177,7 +177,8 @@ const WorkFlow = () => {
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
-  const [reminders, setReminders] = useState('');
+  const [checked, setChecked] = useState([]);
+  const [reminders, setReminders] = useState([]);
   const [editing, setEditing] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -221,13 +222,15 @@ const WorkFlow = () => {
   const handleAdded = () => {
     setAdded(today);
   };
-  const handleDueDate = (event) => {
-    const obj = event.target.value;
-    const newDueDate = obj.toString();
+  const handleDueDate = (date) => {
+    // const timeOnly = date.splice(0, 10);
+    console.log('handleDueDate date arguement:', date);
+    const newDueDate = date.toLocaleString().replace(',', '');
     setDueDate(newDueDate);
   };
-  const handleDueTime = (event) => {
-    setDueTime(event.target.value);
+  const handleDueTime = (date) => {
+    const newDueTime = date.toLocaleString().replace(',', '');
+    setDueTime(newDueTime);
   };
   const handleNotes = (event) => {
     setNotes(event.target.value);
@@ -238,18 +241,11 @@ const WorkFlow = () => {
   const handleInvites = (event) => {
     setInvites(event.target.value);
   };
-  // const handleReminders = (event) => {
-  //   setReminders(event.target.value);
-  // };
+  const handleChecked = (event) => {
+    setChecked(event.target.value);
+  };
   const handleReminders = (event) => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    setReminders(value);
+    setReminders(event.target.value);
   };
   const handleEditing = () => {
     setEditing(! editing);
@@ -343,30 +339,35 @@ const WorkFlow = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addTodoItem(key, id, title, priority, dueDate, dueTime, repeat, notes, actions, invites, reminders);
+    addTodoItem(key, id, title, priority, dueDate, dueTime, repeat, notes, actions, invites, checked, reminders);
     setShowInput(! showInput);
     setTitle('');
+    setNotes('');
     setPriority('');
     setRepeat('');
-    setNotes('');
     setActions('');
     setInvites('');
     setReminders('');
+    setDueDate('');
+    setDueTime('');
+    setAdded('');
+    setChecked('');
   };
 
   const handleCancelInput = (event) => {
     event.preventDefault();
     setShowInput(! showInput);
     setTitle('');
+    setNotes('');
     setPriority('');
     setRepeat('');
-    setDueDate('');
-    setDueTime('');
-    setAdded('');
-    setNotes('');
     setActions('');
     setInvites('');
     setReminders('');
+    setDueDate('');
+    setDueTime('');
+    setAdded('');
+    setChecked('');
   };
   // const isSelected = (index) => selected.indexOf(index) !== - 1;
   // const isItemSelected = isSelected(todoItem.index);
@@ -388,6 +389,7 @@ const WorkFlow = () => {
           reminders={ reminders }
           editing={ editing }
           completed={ completed }
+          checked={ checked }
           handleCancelInput={ handleCancelInput }
           handleSubmit={ handleSubmit }
           addTodoItem={ addTodoItem }
@@ -402,6 +404,7 @@ const WorkFlow = () => {
           handleReminders={ handleReminders }
           handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
+          handleChecked={ handleChecked }
         />
         <EnhancedTableToolbar
           numSelected={ selected.length }

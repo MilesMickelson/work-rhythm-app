@@ -1,5 +1,14 @@
 import React from 'react';
+import 'date-fns';
 
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+import Grid from '@material-ui/core/Grid';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Input from '@material-ui/core/Input';
 import Collapse from '@material-ui/core/Collapse';
@@ -8,13 +17,12 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemText from '@material-ui/core/ListItemText';
+// import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
-const CssTextField = withStyles((theme) => ({
+const CssTextField = withStyles(() => ({
   root: {
     '& label.Select': {
       color: '#262626',
@@ -82,7 +90,7 @@ const MenuProps = {
   },
 };
 
-const reminderOptions = [
+const names = [
   'Everyday at 9am',
   '1 hour before',
   '3 hours before',
@@ -117,7 +125,7 @@ const InputForm = (props) => {
     handleReminders,
     handleSubmit,
     addTodoItem,
-    handleCancelInput
+    handleCancelInput,
   } = props;
   const classes = useStyles();
   return (
@@ -190,23 +198,28 @@ const InputForm = (props) => {
               <option value={ 1 }>Annually</option>
             </Select>
           </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.formControl }>
+          <FormControl className={ classes.formControl }>
             <InputLabel htmlFor='reminder'>Reminders</InputLabel>
             <Select
-              id='reminders'
+              labelId='demo-mutiple-checkbox-label'
+              id='demo-mutiple-checkbox'
               multiple
-              native
-              value={ reminders || '' }
+              variant='filled'
+              size='small'
+              // native
+              value={ [reminders] }
               onChange={ handleReminders }
-              MenuProps={ MenuProps }
               input={ <Input /> }
+              MenuProps={ MenuProps }
               renderValue={ (selected) => selected.join(', ') }
             >
-              {reminderOptions.map((reminderOption) => (
-                <MenuItem key={ reminderOption } value={ reminderOption }>
-                  <Checkbox checked={ reminderOptions.indexOf(reminderOption) > - 1 } />
-                  <ListItemText primary={ reminderOption } />
-                </MenuItem>
+              {names.map((name) => (
+                <option key={ name } value={ name }>
+                  <Checkbox
+                    checked={ reminders.indexOf(name) > - 1 }
+                  />
+                  { name }
+                </option>
               ))}
             </Select>
           </FormControl>
@@ -240,29 +253,37 @@ const InputForm = (props) => {
             </Select>
           </FormControl>
           <FormControl className={ classes.topMargin }>
-            <TextField
-              type='date'
-              label='Due Date'
-              size='small'
-              variant='filled'
-              value={ dueDate || '' }
-              onChange={ handleDueDate }
-              className={ classes.textField }
-              InputLabelProps={ { shrink: true } }
-            />
+            <MuiPickersUtilsProvider utils={ DateFnsUtils }>
+              {/* container justify='space-around' */}
+              <Grid item>
+                <KeyboardDatePicker
+                  margin='normal'
+                  id='date-picker-dialog'
+                  label='Due Date'
+                  views={ ['year', 'month', 'date'] }
+                  format='dd/MM/yyyy'
+                  value={ dueDate }
+                  onChange={ handleDueDate }
+                  KeyboardButtonProps={ { 'aria-label': 'change date' } }
+                  InputLabelProps={ { shrink: true } }
+                />
+              </Grid>
+            </MuiPickersUtilsProvider>
           </FormControl>
           <FormControl className={ classes.topMargin }>
-            <TextField
-              type='time'
-              label='Time of Event(opt.)'
-              size='small'
-              variant='filled'
-              value={ dueTime || '' }
-              onChange={ handleDueTime }
-              className={ classes.textField }
-              InputLabelProps={ { shrink: true } }
-              // inputProps={ { step: 300 } }
-            />
+            <MuiPickersUtilsProvider utils={ DateFnsUtils }>
+              <Grid container justify='space-around'>
+                <KeyboardTimePicker
+                  margin='normal'
+                  id='dueTime-dialog'
+                  label='Set Time'
+                  value={ dueTime }
+                  onChange={ handleDueTime }
+                  KeyboardButtonProps={ { 'aria-label': 'change time' } }
+                  InputLabelProps={ { shrink: true } }
+                />
+              </Grid>
+            </MuiPickersUtilsProvider>
           </FormControl>
           <Button
             type='submit'
