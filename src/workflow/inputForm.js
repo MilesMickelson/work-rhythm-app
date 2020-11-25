@@ -104,6 +104,7 @@ const names = [
 
 const InputForm = (props) => {
   const {
+    todaysTime,
     showInput,
     title,
     handleTitle,
@@ -257,13 +258,17 @@ const InputForm = (props) => {
               {/* container justify='space-around' */}
               <Grid item>
                 <KeyboardDatePicker
+                  variant='filled'
+                  size='small'
                   margin='normal'
                   id='date-picker-dialog'
                   label='Due Date'
                   views={ ['year', 'month', 'date'] }
                   format='MM/dd/yyyy'
-                  value={ dueDate || '' }
+                  value={ dueDate }
                   onChange={ handleDueDate }
+                  // placeholder={ '' || dueDate }
+                  // defaultValue={ todaysDate }
                   KeyboardButtonProps={ { 'aria-label': 'change date' } }
                   InputLabelProps={ { shrink: true } }
                 />
@@ -272,17 +277,24 @@ const InputForm = (props) => {
           </FormControl>
           <FormControl className={ classes.topMargin }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
-              <Grid container justify='space-around'>
+              {/* container justify='space-around' */}
+              <Grid item>
                 <KeyboardTimePicker
+                  variant='filled'
+                  size='small'
                   margin='normal'
                   id='dueTime-dialog'
                   label='Set Time'
+                  format='HH:mm:ss pp'
+                  views={ ['hours', 'minutes'] }
+                  value={ dueTime }
                   onChange={ handleDueTime }
-                  value={ dueTime || '' }
-                  placeholder={ dueTime || '' }
+                  defaultValue={ todaysTime }
+                  placeholder={ todaysTime }
                   KeyboardButtonProps={ { 'aria-label': 'change time' } }
                   InputLabelProps={ { shrink: true } }
-                  inputProps={ { step: 300 } } // 5 min
+                  inputProps={ { filledInput: true } } // 5 min step: 300,
+                  // ampm={ true }
                 />
               </Grid>
             </MuiPickersUtilsProvider>

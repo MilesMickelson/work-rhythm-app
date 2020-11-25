@@ -165,6 +165,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// const today = new Date().toLocaleString().replace(',', '');
+const today = new Date();
+const todayToString = today.toLocaleString().replace(',', '');
+const todaysDate = todayToString.slice(0, 10);
+const todaysTime = todayToString.slice(10, 23);
+
 const WorkFlow = () => {
   const classes = useStyles();
   const [id, setId] = useState(0);
@@ -173,8 +179,8 @@ const WorkFlow = () => {
   const [priority, setPriority] = useState(0);
   const [repeat, setRepeat] = useState('');
   const [added, setAdded] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [dueTime, setDueTime] = useState('');
+  const [dueDate, setDueDate] = useState(today);
+  const [dueTime, setDueTime] = useState(today);
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
@@ -197,7 +203,6 @@ const WorkFlow = () => {
     setItemList(itemList);
   }, [itemList]);
 
-  const today = new Date().toLocaleString().replace(',', '');
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE ID:', id);
   // eslint-disable-next-line no-console
@@ -235,17 +240,16 @@ const WorkFlow = () => {
     setRepeat(event.target.value);
   };
   const handleAdded = () => {
-    setAdded(today);
+    setAdded(todaysDate);
   };
   const handleDueDate = (date) => {
-    console.log('handleDueDate date arguement:', date);
     const dateToString = date.toLocaleString().replace(',', '');
-    const newDueDate = dateToString.slice(0, 10);
+    const newDueDate = dateToString.slice(0, 11);
     setDueDate(newDueDate);
   };
   const handleDueTime = (date) => {
-    const timeToString = date.toLocaleString().replace(',', '');
-    const newDueTime = timeToString.slice(10, 23);
+    const timeToString = date.toLocaleString();
+    const newDueTime = timeToString.slice(12, 23);
     setDueTime(newDueTime);
   };
   const handleNotes = (event) => {
@@ -350,7 +354,6 @@ const WorkFlow = () => {
       }
     ];
     setItemList(newTodoItem);
-    console.count('addTodoItem Run Count(for dupes):');
   };
 
   const handleSubmit = (event) => {
@@ -393,6 +396,7 @@ const WorkFlow = () => {
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>
         <InputForm
+          todaysTime={ todaysTime }
           showInput={ showInput }
           tite={ title }
           priority={ priority }
@@ -603,7 +607,7 @@ const WorkFlow = () => {
         control={ <Switch checked={ dense } onChange={ handleChangeDense } /> }
         label='Condense'
       />
-      <Paper>{today}</Paper>
+      <Paper>{todaysDate}</Paper>
     </div>
   );
 };
