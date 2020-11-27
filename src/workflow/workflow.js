@@ -38,31 +38,31 @@ import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
 import EnhancedTableHead from './tableHead';
 
-// function descendingComparator(a, b, orderBy) {
-//   if (b[orderBy] < a[orderBy]) {
-//     return - 1;
-//   }
-//   if (b[orderBy] > a[orderBy]) {
-//     return 1;
-//   }
-//   return 0;
-// }
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return - 1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
 
-// function getComparator(order, orderBy) {
-//   return order === 'desc'
-//     ? (a, b) => descendingComparator(a, b, orderBy)
-//     : (a, b) => - descendingComparator(a, b, orderBy);
-// }
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => - descendingComparator(a, b, orderBy);
+}
 
-// function stableSort(array, comparator) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   return stabilizedThis.map((el) => el[0]);
-// }
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
 
 function PaperComponent(props) {
   return (
@@ -169,7 +169,7 @@ const useStyles = makeStyles((theme) => ({
 const today = new Date();
 const todayToString = today.toLocaleString().replace(',', '');
 const todaysDate = todayToString.slice(0, 10);
-const todaysTime = todayToString.slice(10, 23);
+const todaysTime = todayToString.slice(10, 18);
 
 const WorkFlow = () => {
   const classes = useStyles();
@@ -179,8 +179,8 @@ const WorkFlow = () => {
   const [priority, setPriority] = useState(0);
   const [repeat, setRepeat] = useState('');
   const [added, setAdded] = useState('');
-  const [dueDate, setDueDate] = useState(today);
-  const [dueTime, setDueTime] = useState(today);
+  const [dueDate, setDueDate] = useState();
+  const [dueTime, setDueTime] = useState();
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
@@ -234,8 +234,24 @@ const WorkFlow = () => {
     setTitle(event.target.value);
   };
   const handlePriority = (event) => {
-    setPriority(event.target.value);
+    const input = event.target.value;
+    switch (input) {
+    case null:
+      setPriority('n/a');
+      break;
+    case input:
+      setPriority(input);
+      break;
+    default:
+      setPriority();
+      break;
+    }
   };
+    // if (input === 0) {
+    //   setPriority('n/a');
+    // } else {
+    //   setPriority(input);
+    // }
   const handleRepeat = (event) => {
     setRepeat(event.target.value);
   };
@@ -243,13 +259,19 @@ const WorkFlow = () => {
     setAdded(todaysDate);
   };
   const handleDueDate = (date) => {
-    const dateToString = date.toLocaleString().replace(',', '');
-    const newDueDate = dateToString.slice(0, 11);
-    setDueDate(newDueDate);
+    if (date === null) {
+      setDueDate('n/a');
+    } else {
+      const dateToString = date.toLocaleString();
+      const newDueDate = dateToString.slice(0, 10);
+      setDueDate(newDueDate);
+    }
   };
+  // todo (date) => Fri Nov 27 2020 14:30:51 GMT-0500 (Eastern Standard Time)
   const handleDueTime = (date) => {
+    console.log('handleDueTime date:', date);
     const timeToString = date.toLocaleString();
-    const newDueTime = timeToString.slice(12, 23);
+    const newDueTime = timeToString.slice(11, 23);
     setDueTime(newDueTime);
   };
   const handleNotes = (event) => {
@@ -397,6 +419,7 @@ const WorkFlow = () => {
       <Paper className={ classes.tableWrap }>
         <InputForm
           todaysTime={ todaysTime }
+          todaysDate={ todaysDate }
           showInput={ showInput }
           tite={ title }
           priority={ priority }
@@ -454,6 +477,7 @@ const WorkFlow = () => {
                   id={ id }
                   index={ index }
                   tabIndex={ - 1 }
+                  className={ classes.itemRow }
                   // aria-checked={ isItemSelected }
                   // selected={ isItemSelected }
                 >

@@ -4,8 +4,8 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
+  TimePicker,
+  DatePicker,
 } from '@material-ui/pickers';
 
 import Grid from '@material-ui/core/Grid';
@@ -105,6 +105,7 @@ const names = [
 const InputForm = (props) => {
   const {
     todaysTime,
+    todaysDate,
     showInput,
     title,
     handleTitle,
@@ -168,7 +169,7 @@ const InputForm = (props) => {
               value={ priority || '' }
               onChange={ handlePriority }
             >
-              <option aria-label='none' value='' />
+              <option aria-label='none' value={ null } />
               <option value={ 3 }>High</option>
               <option value={ 2 }>Medium</option>
               <option value={ 1 }>Low</option>
@@ -205,7 +206,6 @@ const InputForm = (props) => {
               labelId='demo-mutiple-checkbox-label'
               id='demo-mutiple-checkbox'
               multiple
-              variant='filled'
               size='small'
               // native
               value={ [reminders] }
@@ -255,48 +255,40 @@ const InputForm = (props) => {
           </FormControl>
           <FormControl className={ classes.topMargin }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
-              {/* container justify='space-around' */}
-              <Grid item>
-                <KeyboardDatePicker
-                  variant='filled'
-                  size='small'
-                  margin='normal'
-                  id='date-picker-dialog'
-                  label='Due Date'
-                  views={ ['year', 'month', 'date'] }
-                  format='MM/dd/yyyy'
-                  value={ dueDate }
-                  onChange={ handleDueDate }
-                  // placeholder={ '' || dueDate }
-                  // defaultValue={ todaysDate }
-                  KeyboardButtonProps={ { 'aria-label': 'change date' } }
-                  InputLabelProps={ { shrink: true } }
-                />
-              </Grid>
+              <DatePicker
+                label='Date Due'
+                variant='dialog'
+                inputVariant='filled'
+                margin='normal'
+                autoOk='true'
+                disablePast='true'
+                value={ dueDate || '' }
+                onChange={ handleDueDate }
+                placeholder={ todaysDate }
+                InputLabelProps={ { shrink: true } }
+                KeyboardButtonProps={ { 'aria-label': 'change date' } }
+              />
             </MuiPickersUtilsProvider>
           </FormControl>
           <FormControl className={ classes.topMargin }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
-              {/* container justify='space-around' */}
-              <Grid item>
-                <KeyboardTimePicker
-                  variant='filled'
-                  size='small'
-                  margin='normal'
-                  id='dueTime-dialog'
-                  label='Set Time'
-                  format='HH:mm:ss pp'
-                  views={ ['hours', 'minutes'] }
-                  value={ dueTime }
-                  onChange={ handleDueTime }
-                  defaultValue={ todaysTime }
-                  placeholder={ todaysTime }
-                  KeyboardButtonProps={ { 'aria-label': 'change time' } }
-                  InputLabelProps={ { shrink: true } }
-                  inputProps={ { filledInput: true } } // 5 min step: 300,
-                  // ampm={ true }
-                />
-              </Grid>
+              <TimePicker
+                label='Set Time'
+                variant='dialog'
+                inputVariant='filled'
+                margin='normal'
+                views={ ['hours', 'minutes'] }
+                format='HH:mm'
+                placeholder='––:––'
+                minutesStep={ 5 }
+                autoOk='true'
+                disable='true'
+                // autoOk={  }
+                value={ dueTime || '' }
+                onChange={ handleDueTime }
+                InputLabelProps={ { shrink: true } }
+                KeyboardButtonProps={ { 'aria-label': 'change time' } }
+              />
             </MuiPickersUtilsProvider>
           </FormControl>
           <Button
