@@ -184,8 +184,8 @@ const WorkFlow = () => {
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
   const [invites, setInvites] = useState('');
-  const [checked, setChecked] = useState([]);
   const [reminders, setReminders] = useState([]);
+  const [checked, setChecked] = useState([]);
   const [editing, setEditing] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -421,7 +421,7 @@ const WorkFlow = () => {
           todaysTime={ todaysTime }
           todaysDate={ todaysDate }
           showInput={ showInput }
-          tite={ title }
+          title={ title }
           priority={ priority }
           repeat={ repeat }
           dueDate={ dueDate }

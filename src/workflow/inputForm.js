@@ -22,6 +22,29 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
+// const names = [
+//   'Everyday at 9am',
+//   '1 hour before',
+//   '3 hours before',
+//   '12 hours before',
+//   '1 day before',
+//   '3 days before',
+//   '1 week before',
+//   '1 month before',
+//   '3 months before',
+// ];
+
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
+
 const CssTextField = withStyles(() => ({
   root: {
     '& label.Select': {
@@ -54,53 +77,21 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
+  inputGroupA: {
+    margin: theme.spacing(1),
+  },
+  selectGroupB: {
+    margin: theme.spacing(1),
+    marginTop: 6,
+    width: 212,
+    minWidth: 120,
+    maxWidth: 300,
   },
   button: {
     marginLeft: theme.spacing(1),
     marginBottom: theme.spacing(2),
   },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  topMargin: {
-    marginTop: 16,
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    maxWidth: 300,
-  },
 }));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const names = [
-  'Everyday at 9am',
-  '1 hour before',
-  '3 hours before',
-  '12 hours before',
-  '1 day before',
-  '3 days before',
-  '1 week before',
-  '1 month before',
-  '3 months before',
-];
 
 const InputForm = (props) => {
   const {
@@ -142,30 +133,31 @@ const InputForm = (props) => {
         unmountOnExit
       >
         <div className={ classes.inputWrap }>
-          <FormControl className={ classes.margin }>
+          <FormControl className={ classes.inputGroupA }>
             <CssTextField
-              multiline
-              margin='dense'
-              variant='filled'
               label='Title'
+              variant='filled'
+              margin='dense'
+              multiline={ true }
+              required={ true }
               value={ title || '' }
               onChange={ handleTitle }
             />
           </FormControl>
-          <FormControl className={ classes.margin }>
+          <FormControl className={ classes.inputGroupA }>
             <CssTextField
-              multiline
+              label='Notes'
               margin='dense'
               variant='filled'
-              label='Notes'
+              multiline={ true }
               value={ notes || '' }
               onChange={ handleNotes }
             />
           </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+          <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='priority'>Priority</InputLabel>
             <Select
-              native
+              native={ true }
               value={ priority || '' }
               onChange={ handlePriority }
             >
@@ -175,10 +167,10 @@ const InputForm = (props) => {
               <option value={ 1 }>Low</option>
             </Select>
           </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+          <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='repeat'>Repeat</InputLabel>
             <Select
-              native
+              native={ true }
               value={ repeat || '' }
               onChange={ handleRepeat }
             >
@@ -200,34 +192,10 @@ const InputForm = (props) => {
               <option value={ 1 }>Annually</option>
             </Select>
           </FormControl>
-          <FormControl className={ classes.formControl }>
-            <InputLabel htmlFor='reminder'>Reminders</InputLabel>
-            <Select
-              labelId='demo-mutiple-checkbox-label'
-              id='demo-mutiple-checkbox'
-              multiple
-              size='small'
-              // native
-              value={ [reminders] }
-              onChange={ handleReminders }
-              input={ <Input /> }
-              MenuProps={ MenuProps }
-              renderValue={ (selected) => selected.join(', ') }
-            >
-              {names.map((name) => (
-                <option key={ name } value={ name }>
-                  <Checkbox
-                    checked={ reminders.indexOf(name) > - 1 }
-                  />
-                  { name }
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+          <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='actions'>Actions</InputLabel>
             <Select
-              native
+              native={ true }
               value={ actions || '' }
               onChange={ handleActions }
             >
@@ -239,10 +207,10 @@ const InputForm = (props) => {
               <option value={ 5 }>Research</option>
             </Select>
           </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.topMargin }>
+          <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='invite'>Invites</InputLabel>
             <Select
-              native
+              native={ true }
               value={ invites || '' }
               onChange={ handleInvites }
             >
@@ -253,7 +221,7 @@ const InputForm = (props) => {
               <option value={ 4 }>Robert Downey</option>
             </Select>
           </FormControl>
-          <FormControl className={ classes.topMargin }>
+          <FormControl className={ classes.selectGroupB }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <DatePicker
                 label='Date Due'
@@ -266,11 +234,10 @@ const InputForm = (props) => {
                 onChange={ handleDueDate }
                 placeholder={ todaysDate }
                 InputLabelProps={ { shrink: true } }
-                KeyboardButtonProps={ { 'aria-label': 'change date' } }
               />
             </MuiPickersUtilsProvider>
           </FormControl>
-          <FormControl className={ classes.topMargin }>
+          <FormControl className={ classes.selectGroupB }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <TimePicker
                 label='Set Time'
@@ -281,21 +248,36 @@ const InputForm = (props) => {
                 format='HH:mm'
                 placeholder='––:––'
                 minutesStep={ 5 }
-                autoOk='true'
-                disable='true'
-                // autoOk={  }
+                native={ true }
+                autoOk={ true }
                 value={ dueTime || '' }
                 onChange={ handleDueTime }
                 InputLabelProps={ { shrink: true } }
-                KeyboardButtonProps={ { 'aria-label': 'change time' } }
               />
             </MuiPickersUtilsProvider>
+          </FormControl>
+          <FormControl size='small' className={ classes.selectGroupB }>
+            <InputLabel htmlFor='reminder'>Reminders</InputLabel>
+            <Select
+              size='small'
+              native
+              multiple
+              value={ reminders }
+              onChange={ handleReminders }
+              // input={ <Input /> }
+              // renderValue={ (selected) => selected.join(', ') }
+            >
+              <option aria-label='None' value='' />
+              <option value={ 1 }>
+                <Checkbox />
+                1 hour before
+              </option>
+            </Select>
           </FormControl>
           <Button
             type='submit'
             variant='contained'
             color='primary'
-            size='large'
             aria-label='save input'
             className={ classes.button }
             startIcon={ <SaveAltIcon /> }
