@@ -38,31 +38,31 @@ import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
 import EnhancedTableHead from './tableHead';
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return - 1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+// function descendingComparator(a, b, orderBy) {
+//   if (b[orderBy] < a[orderBy]) {
+//     return - 1;
+//   }
+//   if (b[orderBy] > a[orderBy]) {
+//     return 1;
+//   }
+//   return 0;
+// }
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => - descendingComparator(a, b, orderBy);
-}
+// function getComparator(order, orderBy) {
+//   return order === 'desc'
+//     ? (a, b) => descendingComparator(a, b, orderBy)
+//     : (a, b) => - descendingComparator(a, b, orderBy);
+// }
 
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+// function stableSort(array, comparator) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   return stabilizedThis.map((el) => el[0]);
+// }
 
 function PaperComponent(props) {
   return (
@@ -501,12 +501,12 @@ const WorkFlow = () => {
                     >
                       {todoItem.title}
                     </TableCell>
-                    <TableCell className='menuInput' align='right'>{todoItem.priority}</TableCell>
                     <TableCell className='menuInput' align='right'>
                       {todoItem.dueDate}
                       {todoItem.dueTime}
                     </TableCell>
-                    <TableCell className='menuInput' align='right'>
+                    <TableCell className='menuInput' align='right'>{todoItem.priority}</TableCell>
+                    <TableCell className={ classes.itemIcons } align='right'>
                       <IconButton
                         size='small'
                         aria-label='show set repeat'
@@ -516,7 +516,7 @@ const WorkFlow = () => {
                         <LoopIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell className='menuInput' align='right'>
+                    <TableCell className={ classes.itemIcons } align='right'>
                       <IconButton
                         size='small'
                         aria-label='show set timer'

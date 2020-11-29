@@ -22,7 +22,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 
-// const names = [
+// const reminders = [
 //   'Everyday at 9am',
 //   '1 hour before',
 //   '3 hours before',
@@ -33,17 +33,6 @@ import SaveAltIcon from '@material-ui/icons/SaveAlt';
 //   '1 month before',
 //   '3 months before',
 // ];
-
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 250,
-//     },
-//   },
-// };
 
 const CssTextField = withStyles(() => ({
   root: {
@@ -74,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadiusTopLeft: 4,
     borderRadiusTopRight: 4,
     borderBottom: '2px solid #005269',
-    display: 'flex',
-    flexWrap: 'wrap',
+    // display: 'flex',
+    // flexWrap: 'wrap',
   },
   inputGroupA: {
     margin: theme.spacing(1),
@@ -87,9 +76,22 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
     maxWidth: 300,
   },
-  button: {
+  timeAndDate: {
     marginLeft: theme.spacing(1),
-    marginBottom: theme.spacing(2),
+    marginRight: theme.spacing(1),
+    marginTop: - theme.spacing(1),
+    width: 212,
+    minWidth: 120,
+    maxWidth: 300,
+  },
+  button: {
+    left: '48%',
+    margin: theme.spacing(1),
+    fontSize: 18,
+    width: 212,
+    height: 50,
+    minWidth: 120,
+    maxWidth: 300,
   },
 }));
 
@@ -221,7 +223,7 @@ const InputForm = (props) => {
               <option value={ 4 }>Robert Downey</option>
             </Select>
           </FormControl>
-          <FormControl className={ classes.selectGroupB }>
+          <FormControl className={ classes.timeAndDate }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <DatePicker
                 label='Date Due'
@@ -237,7 +239,7 @@ const InputForm = (props) => {
               />
             </MuiPickersUtilsProvider>
           </FormControl>
-          <FormControl className={ classes.selectGroupB }>
+          <FormControl className={ classes.timeAndDate }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <TimePicker
                 label='Set Time'
@@ -256,24 +258,21 @@ const InputForm = (props) => {
               />
             </MuiPickersUtilsProvider>
           </FormControl>
-          <FormControl size='small' className={ classes.selectGroupB }>
+          <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='reminder'>Reminders</InputLabel>
             <Select
-              size='small'
-              native
-              multiple
+              native={ true }
               value={ reminders }
               onChange={ handleReminders }
+              // multiple
               // input={ <Input /> }
               // renderValue={ (selected) => selected.join(', ') }
             >
               <option aria-label='None' value='' />
-              <option value={ 1 }>
-                <Checkbox />
-                1 hour before
-              </option>
+              <option value={ 1 }>1 hour before</option>
             </Select>
           </FormControl>
+          <br />
           <Button
             type='submit'
             variant='contained'
@@ -286,9 +285,9 @@ const InputForm = (props) => {
             Save
           </Button>
           <Button
+            type='submit'
             variant='contained'
             color='primary'
-            size='large'
             aria-label='cancel input'
             className={ classes.button }
             startIcon={ <CloseIcon /> }

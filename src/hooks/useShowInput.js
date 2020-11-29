@@ -1,12 +1,55 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 
-const useShowInput = () => {
-  const [showInput, setShowInput] = useState(false);
-  return {
-    useHandleShowInput: () => {
-      setShowInput(! showInput);
-    },
-  };
-};
+// const useShowInput = () => {
+//   const [showInput, setShowInput] = useState(false);
+//   return {
+//     useHandleShowInput: () => {
+//       setShowInput(! showInput);
+//     },
+//   };
+// };
 
-export default useShowInput;
+// export default useShowInput;
+
+// import { useState } from 'react';
+
+// export default () => {
+//   const [value, setValue] = useState('');
+
+//   return {
+//     value,
+//     onChange: (event) => {
+//       setValue(event.target.value);
+//     },
+//     reset: () => setValue('')
+//   };
+// };
+// import { useState } from 'react';
+
+// const useInput = (
+//   title,
+//   priority,
+//   recur,
+//   due,
+//   notes,
+//   actions,
+//   invites,
+//   reminders
+//   ) => {
+//   const [title, setTitle] = useState('');
+
+//   function handleTitle(event) {
+//     setTitle(event.target.value);
+//     reset: () => setTitle('')
+//   }
+
+//   return
+//     title,
+//     priority,
+//     recur,
+//     due,
+//     notes,
+//     actions,
+//     invites,
+//     reminders;
+// };
