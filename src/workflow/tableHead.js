@@ -73,6 +73,9 @@ const useStyles = makeStyles(() => ({
     top: 20,
     width: 1,
   },
+  tableHeaderRow: {
+    borderBottom: '2px solid #005269',
+  },
 }));
 
 const EnhancedTableHead = (props) => {
@@ -86,7 +89,7 @@ const EnhancedTableHead = (props) => {
 
   return (
     <TableHead>
-      <TableRow>
+      <TableRow className={ classes.tableHeaderRow }>
         <TableCell padding='checkbox'>
           <Checkbox
             indeterminate={ numSelected > 0 && numSelected < rowCount }

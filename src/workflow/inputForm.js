@@ -163,7 +163,7 @@ const InputForm = (props) => {
               value={ priority || '' }
               onChange={ handlePriority }
             >
-              <option aria-label='none' value='N/A' />
+              <option aria-label='none' value='None' />
               <option value='High'>High</option>
               <option value='Medium'>Medium</option>
               <option value='Low'>Low</option>

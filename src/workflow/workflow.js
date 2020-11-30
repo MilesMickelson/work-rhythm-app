@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
   tableWrap: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
-    borderRadius: 4,
+    borderRadius: 8,
     boxShadow: '0 0 0 2px #005269',
   },
   table: {
@@ -144,6 +144,11 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       borderBottom: 'unset',
     },
+  },
+  expandHeader: {
+    // all: 'unset',
+    width: '100%',
+    borderBottom: '2px dashed #005269',
   },
   expandRow: {
     '& > *': {
@@ -285,25 +290,35 @@ const WorkFlow = () => {
     setTitle(event.target.value);
   };
   const handleHighPriority = () => {
-    if (priority === 0) {
-      setHighPriority(false);
-    } else if (priority === 'High') {
+    if (priority === 'High') {
       setHighPriority(true);
+    } else {
+      setHighPriority(false);
     }
   };
   const handlePriority = (event) => {
     const input = event.target.value;
-    setPriority(input);
+    if (priority === 'None') {
+      setPriority('N/A');
+    } else {
+      setPriority(input);
+    }
   };
   const handleIsRepeating = () => {
-    if (! repeat) {
-      setIsRepeating(false);
-    } else {
+    if (repeat) {
       setIsRepeating(true);
+    } else {
+      setIsRepeating(false);
     }
   };
   const handleRepeat = (event) => {
-    setRepeat(event.target.value);
+    const notApp = 'N/A';
+    const input = event.target.value;
+    if (repeat !== '') {
+      setRepeat(notApp);
+    } else {
+      setRepeat(input);
+    }
   };
   const handleAdded = () => {
     setAdded(todaysDate);
@@ -312,8 +327,9 @@ const WorkFlow = () => {
     setActiveTimer(true);
   };
   const handleDueDate = (date) => {
-    if (date === null) {
-      setDueDate('n/a');
+    const notApp = 'N/A';
+    if (dueDate === '') {
+      setDueDate(notApp);
     } else {
       const dateToString = date.toLocaleString();
       const newDueDate = dateToString.slice(0, 10);
@@ -322,13 +338,22 @@ const WorkFlow = () => {
   };
   // todo (date) => Fri Nov 27 2020 14:30:51 GMT-0500 (Eastern Standard Time)
   const handleDueTime = (date) => {
-    console.log('handleDueTime date:', date);
-    const timeToString = date.toLocaleString();
-    const newDueTime = timeToString.slice(11, 23);
-    setDueTime(newDueTime);
+    const notApp = 'N/A';
+    if (dueTime === '') {
+      setDueTime(notApp);
+    } else {
+      const timeToString = date.toLocaleString();
+      const newDueTime = timeToString.slice(11, 23);
+      setDueTime(newDueTime);
+    }
   };
   const handleNotes = (event) => {
-    setNotes(event.target.value);
+    const input = event.target.value;
+    if (notes !== '') {
+      setNotes('');
+    } else {
+      setNotes(input);
+    }
   };
   const handleActions = (event) => {
     setActions(event.target.value);
@@ -479,7 +504,6 @@ const WorkFlow = () => {
   // const isSelected = (index) => selected.indexOf(index) !== - 1;
   // const isItemSelected = isSelected(todoItem.index);
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
-
   return (
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>
@@ -572,7 +596,7 @@ const WorkFlow = () => {
                     </TableCell>
                     <TableCell
                       className={ classes.itemPriorityCol }
-                      style={ { color: todoItem.highPriority ? 'red' : '' } }
+                      style={ { color: todoItem.highPriority ? '#B71C1C' : '' } }
                       align='right'
                     >
                       {todoItem.priority}
@@ -581,7 +605,7 @@ const WorkFlow = () => {
                       <IconButton
                         size='small'
                         aria-label='show set repeat'
-                        style={ { color: todoItem.isRepeating ? theme.palette.secondary.main : '' } }
+                        style={ { color: todoItem.isRepeating ? '#00C853' : '' } }
                         // aria-expanded={ drag }
                         // onClick={ handleDrag }
                       >
@@ -594,7 +618,7 @@ const WorkFlow = () => {
                         aria-label='show set timer'
                         aria-expanded={ drag }
                         onClick={ handleDrag }
-                        style={ { color: todoItem.activeTimer ? theme.palette.secondary.main : '' } }
+                        style={ { color: todoItem.activeTimer ? '#00C853' : '' } }
                       >
                         <AlarmIcon />
                       </IconButton>
@@ -653,9 +677,9 @@ const WorkFlow = () => {
                           <Typography variant='h6' style={ { fontStyle: 'italic' } } gutterBottom>
                             Details
                           </Typography>
-                          <Table size='small' aria-label='purchases'>
+                          <Table size='small' aria-label='details'>
                             <TableHead>
-                              <TableRow style={ { width: '100%' } }>
+                              <TableRow className={ classes.expandHeader }>
                                 <TableCell align='left'>Notes</TableCell>
                                 <TableCell align='right'>Actions</TableCell>
                                 <TableCell align='right'>Invites</TableCell>
