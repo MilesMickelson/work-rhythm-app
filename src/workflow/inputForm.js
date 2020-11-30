@@ -159,45 +159,39 @@ const InputForm = (props) => {
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='priority'>Priority</InputLabel>
             <Select
-              native={ true }
+              native
               value={ priority || '' }
               onChange={ handlePriority }
             >
-              <option aria-label='none' value={ null } />
-              <option value={ 3 }>High</option>
-              <option value={ 2 }>Medium</option>
-              <option value={ 1 }>Low</option>
+              <option aria-label='none' value='N/A' />
+              <option value='High'>High</option>
+              <option value='Medium'>Medium</option>
+              <option value='Low'>Low</option>
             </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='repeat'>Repeat</InputLabel>
             <Select
-              native={ true }
+              native
               value={ repeat || '' }
               onChange={ handleRepeat }
             >
               <option aria-label='none' value='' />
-              <option value={ 15 }>Everyday</option>
-              <option value={ 14 }>Every 2 days</option>
-              <option value={ 13 }>Every 3 days</option>
-              <option value={ 12 }>Every 4 days</option>
-              <option value={ 11 }>Every 5 days</option>
-              <option value={ 10 }>Mon-Fri</option>
-              <option value={ 9 }>Weekends</option>
-              <option value={ 8 }>Weekly</option>
-              <option value={ 7 }>Bi-Weekly</option>
-              <option value={ 6 }>Tri-Weekly</option>
-              <option value={ 5 }>Monthly</option>
-              <option value={ 4 }>Bi-Monthly</option>
+              <option value={ 9 }>Everyday</option>
+              <option value={ 8 }>Weekdays</option>
+              <option value={ 7 }>Weekends</option>
+              <option value={ 6 }>Weekly</option>
+              <option value={ 5 }>Bi-Weekly</option>
+              <option value={ 4 }>Monthly</option>
               <option value={ 3 }>Tri-Monthly</option>
               <option value={ 2 }>Bi-Annually</option>
-              <option value={ 1 }>Annually</option>
+              <option value='Annually'>Annually</option>
             </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='actions'>Actions</InputLabel>
             <Select
-              native={ true }
+              native
               value={ actions || '' }
               onChange={ handleActions }
             >
@@ -212,7 +206,7 @@ const InputForm = (props) => {
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='invite'>Invites</InputLabel>
             <Select
-              native={ true }
+              native
               value={ invites || '' }
               onChange={ handleInvites }
             >
@@ -230,7 +224,8 @@ const InputForm = (props) => {
                 variant='dialog'
                 inputVariant='filled'
                 margin='normal'
-                autoOk='true'
+                native
+                autoOk
                 disablePast='true'
                 value={ dueDate || '' }
                 onChange={ handleDueDate }
@@ -242,7 +237,7 @@ const InputForm = (props) => {
           <FormControl className={ classes.timeAndDate }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <TimePicker
-                label='Set Time'
+                label='Time Due'
                 variant='dialog'
                 inputVariant='filled'
                 margin='normal'
@@ -250,8 +245,8 @@ const InputForm = (props) => {
                 format='HH:mm'
                 placeholder='––:––'
                 minutesStep={ 5 }
-                native={ true }
-                autoOk={ true }
+                native
+                autoOk
                 value={ dueTime || '' }
                 onChange={ handleDueTime }
                 InputLabelProps={ { shrink: true } }
@@ -261,7 +256,7 @@ const InputForm = (props) => {
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='reminder'>Reminders</InputLabel>
             <Select
-              native={ true }
+              native
               value={ reminders }
               onChange={ handleReminders }
               // multiple

@@ -21,28 +21,28 @@ const headCells = [
     id: 'due',
     numeric: true,
     isAnIcon: false,
-    disablePadding: false,
+    disablePadding: true,
     label: 'Due'
   },
   {
     id: 'priority',
     numeric: true,
-    isAnIcon: true,
-    disablePadding: false,
+    isAnIcon: false,
+    disablePadding: true,
     label: 'Priority'
   },
   {
     id: 'repeat',
     numeric: true,
     isAnIcon: true,
-    disablePadding: false,
+    disablePadding: true,
     label: 'Repeat'
   },
   {
     id: 'timer',
     numeric: true,
     isAnIcon: true,
-    disablePadding: false,
+    disablePadding: true,
     label: 'Timer'
   },
   {
@@ -100,7 +100,7 @@ const EnhancedTableHead = (props) => {
             key={ headCell.id }
             align={ headCell.numeric ? 'right' : 'left' }
             padding={ headCell.disablePadding ? 'none' : 'default' }
-            width={ headCell.isAnIcon ? 25 : 'default' }
+            width={ headCell.isAnIcon ? 70 : 'default' }
             sortDirection={ orderBy === headCell.id ? order : false }
           >
             <TableSortLabel

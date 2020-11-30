@@ -37,6 +37,7 @@ import Draggable from 'react-draggable';
 import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
 import EnhancedTableHead from './tableHead';
+import theme from '../theme';
 
 // function descendingComparator(a, b, orderBy) {
 //   if (b[orderBy] < a[orderBy]) {
@@ -93,8 +94,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
   },
-  textInput: {
-    width: 300,
+  itemRow: {
+    borderBottom: '2px solid #005269',
   },
   menuInput: {
     width: 90,
@@ -148,14 +149,26 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       borderBottom: 'unset',
     },
-    marginLeft: 100,
   },
   checkbox: {
     width: 50,
   },
+  expandIcon: {
+    width: 64,
+  },
+  itemDateCol: {
+    width: 90,
+    paddingRight: 0,
+  },
+  itemPriorityCol: {
+    width: 90,
+    padding: 0,
+  },
+  iconTrio: {
+    padding: 0,
+  },
   expand: {
     transform: 'rotate(0deg)',
-    marginLeft: 'auto',
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
     }),
@@ -186,6 +199,9 @@ const WorkFlow = () => {
   const [invites, setInvites] = useState('');
   const [reminders, setReminders] = useState([]);
   const [checked, setChecked] = useState([]);
+  const [isRepeating, setIsRepeating] = useState(false);
+  const [highPriority, setHighPriority] = useState(false);
+  const [activeTimer, setActiveTimer] = useState(false);
   const [editing, setEditing] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -197,7 +213,42 @@ const WorkFlow = () => {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [itemList, setItemList] = useState([]);
+  const [itemList, setItemList] = useState([
+    {
+      actions: '1',
+      activeTimer: false,
+      added: '11/29/2020',
+      dueDate: '11/30/2020',
+      dueTime: ' 6:30:21 PM',
+      highPriority: true,
+      id: 'oinP_l4tkyKjFqpKpmWM9',
+      invites: '4',
+      isRepeating: true,
+      key: '7Ku7UNMuVVZCKZGTtPm17',
+      notes: 'This is my testing todo item notes and it helps me test',
+      priority: 'High',
+      reminders: '1',
+      repeat: '9',
+      title: 'This is my testing todo item and it helps me test',
+    },
+    {
+      actions: '3',
+      activeTimer: true,
+      added: '11/29/2020',
+      dueDate: '12/10/2020',
+      dueTime: ' 7:25:21 PM',
+      highPriority: false,
+      id: 'oinP_l4tkysdvpmWM9',
+      invites: '4',
+      isRepeating: false,
+      key: '7Ku7UNMuVVZGTtPm17',
+      notes: 'This is my testing todo item notes and it helps me test',
+      priority: 'Medium',
+      reminders: '1',
+      repeat: '9',
+      title: 'This is my testing todo item and it helps me test',
+    },
+  ]);
 
   useEffect(() => {
     setItemList(itemList);
@@ -233,30 +284,32 @@ const WorkFlow = () => {
   const handleTitle = (event) => {
     setTitle(event.target.value);
   };
-  const handlePriority = (event) => {
-    const input = event.target.value;
-    switch (input) {
-    case null:
-      setPriority('n/a');
-      break;
-    case input:
-      setPriority(input);
-      break;
-    default:
-      setPriority();
-      break;
+  const handleHighPriority = () => {
+    if (priority === 0) {
+      setHighPriority(false);
+    } else if (priority === 'High') {
+      setHighPriority(true);
     }
   };
-    // if (input === 0) {
-    //   setPriority('n/a');
-    // } else {
-    //   setPriority(input);
-    // }
+  const handlePriority = (event) => {
+    const input = event.target.value;
+    setPriority(input);
+  };
+  const handleIsRepeating = () => {
+    if (! repeat) {
+      setIsRepeating(false);
+    } else {
+      setIsRepeating(true);
+    }
+  };
   const handleRepeat = (event) => {
     setRepeat(event.target.value);
   };
   const handleAdded = () => {
     setAdded(todaysDate);
+  };
+  const handleActiveTimer = () => {
+    setActiveTimer(true);
   };
   const handleDueDate = (date) => {
     if (date === null) {
@@ -302,6 +355,7 @@ const WorkFlow = () => {
     setShowInput(! showInput);
   };
   const handleDrag = () => {
+    handleActiveTimer();
     setDrag(! drag);
   };
   const handleRequestSort = (event, property) => {
@@ -311,6 +365,7 @@ const WorkFlow = () => {
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    handleActiveTimer();
   };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -358,6 +413,8 @@ const WorkFlow = () => {
     handleSetKey();
     handleSetId();
     handleAdded();
+    handleHighPriority();
+    handleIsRepeating();
     const newTodoItem = [
       ...itemList,
       {
@@ -365,10 +422,13 @@ const WorkFlow = () => {
         id,
         title,
         priority,
+        highPriority,
         repeat,
+        isRepeating,
         added,
         dueDate,
         dueTime,
+        activeTimer,
         notes,
         actions,
         invites,
@@ -392,6 +452,8 @@ const WorkFlow = () => {
     setDueDate('');
     setDueTime('');
     setAdded('');
+    setHighPriority('');
+    setIsRepeating('');
     setChecked('');
   };
 
@@ -409,6 +471,10 @@ const WorkFlow = () => {
     setDueTime('');
     setAdded('');
     setChecked('');
+  };
+
+  const handleRepeatPopulation = (event) => {
+    event.preventDefault();
   };
   // const isSelected = (index) => selected.indexOf(index) !== - 1;
   // const isItemSelected = isSelected(todoItem.index);
@@ -492,36 +558,43 @@ const WorkFlow = () => {
                       />
                     </TableCell>
                     <TableCell
-                      // style={ { textDecoration: todoItem.isCompleted ? 'line-through' : '' } }
+                      style={ { textDecoration: todoItem.isCompleted ? 'line-through' : '' } }
                       align='left'
                       component='th'
                       scope='row'
                       padding='none'
-                      className='textInput'
                     >
                       {todoItem.title}
                     </TableCell>
-                    <TableCell className='menuInput' align='right'>
+                    <TableCell className={ classes.itemDateCol } align='right' style={ { width: 64 } }>
                       {todoItem.dueDate}
                       {todoItem.dueTime}
                     </TableCell>
-                    <TableCell className='menuInput' align='right'>{todoItem.priority}</TableCell>
-                    <TableCell className={ classes.itemIcons } align='right'>
+                    <TableCell
+                      className={ classes.itemPriorityCol }
+                      style={ { color: todoItem.highPriority ? 'red' : '' } }
+                      align='right'
+                    >
+                      {todoItem.priority}
+                    </TableCell>
+                    <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
                       <IconButton
                         size='small'
                         aria-label='show set repeat'
+                        style={ { color: todoItem.isRepeating ? theme.palette.secondary.main : '' } }
                         // aria-expanded={ drag }
                         // onClick={ handleDrag }
                       >
                         <LoopIcon />
                       </IconButton>
                     </TableCell>
-                    <TableCell className={ classes.itemIcons } align='right'>
+                    <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
                       <IconButton
                         size='small'
                         aria-label='show set timer'
                         aria-expanded={ drag }
                         onClick={ handleDrag }
+                        style={ { color: todoItem.activeTimer ? theme.palette.secondary.main : '' } }
                       >
                         <AlarmIcon />
                       </IconButton>
@@ -549,7 +622,7 @@ const WorkFlow = () => {
                         </DialogActions>
                       </Dialog>
                     </TableCell>
-                    <TableCell align='right'>
+                    <TableCell align='right' style={ { width: 64 } }>
                       <IconButton
                         aria-label='show more'
                         aria-expanded={ expanded }
@@ -563,18 +636,26 @@ const WorkFlow = () => {
                       </IconButton>
                     </TableCell>
                   </TableRow>
-                  <TableRow
-                    className={ classes.expandRow }
-                  >
-                    <TableCell style={ { paddingBottom: 0, paddingTop: 0 } } colSpan={ 6 }>
+                  <TableRow className={ classes.expandRow }>
+                    <TableCell
+                      style={
+                        {
+                          paddingTop: 0,
+                          paddingRight: 8,
+                          paddingBottom: 0,
+                          paddingLeft: 24,
+                        }
+                      }
+                      colSpan={ 16 }
+                    >
                       <Collapse in={ expanded } timeout='auto' unmountOnExit>
                         <Box margin={ 1 }>
-                          <Typography variant='h6' gutterBottom component='div'>
+                          <Typography variant='h6' style={ { fontStyle: 'italic' } } gutterBottom>
                             Details
                           </Typography>
                           <Table size='small' aria-label='purchases'>
                             <TableHead>
-                              <TableRow>
+                              <TableRow style={ { width: '100%' } }>
                                 <TableCell align='left'>Notes</TableCell>
                                 <TableCell align='right'>Actions</TableCell>
                                 <TableCell align='right'>Invites</TableCell>
@@ -584,7 +665,7 @@ const WorkFlow = () => {
                               </TableRow>
                             </TableHead>
                             <TableBody>
-                              <TableRow>
+                              <TableRow className={ classes.expandRow }>
                                 <TableCell align='left'>{todoItem.notes}</TableCell>
                                 <TableCell align='right'>{todoItem.actions}</TableCell>
                                 <TableCell align='right'>{todoItem.invites}</TableCell>
