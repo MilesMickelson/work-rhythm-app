@@ -160,10 +160,11 @@ const InputForm = (props) => {
             <InputLabel htmlFor='priority'>Priority</InputLabel>
             <Select
               native
+              id='priority'
               value={ priority || '' }
               onChange={ handlePriority }
             >
-              <option aria-label='none' value='None' />
+              <option aria-label='none' value='' />
               <option value='High'>High</option>
               <option value='Medium'>Medium</option>
               <option value='Low'>Low</option>
@@ -177,14 +178,14 @@ const InputForm = (props) => {
               onChange={ handleRepeat }
             >
               <option aria-label='none' value='' />
-              <option value={ 9 }>Everyday</option>
-              <option value={ 8 }>Weekdays</option>
-              <option value={ 7 }>Weekends</option>
-              <option value={ 6 }>Weekly</option>
-              <option value={ 5 }>Bi-Weekly</option>
-              <option value={ 4 }>Monthly</option>
-              <option value={ 3 }>Tri-Monthly</option>
-              <option value={ 2 }>Bi-Annually</option>
+              <option value='Everyday'>Everyday</option>
+              <option value='Weekdays'>Weekdays</option>
+              <option value='Weekends'>Weekends</option>
+              <option value='Weekly'>Weekly</option>
+              <option value='Bi-Weekly'>Bi-Weekly</option>
+              <option value='Monthly'>Monthly</option>
+              <option value='Tri-Monthly'>Tri-Monthly</option>
+              <option value='Bi-Annually'>Bi-Annually</option>
               <option value='Annually'>Annually</option>
             </Select>
           </FormControl>

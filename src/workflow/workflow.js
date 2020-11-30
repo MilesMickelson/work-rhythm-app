@@ -194,7 +194,7 @@ const WorkFlow = () => {
   const [id, setId] = useState(0);
   const [key, setKey] = useState('');
   const [title, setTitle] = useState('');
-  const [priority, setPriority] = useState(0);
+  const [priority, setPriority] = useState('');
   const [repeat, setRepeat] = useState('');
   const [added, setAdded] = useState('');
   const [dueDate, setDueDate] = useState();
@@ -297,28 +297,24 @@ const WorkFlow = () => {
     }
   };
   const handlePriority = (event) => {
+    const notApp = 'N/A';
     const input = event.target.value;
-    if (priority === 'None') {
-      setPriority('N/A');
-    } else {
+    if (! priority) {
       setPriority(input);
+    } else {
+      setPriority(notApp);
     }
   };
   const handleIsRepeating = () => {
-    if (repeat) {
-      setIsRepeating(true);
-    } else {
+    if (! repeat) {
       setIsRepeating(false);
+    } else {
+      setIsRepeating(true);
     }
   };
   const handleRepeat = (event) => {
-    const notApp = 'N/A';
     const input = event.target.value;
-    if (repeat !== '') {
-      setRepeat(notApp);
-    } else {
-      setRepeat(input);
-    }
+    setRepeat(input);
   };
   const handleAdded = () => {
     setAdded(todaysDate);
@@ -327,33 +323,18 @@ const WorkFlow = () => {
     setActiveTimer(true);
   };
   const handleDueDate = (date) => {
-    const notApp = 'N/A';
-    if (dueDate === '') {
-      setDueDate(notApp);
-    } else {
-      const dateToString = date.toLocaleString();
-      const newDueDate = dateToString.slice(0, 10);
-      setDueDate(newDueDate);
-    }
+    const dateToString = date.toLocaleString();
+    const newDueDate = dateToString.slice(0, 10);
+    setDueDate(newDueDate);
   };
   // todo (date) => Fri Nov 27 2020 14:30:51 GMT-0500 (Eastern Standard Time)
   const handleDueTime = (date) => {
-    const notApp = 'N/A';
-    if (dueTime === '') {
-      setDueTime(notApp);
-    } else {
-      const timeToString = date.toLocaleString();
-      const newDueTime = timeToString.slice(11, 23);
-      setDueTime(newDueTime);
-    }
+    const timeToString = date.toLocaleString();
+    const newDueTime = timeToString.slice(11, 23);
+    setDueTime(newDueTime);
   };
   const handleNotes = (event) => {
-    const input = event.target.value;
-    if (notes !== '') {
-      setNotes('');
-    } else {
-      setNotes(input);
-    }
+    setNotes(event.target.value);
   };
   const handleActions = (event) => {
     setActions(event.target.value);
