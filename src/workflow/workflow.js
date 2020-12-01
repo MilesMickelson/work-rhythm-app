@@ -7,6 +7,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import LoopIcon from '@material-ui/icons/Loop';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import LabelImportantIcon from '@material-ui/icons/LabelImportant';
+import EmailIcon from '@material-ui/icons/Email';
+import SendIcon from '@material-ui/icons/Send';
+import CallIcon from '@material-ui/icons/Call';
+import BookIcon from '@material-ui/icons/Book';
+import SearchIcon from '@material-ui/icons/Search';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -196,13 +201,14 @@ const WorkFlow = () => {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('');
   const [repeat, setRepeat] = useState('');
-  const [added, setAdded] = useState('');
+  const [timer, setTimer] = useState('');
   const [dueDate, setDueDate] = useState();
   const [dueTime, setDueTime] = useState();
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
-  const [timer, setTimer] = useState('');
   const [reminders, setReminders] = useState([]);
+  const [actionChips, setActionChips] = useState([]);
+  const [added, setAdded] = useState('');
   const [checked, setChecked] = useState([]);
   const [isRepeating, setIsRepeating] = useState(false);
   const [highPriority, setHighPriority] = useState(false);
@@ -343,6 +349,21 @@ const WorkFlow = () => {
   const handleActions = (event) => {
     setActions(event.target.value);
   };
+  const handleActionChips = () => {
+    switch (actions) {
+    case 'email': {
+      const email = <Chip size='small' avatar={ <EmailIcon /> } label='Email' />;
+      setActionChips(email);
+      break;
+    }
+    default: {
+      return (
+        <Chip size='small' avatar={ <SearchIcon /> } label='Email' />
+      );
+    }
+    }
+    // setActions(event.target.value);
+  };
   const handleTimer = (event) => {
     setTimer(event.target.value);
   };
@@ -424,6 +445,7 @@ const WorkFlow = () => {
     handleHighPriority();
     handleIsRepeating();
     handleActiveTimer();
+    handleActionChips();
     const newTodoItem = [
       ...itemList,
       {
@@ -437,11 +459,12 @@ const WorkFlow = () => {
         added,
         dueDate,
         dueTime,
-        activeTimer,
         notes,
         actions,
         timer,
-        reminders
+        reminders,
+        activeTimer,
+        actionChips,
       }
     ];
     setItemList(newTodoItem);
