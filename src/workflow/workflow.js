@@ -9,7 +9,7 @@ import AlarmIcon from '@material-ui/icons/Alarm';
 import LabelImportantIcon from '@material-ui/icons/LabelImportant';
 import EmailIcon from '@material-ui/icons/Email';
 import SendIcon from '@material-ui/icons/Send';
-import CallIcon from '@material-ui/icons/Call';
+import VideoCallIcon from '@material-ui/icons/VideoCall';
 import BookIcon from '@material-ui/icons/Book';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -226,7 +226,7 @@ const WorkFlow = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [itemList, setItemList] = useState([
     {
-      actions: '1',
+      actions: 'NotApp!',
       activeTimer: false,
       added: '11/29/2020',
       dueDate: '11/30/2020',
@@ -243,7 +243,7 @@ const WorkFlow = () => {
       title: 'This is my testing todo item and it helps me test',
     },
     {
-      actions: '3',
+      actions: 'NotApp!',
       activeTimer: true,
       added: '11/29/2020',
       dueDate: '12/10/2020',
@@ -289,6 +289,8 @@ const WorkFlow = () => {
   console.log('WORKFLOW STATE Reminders:', reminders);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Added:', added);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Action Chips:', actionChips);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE itemList:', itemList);
 
@@ -351,18 +353,72 @@ const WorkFlow = () => {
   };
   const handleActionChips = () => {
     switch (actions) {
-    case 'email': {
-      const email = <Chip size='small' avatar={ <EmailIcon /> } label='Email' />;
-      setActionChips(email);
+    // eslint-disable-next-line no-lone-blocks
+    default: {
+      setActionChips([]);
       break;
     }
-    default: {
-      return (
-        <Chip size='small' avatar={ <SearchIcon /> } label='Email' />
+    case 'email': {
+      const email = (
+        <Chip
+          size='small'
+          avatar={ <EmailIcon /> }
+          label='Email'
+          clickable={ true }
+        />
       );
+      setActionChips([email]);
+      break;
+    }
+    case 'research': {
+      const research = (
+        <Chip
+          size='small'
+          avatar={ <SearchIcon /> }
+          label='Research'
+          clickable={ true }
+        />
+      );
+      setActionChips([research]);
+      break;
+    }
+    case 'message': {
+      const message = (
+        <Chip
+          size='small'
+          avatar={ <SendIcon /> }
+          label='Message'
+          clickable={ true }
+        />
+      );
+      setActionChips([message]);
+      break;
+    }
+    case 'read': {
+      const read = (
+        <Chip
+          size='small'
+          avatar={ <BookIcon /> }
+          label='Read'
+          clickable={ true }
+        />
+      );
+      setActionChips([read]);
+      break;
+    }
+    case 'zoom': {
+      const zoom = (
+        <Chip
+          size='small'
+          avatar={ <VideoCallIcon /> }
+          label='Zoom'
+          clickable={ true }
+        />
+      );
+      setActionChips([zoom]);
+      break;
     }
     }
-    // setActions(event.target.value);
   };
   const handleTimer = (event) => {
     setTimer(event.target.value);
@@ -484,9 +540,10 @@ const WorkFlow = () => {
     setDueDate('');
     setDueTime('');
     setAdded('');
-    setHighPriority('');
-    setIsRepeating('');
-    setChecked('');
+    setHighPriority();
+    setIsRepeating();
+    setChecked();
+    setActionChips([]);
   };
 
   const handleCancelInput = (event) => {
@@ -502,7 +559,10 @@ const WorkFlow = () => {
     setDueDate('');
     setDueTime('');
     setAdded('');
-    setChecked('');
+    setHighPriority();
+    setIsRepeating();
+    setChecked();
+    setActionChips([]);
   };
 
   // const handleRepeatPopulation = (event) => {
@@ -697,7 +757,7 @@ const WorkFlow = () => {
                             <TableBody>
                               <TableRow className={ classes.expandRow }>
                                 <TableCell align='left'>{todoItem.notes}</TableCell>
-                                <TableCell align='right'>{todoItem.actions}</TableCell>
+                                <TableCell align='right'>{todoItem.actionChips}</TableCell>
                                 <TableCell align='right'>{todoItem.reminders}</TableCell>
                                 <TableCell align='right'>{todoItem.added}</TableCell>
                                 <TableCell align='right'>

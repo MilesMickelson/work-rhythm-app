@@ -197,11 +197,11 @@ const InputForm = (props) => {
               onChange={ handleActions }
             >
               <option aria-label='None' value='' />
-              <option value='Call'>Call</option>
-              <option value='Email'>Email</option>
-              <option value='Message'>Message</option>
-              <option value='Read'>Read</option>
-              <option value='Research'>Research</option>
+              <option value='zoom'>Zoom</option>
+              <option value='email'>Email</option>
+              <option value='message'>Message</option>
+              <option value='read'>Read</option>
+              <option value='research'>Research</option>
             </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
