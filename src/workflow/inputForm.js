@@ -114,8 +114,8 @@ const InputForm = (props) => {
     handleNotes,
     actions,
     handleActions,
-    invites,
-    handleInvites,
+    timer,
+    handleTimer,
     reminders,
     handleReminders,
     handleSubmit,
@@ -197,25 +197,25 @@ const InputForm = (props) => {
               onChange={ handleActions }
             >
               <option aria-label='None' value='' />
-              <option value={ 1 }>Call</option>
-              <option value={ 2 }>Email</option>
-              <option value={ 3 }>Message</option>
-              <option value={ 4 }>Read</option>
-              <option value={ 5 }>Research</option>
+              <option value='Call'>Call</option>
+              <option value='Email'>Email</option>
+              <option value='Message'>Message</option>
+              <option value='Read'>Read</option>
+              <option value='Research'>Research</option>
             </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
-            <InputLabel htmlFor='invite'>Invites</InputLabel>
+            <InputLabel htmlFor='invite'>Timer</InputLabel>
             <Select
               native
-              value={ invites || '' }
-              onChange={ handleInvites }
+              value={ timer || '' }
+              onChange={ handleTimer }
             >
               <option aria-label='None' value='' />
-              <option value={ 1 }>Brad Pitt</option>
-              <option value={ 2 }>Ryan Reynolds</option>
-              <option value={ 3 }>Ryan Gosling</option>
-              <option value={ 4 }>Robert Downey</option>
+              <option value='60:00'>1 hour</option>
+              <option value='45:00'>45 minutes</option>
+              <option value='30:00'>30 minutes</option>
+              <option value='20:00'>20 minutes</option>
             </Select>
           </FormControl>
           <FormControl className={ classes.timeAndDate }>
@@ -265,7 +265,7 @@ const InputForm = (props) => {
               // renderValue={ (selected) => selected.join(', ') }
             >
               <option aria-label='None' value='' />
-              <option value={ 1 }>1 hour before</option>
+              <option value='1 hour before'>1 hour before</option>
             </Select>
           </FormControl>
           <br />

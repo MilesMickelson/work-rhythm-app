@@ -201,7 +201,7 @@ const WorkFlow = () => {
   const [dueTime, setDueTime] = useState();
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState('');
-  const [invites, setInvites] = useState('');
+  const [timer, setTimer] = useState('');
   const [reminders, setReminders] = useState([]);
   const [checked, setChecked] = useState([]);
   const [isRepeating, setIsRepeating] = useState(false);
@@ -227,7 +227,7 @@ const WorkFlow = () => {
       dueTime: ' 6:30:21 PM',
       highPriority: true,
       id: 'oinP_l4tkyKjFqpKpmWM9',
-      invites: '4',
+      timer: '20:00',
       isRepeating: true,
       key: '7Ku7UNMuVVZCKZGTtPm17',
       notes: 'This is my testing todo item notes and it helps me test',
@@ -244,7 +244,7 @@ const WorkFlow = () => {
       dueTime: ' 7:25:21 PM',
       highPriority: false,
       id: 'oinP_l4tkysdvpmWM9',
-      invites: '4',
+      timer: '20:00',
       isRepeating: false,
       key: '7Ku7UNMuVVZGTtPm17',
       notes: 'This is my testing todo item notes and it helps me test',
@@ -276,7 +276,7 @@ const WorkFlow = () => {
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Notes:', notes);
   // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Invites:', invites);
+  console.log('WORKFLOW STATE Timer:', timer);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Actions:', actions);
   // eslint-disable-next-line no-console
@@ -320,7 +320,11 @@ const WorkFlow = () => {
     setAdded(todaysDate);
   };
   const handleActiveTimer = () => {
-    setActiveTimer(true);
+    if (! timer) {
+      setActiveTimer(false);
+    } else {
+      setActiveTimer(true);
+    }
   };
   const handleDueDate = (date) => {
     const dateToString = date.toLocaleString();
@@ -339,8 +343,8 @@ const WorkFlow = () => {
   const handleActions = (event) => {
     setActions(event.target.value);
   };
-  const handleInvites = (event) => {
-    setInvites(event.target.value);
+  const handleTimer = (event) => {
+    setTimer(event.target.value);
   };
   const handleChecked = (event) => {
     setChecked(event.target.value);
@@ -361,7 +365,6 @@ const WorkFlow = () => {
     setShowInput(! showInput);
   };
   const handleDrag = () => {
-    handleActiveTimer();
     setDrag(! drag);
   };
   const handleRequestSort = (event, property) => {
@@ -371,7 +374,6 @@ const WorkFlow = () => {
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    handleActiveTimer();
   };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -421,6 +423,7 @@ const WorkFlow = () => {
     handleAdded();
     handleHighPriority();
     handleIsRepeating();
+    handleActiveTimer();
     const newTodoItem = [
       ...itemList,
       {
@@ -437,7 +440,7 @@ const WorkFlow = () => {
         activeTimer,
         notes,
         actions,
-        invites,
+        timer,
         reminders
       }
     ];
@@ -446,14 +449,14 @@ const WorkFlow = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addTodoItem(key, id, title, priority, dueDate, dueTime, repeat, notes, actions, invites, checked, reminders);
+    addTodoItem(key, id, title, priority, dueDate, dueTime, repeat, notes, actions, timer, checked, reminders);
     setShowInput(! showInput);
     setTitle('');
     setNotes('');
     setPriority('');
     setRepeat('');
     setActions('');
-    setInvites('');
+    setTimer('');
     setReminders('');
     setDueDate('');
     setDueTime('');
@@ -471,7 +474,7 @@ const WorkFlow = () => {
     setPriority('');
     setRepeat('');
     setActions('');
-    setInvites('');
+    setTimer('');
     setReminders('');
     setDueDate('');
     setDueTime('');
@@ -479,9 +482,9 @@ const WorkFlow = () => {
     setChecked('');
   };
 
-  const handleRepeatPopulation = (event) => {
-    event.preventDefault();
-  };
+  // const handleRepeatPopulation = (event) => {
+  //   event.preventDefault();
+  // };
   // const isSelected = (index) => selected.indexOf(index) !== - 1;
   // const isItemSelected = isSelected(todoItem.index);
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
@@ -499,7 +502,7 @@ const WorkFlow = () => {
           dueTime={ dueTime }
           notes={ notes }
           actions={ actions }
-          invites={ invites }
+          timer={ timer }
           reminders={ reminders }
           editing={ editing }
           completed={ completed }
@@ -514,7 +517,7 @@ const WorkFlow = () => {
           handleDueTime={ handleDueTime }
           handleNotes={ handleNotes }
           handleActions={ handleActions }
-          handleInvites={ handleInvites }
+          handleTimer={ handleTimer }
           handleReminders={ handleReminders }
           handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
@@ -663,7 +666,6 @@ const WorkFlow = () => {
                               <TableRow className={ classes.expandHeader }>
                                 <TableCell align='left'>Notes</TableCell>
                                 <TableCell align='right'>Actions</TableCell>
-                                <TableCell align='right'>Invites</TableCell>
                                 <TableCell align='right'>Reminders</TableCell>
                                 <TableCell align='right'>Added</TableCell>
                                 <TableCell align='right'>Edit</TableCell>
@@ -673,7 +675,6 @@ const WorkFlow = () => {
                               <TableRow className={ classes.expandRow }>
                                 <TableCell align='left'>{todoItem.notes}</TableCell>
                                 <TableCell align='right'>{todoItem.actions}</TableCell>
-                                <TableCell align='right'>{todoItem.invites}</TableCell>
                                 <TableCell align='right'>{todoItem.reminders}</TableCell>
                                 <TableCell align='right'>{todoItem.added}</TableCell>
                                 <TableCell align='right'>
