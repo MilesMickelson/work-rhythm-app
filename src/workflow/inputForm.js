@@ -198,7 +198,8 @@ const InputForm = (props) => {
             >
               <option aria-label='None' value='' />
               <option value='zoom'>Zoom</option>
-              <option value='email'>Email</option>
+              <option value='gmail'>Gmail</option>
+              <option value='outlook'>Outlook</option>
               <option value='message'>Message</option>
               <option value='read'>Read</option>
               <option value='research'>Research</option>

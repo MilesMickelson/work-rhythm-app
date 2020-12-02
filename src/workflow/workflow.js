@@ -36,6 +36,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Chip from '@material-ui/core/Chip';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Draggable from 'react-draggable';
 
@@ -226,38 +227,38 @@ const WorkFlow = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [itemList, setItemList] = useState([
     {
-      actions: 'NotApp!',
-      activeTimer: false,
-      added: '11/29/2020',
-      dueDate: '11/30/2020',
-      dueTime: ' 6:30:21 PM',
+      actions: 'zoom',
+      activeTimer: true,
+      added: '12/1/2020 ',
+      dueDate: '12/31/2020',
+      dueTime: '6:45:00 PM',
       highPriority: true,
-      id: 'oinP_l4tkyKjFqpKpmWM9',
-      timer: '20:00',
+      id: 'JgKzuOY1ViP-L2678678',
       isRepeating: true,
-      key: '7Ku7UNMuVVZCKZGTtPm17',
-      notes: 'This is my testing todo item notes and it helps me test',
+      key: 'ufR9N2I28ceGkb678679',
+      notes: 'These are my notes for my second todo item in order to help me test.',
       priority: 'High',
-      reminders: '1',
-      repeat: '9',
-      title: 'This is my testing todo item and it helps me test',
+      reminders: '1 hour before',
+      repeat: 'Everyday',
+      timer: '60:00',
+      title: 'Hello this is my second todo item and it helps me test what I need to.',
     },
     {
-      actions: 'NotApp!',
+      actions: 'zoom',
       activeTimer: true,
-      added: '11/29/2020',
-      dueDate: '12/10/2020',
-      dueTime: ' 7:25:21 PM',
-      highPriority: false,
-      id: 'oinP_l4tkysdvpmWM9',
-      timer: '20:00',
-      isRepeating: false,
-      key: '7Ku7UNMuVVZGTtPm17',
-      notes: 'This is my testing todo item notes and it helps me test',
-      priority: 'Medium',
-      reminders: '1',
-      repeat: '9',
-      title: 'This is my testing todo item and it helps me test',
+      added: '12/1/2020 ',
+      dueDate: '12/31/2020',
+      dueTime: '6:30:21 PM',
+      highPriority: true,
+      id: 'JgKzuOYwlPW1ViP-L26q9',
+      isRepeating: true,
+      key: 'ufR9N2I28ceGkbcPfFvoC',
+      notes: 'These are my notes for my first todo item in order to help me test.',
+      priority: 'High',
+      reminders: '1 hour before',
+      repeat: 'Everyday',
+      timer: '60:00',
+      title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
     },
   ]);
 
@@ -358,16 +359,28 @@ const WorkFlow = () => {
       setActionChips([]);
       break;
     }
-    case 'email': {
-      const email = (
+    case 'gmail': {
+      const gmail = (
         <Chip
           size='small'
           avatar={ <EmailIcon /> }
-          label='Email'
+          label='Gmail'
           clickable={ true }
         />
       );
-      setActionChips([email]);
+      setActionChips([gmail]);
+      break;
+    }
+    case 'outlook': {
+      const outlook = (
+        <Chip
+          size='small'
+          avatar={ <EmailIcon /> }
+          label='Outlook'
+          clickable={ true }
+        />
+      );
+      setActionChips([outlook]);
       break;
     }
     case 'research': {
@@ -658,8 +671,11 @@ const WorkFlow = () => {
                       {todoItem.title}
                     </TableCell>
                     <TableCell className={ classes.itemDateCol } align='right' style={ { width: 64 } }>
-                      {todoItem.dueDate}
-                      {todoItem.dueTime}
+                      <Tooltip title={ todoItem.dueTime } aria-label='todo time due status'>
+                        <div>
+                          {todoItem.dueDate}
+                        </div>
+                      </Tooltip>
                     </TableCell>
                     <TableCell
                       className={ classes.itemPriorityCol }
@@ -669,26 +685,30 @@ const WorkFlow = () => {
                       {todoItem.priority}
                     </TableCell>
                     <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
-                      <IconButton
-                        size='small'
-                        aria-label='show set repeat'
-                        style={ { color: todoItem.isRepeating ? '#00C853' : '' } }
-                        // aria-expanded={ drag }
-                        // onClick={ handleDrag }
-                      >
-                        <LoopIcon />
-                      </IconButton>
+                      <Tooltip title={ todoItem.repeat } aria-label='todo repeat status'>
+                        <IconButton
+                          size='small'
+                          aria-label='show set repeat'
+                          style={ { color: todoItem.isRepeating ? '#00C853' : '' } }
+                          // aria-expanded={ drag }
+                          // onClick={ handleDrag }
+                        >
+                          <LoopIcon />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
-                      <IconButton
-                        size='small'
-                        aria-label='show set timer'
-                        aria-expanded={ drag }
-                        onClick={ handleDrag }
-                        style={ { color: todoItem.activeTimer ? '#00C853' : '' } }
-                      >
-                        <AlarmIcon />
-                      </IconButton>
+                      <Tooltip title={ todoItem.timer } aria-label='todo timer status'>
+                        <IconButton
+                          size='small'
+                          aria-label='show set timer'
+                          aria-expanded={ drag }
+                          onClick={ handleDrag }
+                          style={ { color: todoItem.activeTimer ? '#00C853' : '' } }
+                        >
+                          <AlarmIcon />
+                        </IconButton>
+                      </Tooltip>
                       <Dialog
                         open={ drag }
                         onClose={ handleDrag }
