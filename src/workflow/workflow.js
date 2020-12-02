@@ -6,7 +6,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EditIcon from '@material-ui/icons/Edit';
 import LoopIcon from '@material-ui/icons/Loop';
 import AlarmIcon from '@material-ui/icons/Alarm';
-import LabelImportantIcon from '@material-ui/icons/LabelImportant';
 import EmailIcon from '@material-ui/icons/Email';
 import SendIcon from '@material-ui/icons/Send';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
@@ -37,13 +36,13 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
+import Fade from '@material-ui/core/Fade';
 
 import Draggable from 'react-draggable';
 
 import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
 import EnhancedTableHead from './tableHead';
-import theme from '../theme';
 
 // function descendingComparator(a, b, orderBy) {
 //   if (b[orderBy] < a[orderBy]) {
@@ -206,7 +205,7 @@ const WorkFlow = () => {
   const [dueDate, setDueDate] = useState();
   const [dueTime, setDueTime] = useState();
   const [notes, setNotes] = useState('');
-  const [actions, setActions] = useState('');
+  const [actions, setActions] = useState([]);
   const [reminders, setReminders] = useState([]);
   const [actionChips, setActionChips] = useState([]);
   const [added, setAdded] = useState('');
@@ -225,9 +224,27 @@ const WorkFlow = () => {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const gmail = (
+    <Chip
+      key='key'
+      size='small'
+      avatar={ <EmailIcon /> }
+      label='Gmail'
+      clickable={ true }
+    />
+  );
+  const outlook = (
+    <Chip
+      size='small'
+      avatar={ <EmailIcon /> }
+      label='Outlook'
+      clickable={ true }
+    />
+  );
   const [itemList, setItemList] = useState([
     {
-      actions: 'zoom',
+      actions: 'Gmail',
+      actionChips: gmail,
       activeTimer: true,
       added: '12/1/2020 ',
       dueDate: '12/31/2020',
@@ -244,7 +261,8 @@ const WorkFlow = () => {
       title: 'Hello this is my second todo item and it helps me test what I need to.',
     },
     {
-      actions: 'zoom',
+      actions: 'Outlook',
+      actionChips: outlook,
       activeTimer: true,
       added: '12/1/2020 ',
       dueDate: '12/31/2020',
@@ -354,36 +372,36 @@ const WorkFlow = () => {
   };
   const handleActionChips = () => {
     switch (actions) {
-    // eslint-disable-next-line no-lone-blocks
     default: {
-      setActionChips([]);
       break;
     }
-    case 'gmail': {
-      const gmail = (
-        <Chip
-          size='small'
-          avatar={ <EmailIcon /> }
-          label='Gmail'
-          clickable={ true }
-        />
-      );
-      setActionChips([gmail]);
-      break;
-    }
-    case 'outlook': {
-      const outlook = (
-        <Chip
-          size='small'
-          avatar={ <EmailIcon /> }
-          label='Outlook'
-          clickable={ true }
-        />
-      );
-      setActionChips([outlook]);
-      break;
-    }
-    case 'research': {
+    // case 'Gmail': {
+    //   const gmail = (
+    //     <Chip
+    //       size='small'
+    //       avatar={ <EmailIcon /> }
+    //       label='Gmail'
+    //       clickable={ true }
+    //     />
+    //   );
+    //   setActionChips(actions => [...actions, gmail]);
+    //   // setActionChips(gmail);
+    //   break;
+    // }
+    // case 'Outlook': {
+    //   const outlook = (
+    //     <Chip
+    //       size='small'
+    //       avatar={ <EmailIcon /> }
+    //       label='Outlook'
+    //       clickable={ true }
+    //     />
+    //   );
+    //   setActionChips([...actions, outlook]);
+    //   // setActionChips(outlook);
+    //   break;
+    // }
+    case 'Research': {
       const research = (
         <Chip
           size='small'
@@ -392,10 +410,10 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips([research]);
+      setActionChips(research);
       break;
     }
-    case 'message': {
+    case 'Message': {
       const message = (
         <Chip
           size='small'
@@ -404,10 +422,10 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips([message]);
+      setActionChips(message);
       break;
     }
-    case 'read': {
+    case 'Read': {
       const read = (
         <Chip
           size='small'
@@ -416,10 +434,10 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips([read]);
+      setActionChips(read);
       break;
     }
-    case 'zoom': {
+    case 'Zoom': {
       const zoom = (
         <Chip
           size='small'
@@ -428,7 +446,7 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips([zoom]);
+      setActionChips(zoom);
       break;
     }
     }
@@ -501,12 +519,10 @@ const WorkFlow = () => {
     const iKey = nanoid();
     setKey(iKey);
   };
-
   const handleSetId = () => {
     const iD = nanoid();
     setId(iD);
   };
-
   const addTodoItem = () => {
     handleSetKey();
     handleSetId();
@@ -668,10 +684,14 @@ const WorkFlow = () => {
                       scope='row'
                       padding='none'
                     >
-                      {todoItem.title}
+                      <Tooltip title={ `Title: ${todoItem.title}` } aria-label='title' placement='bottom-start' TransitionComponent={ Fade }>
+                        <div>
+                          {todoItem.title}
+                        </div>
+                      </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.itemDateCol } align='right' style={ { width: 64 } }>
-                      <Tooltip title={ todoItem.dueTime } aria-label='todo time due status'>
+                      <Tooltip title={ `Due: ${todoItem.dueDate} At:${todoItem.dueTime}` } aria-label='todo time due status'>
                         <div>
                           {todoItem.dueDate}
                         </div>
@@ -682,10 +702,14 @@ const WorkFlow = () => {
                       style={ { color: todoItem.highPriority ? '#B71C1C' : '' } }
                       align='right'
                     >
-                      {todoItem.priority}
+                      <Tooltip title={ `Priority: ${todoItem.priority}` } aria-label='priority'>
+                        <div>
+                          {todoItem.priority}
+                        </div>
+                      </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
-                      <Tooltip title={ todoItem.repeat } aria-label='todo repeat status'>
+                      <Tooltip title={ `Repeat: ${todoItem.repeat}` } aria-label='todo repeat status'>
                         <IconButton
                           size='small'
                           aria-label='show set repeat'
@@ -698,7 +722,7 @@ const WorkFlow = () => {
                       </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
-                      <Tooltip title={ todoItem.timer } aria-label='todo timer status'>
+                      <Tooltip title={ `Timer: ${todoItem.timer}` } aria-label='todo timer status'>
                         <IconButton
                           size='small'
                           aria-label='show set timer'

@@ -8,30 +8,42 @@ import {
   DatePicker,
 } from '@material-ui/pickers';
 
-import Grid from '@material-ui/core/Grid';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
 import Collapse from '@material-ui/core/Collapse';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-// import MenuItem from '@material-ui/core/MenuItem';
-import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import Checkbox from '@material-ui/core/Checkbox';
 
-// const reminders = [
-//   'Everyday at 9am',
+// const actionOptions = [
+//   'Zoom',
+//   'Gmail',
+//   'Outlook',
+//   'Message',
+//   'Read',
+//   'Research',
+// ];
+
+// const reminderOptions = [
+//   'Event time due',
+//   '5 minutes before', // 10, 15, 20, 30
 //   '1 hour before',
-//   '3 hours before',
-//   '12 hours before',
+//   '2 hours before',
 //   '1 day before',
-//   '3 days before',
+//   '2 days before',
 //   '1 week before',
-//   '1 month before',
-//   '3 months before',
+//   '2 weeks before',
+//   '1 months before',
+//   '2 months before',
+//   'custom',
 // ];
 
 const CssTextField = withStyles(() => ({
@@ -95,9 +107,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
 const InputForm = (props) => {
   const {
-    todaysTime,
     todaysDate,
     showInput,
     title,
@@ -192,6 +214,28 @@ const InputForm = (props) => {
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='actions'>Actions</InputLabel>
             <Select
+              labelId='actions'
+              variant='filled'
+              multiple
+              value={ [actions] }
+              onChange={ handleActions }
+              input={ <Input /> }
+              renderValue={ (selected) => selected.join(', ') }
+              MenuProps={ MenuProps }
+              // SelectProps={ {
+              //   multiple: true,
+              //   value: [actions] || [],
+              //   onChange: handleActions
+              // } }
+            >
+              {actionOptions.map((actionOption) => (
+                <MenuItem key={ actionOption } value={ actionOption }>
+                  <Checkbox checked={ actions.indexOf(actionOption) > - 1 } />
+                  <ListItemText primary={ actionOption } />
+                </MenuItem>
+              ))}
+            </Select>
+            {/* <Select
               native
               value={ actions || '' }
               onChange={ handleActions }
@@ -203,7 +247,7 @@ const InputForm = (props) => {
               <option value='message'>Message</option>
               <option value='read'>Read</option>
               <option value='research'>Research</option>
-            </Select>
+            </Select> */}
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='invite'>Timer</InputLabel>
@@ -261,9 +305,6 @@ const InputForm = (props) => {
               native
               value={ reminders }
               onChange={ handleReminders }
-              // multiple
-              // input={ <Input /> }
-              // renderValue={ (selected) => selected.join(', ') }
             >
               <option aria-label='None' value='' />
               <option value='1 hour before'>1 hour before</option>
