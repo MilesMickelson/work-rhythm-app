@@ -15,36 +15,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemText from '@material-ui/core/ListItemText';
 
 import CloseIcon from '@material-ui/icons/Close';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
-import Checkbox from '@material-ui/core/Checkbox';
-
-// const actionOptions = [
-//   'Zoom',
-//   'Gmail',
-//   'Outlook',
-//   'Message',
-//   'Read',
-//   'Research',
-// ];
-
-// const reminderOptions = [
-//   'Event time due',
-//   '5 minutes before', // 10, 15, 20, 30
-//   '1 hour before',
-//   '2 hours before',
-//   '1 day before',
-//   '2 days before',
-//   '1 week before',
-//   '2 weeks before',
-//   '1 months before',
-//   '2 months before',
-//   'custom',
-// ];
 
 const CssTextField = withStyles(() => ({
   root: {
@@ -106,17 +79,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 300,
   },
 }));
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 const InputForm = (props) => {
   const {
@@ -214,28 +176,6 @@ const InputForm = (props) => {
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='actions'>Actions</InputLabel>
             <Select
-              labelId='actions'
-              variant='filled'
-              multiple
-              value={ [actions] }
-              onChange={ handleActions }
-              input={ <Input /> }
-              renderValue={ (selected) => selected.join(', ') }
-              MenuProps={ MenuProps }
-              // SelectProps={ {
-              //   multiple: true,
-              //   value: [actions] || [],
-              //   onChange: handleActions
-              // } }
-            >
-              {actionOptions.map((actionOption) => (
-                <MenuItem key={ actionOption } value={ actionOption }>
-                  <Checkbox checked={ actions.indexOf(actionOption) > - 1 } />
-                  <ListItemText primary={ actionOption } />
-                </MenuItem>
-              ))}
-            </Select>
-            {/* <Select
               native
               value={ actions || '' }
               onChange={ handleActions }
@@ -247,7 +187,7 @@ const InputForm = (props) => {
               <option value='message'>Message</option>
               <option value='read'>Read</option>
               <option value='research'>Research</option>
-            </Select> */}
+            </Select>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
             <InputLabel htmlFor='invite'>Timer</InputLabel>
@@ -257,10 +197,8 @@ const InputForm = (props) => {
               onChange={ handleTimer }
             >
               <option aria-label='None' value='' />
-              <option value='60:00'>1 hour</option>
-              <option value='45:00'>45 minutes</option>
-              <option value='30:00'>30 minutes</option>
-              <option value='20:00'>20 minutes</option>
+              <option value='On'>On</option>
+              <option value='Off'>Off</option>
             </Select>
           </FormControl>
           <FormControl className={ classes.timeAndDate }>
@@ -303,11 +241,25 @@ const InputForm = (props) => {
             <InputLabel htmlFor='reminder'>Reminders</InputLabel>
             <Select
               native
-              value={ reminders }
+              value={ reminders || '' }
               onChange={ handleReminders }
             >
               <option aria-label='None' value='' />
+              <option value='event time due'>Event time due</option>
+              <option value='5 minutes before'>5 minutes before</option>
+              <option value='10 minutes before'>10 minutes before</option>
+              <option value='15 minutes before'>15 minutes before</option>
+              <option value='20 minutes before'>20 minutes before</option>
+              <option value='30 minutes before'>30 minutes before</option>
               <option value='1 hour before'>1 hour before</option>
+              <option value='2 hours before'>2 hours before</option>
+              <option value='1 hour before'>1 day before</option>
+              <option value='2 days before'>2 days before</option>
+              <option value='1 week before'>1 week before</option>
+              <option value='2 weeks before'>2 weeks before</option>
+              <option value='1 month before'>1 month before</option>
+              <option value='2 months before'>2 months before</option>
+              <option value='custom'>Custom</option>
             </Select>
           </FormControl>
           <br />

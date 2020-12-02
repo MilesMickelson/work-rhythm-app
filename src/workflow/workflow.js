@@ -224,60 +224,41 @@ const WorkFlow = () => {
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const gmail = (
-    <Chip
-      key='key'
-      size='small'
-      avatar={ <EmailIcon /> }
-      label='Gmail'
-      clickable={ true }
-    />
-  );
-  const outlook = (
-    <Chip
-      size='small'
-      avatar={ <EmailIcon /> }
-      label='Outlook'
-      clickable={ true }
-    />
-  );
   const [itemList, setItemList] = useState([
-    {
-      actions: 'Gmail',
-      actionChips: gmail,
-      activeTimer: true,
-      added: '12/1/2020 ',
-      dueDate: '12/31/2020',
-      dueTime: '6:45:00 PM',
-      highPriority: true,
-      id: 'JgKzuOY1ViP-L2678678',
-      isRepeating: true,
-      key: 'ufR9N2I28ceGkb678679',
-      notes: 'These are my notes for my second todo item in order to help me test.',
-      priority: 'High',
-      reminders: '1 hour before',
-      repeat: 'Everyday',
-      timer: '60:00',
-      title: 'Hello this is my second todo item and it helps me test what I need to.',
-    },
-    {
-      actions: 'Outlook',
-      actionChips: outlook,
-      activeTimer: true,
-      added: '12/1/2020 ',
-      dueDate: '12/31/2020',
-      dueTime: '6:30:21 PM',
-      highPriority: true,
-      id: 'JgKzuOYwlPW1ViP-L26q9',
-      isRepeating: true,
-      key: 'ufR9N2I28ceGkbcPfFvoC',
-      notes: 'These are my notes for my first todo item in order to help me test.',
-      priority: 'High',
-      reminders: '1 hour before',
-      repeat: 'Everyday',
-      timer: '60:00',
-      title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
-    },
+    // {
+    //   actions: 'Gmail',
+    //   activeTimer: true,
+    //   added: '12/1/2020 ',
+    //   dueDate: '12/31/2020',
+    //   dueTime: '6:45:00 PM',
+    //   highPriority: true,
+    //   id: 'JgKzuOY1ViP-L2678678',
+    //   isRepeating: true,
+    //   key: 'ufR9N2I28ceGkb678679',
+    //   notes: 'These are my notes for my second todo item in order to help me test.',
+    //   priority: 'High',
+    //   reminders: '1 hour before',
+    //   repeat: 'Everyday',
+    //   timer: '60:00',
+    //   title: 'Hello this is my second todo item and it helps me test what I need to.',
+    // },
+    // {
+    //   actions: 'Outlook',
+    //   activeTimer: true,
+    //   added: '12/1/2020 ',
+    //   dueDate: '12/31/2020',
+    //   dueTime: '6:30:21 PM',
+    //   highPriority: true,
+    //   id: 'JgKzuOYwlPW1ViP-L26q9',
+    //   isRepeating: true,
+    //   key: 'ufR9N2I28ceGkbcPfFvoC',
+    //   notes: 'These are my notes for my first todo item in order to help me test.',
+    //   priority: 'High',
+    //   reminders: '1 hour before',
+    //   repeat: 'Everyday',
+    //   timer: '60:00',
+    //   title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
+    // },
   ]);
 
   useEffect(() => {
@@ -375,33 +356,31 @@ const WorkFlow = () => {
     default: {
       break;
     }
-    // case 'Gmail': {
-    //   const gmail = (
-    //     <Chip
-    //       size='small'
-    //       avatar={ <EmailIcon /> }
-    //       label='Gmail'
-    //       clickable={ true }
-    //     />
-    //   );
-    //   setActionChips(actions => [...actions, gmail]);
-    //   // setActionChips(gmail);
-    //   break;
-    // }
-    // case 'Outlook': {
-    //   const outlook = (
-    //     <Chip
-    //       size='small'
-    //       avatar={ <EmailIcon /> }
-    //       label='Outlook'
-    //       clickable={ true }
-    //     />
-    //   );
-    //   setActionChips([...actions, outlook]);
-    //   // setActionChips(outlook);
-    //   break;
-    // }
-    case 'Research': {
+    case 'gmail': {
+      const gmail = (
+        <Chip
+          size='small'
+          avatar={ <EmailIcon /> }
+          label='Gmail'
+          clickable={ true }
+        />
+      );
+      setActionChips(gmail);
+      break;
+    }
+    case 'outlook': {
+      const outlook = (
+        <Chip
+          size='small'
+          avatar={ <EmailIcon /> }
+          label='Outlook'
+          clickable={ true }
+        />
+      );
+      setActionChips(outlook);
+      break;
+    }
+    case 'research': {
       const research = (
         <Chip
           size='small'
@@ -413,7 +392,7 @@ const WorkFlow = () => {
       setActionChips(research);
       break;
     }
-    case 'Message': {
+    case 'message': {
       const message = (
         <Chip
           size='small'
@@ -425,7 +404,7 @@ const WorkFlow = () => {
       setActionChips(message);
       break;
     }
-    case 'Read': {
+    case 'read': {
       const read = (
         <Chip
           size='small'
@@ -437,7 +416,7 @@ const WorkFlow = () => {
       setActionChips(read);
       break;
     }
-    case 'Zoom': {
+    case 'zoom': {
       const zoom = (
         <Chip
           size='small'
