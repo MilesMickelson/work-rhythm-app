@@ -200,14 +200,19 @@ const todaysTime = todayToString.slice(10, 18);
 
 const WorkFlow = () => {
   const classes = useStyles();
+  const [state, setState] = React.useState({
+    showNotes: false,
+    showActions: false,
+    showReminders: false,
+  });
   const [id, setId] = useState(0);
   const [key, setKey] = useState('');
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('');
   const [repeat, setRepeat] = useState('');
   const [timer, setTimer] = useState('');
-  const [dueDate, setDueDate] = useState();
-  const [dueTime, setDueTime] = useState();
+  const [dueDate, setDueDate] = useState('');
+  const [dueTime, setDueTime] = useState('');
   const [notes, setNotes] = useState('');
   const [actions, setActions] = useState([]);
   const [reminders, setReminders] = useState([]);
@@ -220,6 +225,7 @@ const WorkFlow = () => {
   const [editing, setEditing] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [showInput, setShowInput] = useState(false);
+  // const [showNotes, setShowNotes] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [drag, setDrag] = React.useState(false);
   const [selected, setSelected] = useState('');
@@ -295,6 +301,10 @@ const WorkFlow = () => {
   console.log('WORKFLOW STATE Added:', added);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Action Chips:', actionChips);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE State:', state);
+  // eslint-disable-next-line no-console
+  console.log('WORKFLOW STATE Show Input:', showInput);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE itemList:', itemList);
 
@@ -455,6 +465,12 @@ const WorkFlow = () => {
   const handleShowInput = () => {
     setShowInput(! showInput);
   };
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+  // const handleNotesInput = () => {
+  //   setShowNotes(! showNotes);
+  // };
   const handleDrag = () => {
     setDrag(! drag);
   };
@@ -602,6 +618,7 @@ const WorkFlow = () => {
           editing={ editing }
           completed={ completed }
           checked={ checked }
+          state={ state }
           handleCancelInput={ handleCancelInput }
           handleSubmit={ handleSubmit }
           addTodoItem={ addTodoItem }
@@ -617,6 +634,7 @@ const WorkFlow = () => {
           handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
           handleChecked={ handleChecked }
+          handleChange={ handleChange }
         />
         <EnhancedTableToolbar
           numSelected={ selected.length }
@@ -674,7 +692,7 @@ const WorkFlow = () => {
                       </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.itemDateCol } align='right' style={ { width: 64 } }>
-                      <Tooltip title={ `Due: ${todoItem.dueDate} At:${todoItem.dueTime}` } aria-label='todo time due status'>
+                      <Tooltip title={ `Due:${todoItem.dueDate} At:${todoItem.dueTime}` } aria-label='todo time due status'>
                         <div>
                           {todoItem.dueDate}
                         </div>
@@ -685,7 +703,7 @@ const WorkFlow = () => {
                       style={ { color: todoItem.highPriority ? '#B71C1C' : '' } }
                       align='right'
                     >
-                      <Tooltip title={ `Priority: ${todoItem.priority}` } aria-label='priority'>
+                      <Tooltip title={ `Priority: ${todoItem.priority}` } aria-label='priority' placement='bottom'>
                         <div>
                           {todoItem.priority}
                         </div>
