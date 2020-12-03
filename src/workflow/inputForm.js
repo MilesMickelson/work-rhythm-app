@@ -75,7 +75,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 300,
   },
   notes: {
-    // marginTop: theme.spacing(1),
     marginLeft: theme.spacing(2),
 
   },
@@ -109,29 +108,14 @@ const useStyles = makeStyles((theme) => ({
 
 const InputForm = (props) => {
   const {
+    state,
+    handleSwitch,
+    handleValue,
     todaysDate,
     showInput,
-    title,
-    handleTitle,
-    priority,
-    handlePriority,
-    dueDate,
-    handleDueDate,
-    dueTime,
-    handleDueTime,
-    repeat,
-    handleRepeat,
-    notes,
-    handleNotes,
-    actions,
-    handleActions,
-    reminders,
-    handleReminders,
     handleSubmit,
     addTodoItem,
     handleCancelInput,
-    boolean,
-    handleSwitch,
   } = props;
   const classes = useStyles();
   return (
@@ -150,24 +134,26 @@ const InputForm = (props) => {
             <CssTextField
               className={ classes.title }
               label='Title'
+              name='title'
               variant='filled'
               margin='dense'
               multiline={ true }
               // required={ true }
-              value={ title || '' }
-              onChange={ handleTitle }
+              value={ state.title || '' }
+              onChange={ handleValue }
             />
           </FormControl>
           <FormControl className={ classes.dateAndTime }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <DatePicker
-                label='Date Due'
+                label='Due Date'
+                name='dueDate'
                 variant='dialog'
                 inputVariant='filled'
                 margin='normal'
                 disablePast='true'
-                value={ dueDate || '' }
-                onChange={ handleDueDate }
+                value={ state.dueDate || '' }
+                onChange={ handleValue }
                 placeholder={ todaysDate }
                 InputLabelProps={ { shrink: true } }
                 native
@@ -178,7 +164,8 @@ const InputForm = (props) => {
           <FormControl className={ classes.dateAndTime }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <TimePicker
-                label='Time Due'
+                label='Due Time'
+                name='dueTime'
                 variant='dialog'
                 inputVariant='filled'
                 margin='normal'
@@ -188,8 +175,8 @@ const InputForm = (props) => {
                 minutesStep={ 5 }
                 native
                 autoOk
-                value={ dueTime || '' }
-                onChange={ handleDueTime }
+                value={ state.dueTime || '' }
+                onChange={ handleValue }
                 InputLabelProps={ { shrink: true } }
               />
             </MuiPickersUtilsProvider>
@@ -198,8 +185,9 @@ const InputForm = (props) => {
             <InputLabel htmlFor='repeat'>Repeat</InputLabel>
             <Select
               native
-              value={ repeat || '' }
-              onChange={ handleRepeat }
+              name='repeat'
+              value={ state.repeat || '' }
+              onChange={ handleValue }
             >
               <option aria-label='none' value='' />
               <option value='Everyday'>Everyday</option>
@@ -217,8 +205,9 @@ const InputForm = (props) => {
             <InputLabel htmlFor='reminders'>Reminders</InputLabel>
             <Select
               native
-              value={ reminders || '' }
-              onChange={ handleReminders }
+              name='reminders'
+              value={ state.reminders || '' }
+              onChange={ handleValue }
             >
               <option aria-label='None' value='' />
               <option value='event time due'>Event time due</option>
@@ -240,30 +229,32 @@ const InputForm = (props) => {
           </FormControl>
           <FormControl className={ classes.addtSwitch }>
             <FormControlLabel
-              control={ <Switch checked={ boolean.showAdditional } onChange={ handleSwitch } /> }
+              control={ <Switch checked={ state.showAdditional } onChange={ handleSwitch } /> }
               name='showAdditional'
               label='Additional'
               labelPlacement='left'
             />
           </FormControl>
-          <Collapse in={ boolean.showAdditional } timeout='auto' collapsedHeight='0' unmountOnExit>
+          <Collapse in={ state.showAdditional } timeout='auto' collapsedHeight='0' unmountOnExit>
             <FormControl className={ classes.notes }>
               <CssTextField
                 label='Notes'
+                name='notes'
                 margin='dense'
                 variant='filled'
                 multiline={ true }
-                value={ notes || '' }
-                onChange={ handleNotes }
+                value={ state.notes || '' }
+                onChange={ handleValue }
               />
             </FormControl>
             <FormControl variant='filled' size='small' className={ classes.addGroup2 }>
               <InputLabel htmlFor='priority'>Priority</InputLabel>
               <Select
-                native
+                name='priority'
                 id='priority'
-                value={ priority || '' }
-                onChange={ handlePriority }
+                value={ state.priority || '' }
+                onChange={ handleValue }
+                native
               >
                 <option aria-label='none' value='' />
                 <option value='High'>High</option>
@@ -274,9 +265,10 @@ const InputForm = (props) => {
             <FormControl variant='filled' size='small' className={ classes.addGroup2 }>
               <InputLabel htmlFor='actions'>Actions</InputLabel>
               <Select
+                name='priority'
+                value={ state.actions || '' }
+                onChange={ handleValue }
                 native
-                value={ actions || '' }
-                onChange={ handleActions }
               >
                 <option aria-label='None' value='' />
                 <option value='zoom'>Zoom</option>

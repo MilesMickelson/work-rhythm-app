@@ -200,151 +200,140 @@ const todaysTime = todayToString.slice(10, 18);
 
 const WorkFlow = () => {
   const classes = useStyles();
-  const [boolean, setBoolean] = React.useState({
+  const [state, setState] = React.useState({
     showAdditional: false,
+    key: '',
+    actions: 'Gmail',
+    actionChips: [],
+    activeTimer: true,
+    added: '12/1/2020 ',
+    checked: [],
+    dueDate: '12/31/2020',
+    dueTime: '6:45:00 PM',
+    drag: false,
+    expanded: false,
+    highPriority: true,
+    id: '',
+    isRepeating: true,
+    notes: '',
+    priority: '',
+    reminders: '',
+    repeat: '',
+    title: '',
+    selected: '',
+    stopwatch: '',
+    showInput: false,
+    order: 'asc',
+    orderBy: '',
+    pade: 0,
+    dense: false,
+    rowsPerPage: 10,
+    itemList: [
+      {
+        actions: 'Gmail',
+        activeTimer: true,
+        added: '12/1/2020 ',
+        dueDate: '12/31/2020',
+        dueTime: '6:45:00 PM',
+        highPriority: true,
+        id: 'JgKzuOY1ViP-L2678678',
+        isRepeating: true,
+        key: 'ufR9N2I28ceGkb678679',
+        notes: 'These are my notes for my second todo item in order to help me test.',
+        priority: 'High',
+        reminders: '1 hour before',
+        repeat: 'Everyday',
+        timer: '60:00',
+        title: 'Hello this is my second todo item and it helps me test what I need to.',
+      },
+      {
+        actions: 'Outlook',
+        activeTimer: true,
+        added: '12/1/2020 ',
+        dueDate: '12/31/2020',
+        dueTime: '6:30:21 PM',
+        highPriority: true,
+        id: 'JgKzuOYwlPW1ViP-L26q9',
+        isRepeating: true,
+        key: 'ufR9N2I28ceGkbcPfFvoC',
+        notes: 'These are my notes for my first todo item in order to help me test.',
+        priority: 'High',
+        reminders: '1 hour before',
+        repeat: 'Everyday',
+        timer: '60:00',
+        title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
+      },
+    ]
   });
-  const [id, setId] = useState(0);
-  const [key, setKey] = useState('');
-  const [title, setTitle] = useState('');
-  const [priority, setPriority] = useState('');
-  const [repeat, setRepeat] = useState('');
-  const [timer, setTimer] = useState('');
-  const [dueDate, setDueDate] = useState('');
-  const [dueTime, setDueTime] = useState('');
-  const [notes, setNotes] = useState('');
-  const [actions, setActions] = useState([]);
-  const [reminders, setReminders] = useState([]);
-  const [actionChips, setActionChips] = useState([]);
-  const [added, setAdded] = useState('');
-  const [checked, setChecked] = useState([]);
-  const [isRepeating, setIsRepeating] = useState(false);
-  const [highPriority, setHighPriority] = useState(false);
-  const [activeTimer, setActiveTimer] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [completed, setCompleted] = useState(false);
-  const [showInput, setShowInput] = useState(false);
-  // const [showNotes, setShowNotes] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [drag, setDrag] = React.useState(false);
-  const [selected, setSelected] = useState('');
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('');
-  const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [itemList, setItemList] = useState([
-    {
-      actions: 'Gmail',
-      activeTimer: true,
-      added: '12/1/2020 ',
-      dueDate: '12/31/2020',
-      dueTime: '6:45:00 PM',
-      highPriority: true,
-      id: 'JgKzuOY1ViP-L2678678',
-      isRepeating: true,
-      key: 'ufR9N2I28ceGkb678679',
-      notes: 'These are my notes for my second todo item in order to help me test.',
-      priority: 'High',
-      reminders: '1 hour before',
-      repeat: 'Everyday',
-      timer: '60:00',
-      title: 'Hello this is my second todo item and it helps me test what I need to.',
-    },
-    {
-      actions: 'Outlook',
-      activeTimer: true,
-      added: '12/1/2020 ',
-      dueDate: '12/31/2020',
-      dueTime: '6:30:21 PM',
-      highPriority: true,
-      id: 'JgKzuOYwlPW1ViP-L26q9',
-      isRepeating: true,
-      key: 'ufR9N2I28ceGkbcPfFvoC',
-      notes: 'These are my notes for my first todo item in order to help me test.',
-      priority: 'High',
-      reminders: '1 hour before',
-      repeat: 'Everyday',
-      timer: '60:00',
-      title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
-    },
-  ]);
+  // const [order, setOrder] = useState('asc');
+  // const [orderBy, setOrderBy] = useState('');
+  // const [page, setPage] = useState(0);
+  // const [dense, setDense] = useState(false);
+  // const [rowsPerPage, setRowsPerPage] = useState(10);
+  // const [itemList, setItemList] = useState([
+  //   {
+  //     actions: 'Gmail',
+  //     activeTimer: true,
+  //     added: '12/1/2020 ',
+  //     dueDate: '12/31/2020',
+  //     dueTime: '6:45:00 PM',
+  //     highPriority: true,
+  //     id: 'JgKzuOY1ViP-L2678678',
+  //     isRepeating: true,
+  //     key: 'ufR9N2I28ceGkb678679',
+  //     notes: 'These are my notes for my second todo item in order to help me test.',
+  //     priority: 'High',
+  //     reminders: '1 hour before',
+  //     repeat: 'Everyday',
+  //     timer: '60:00',
+  //     title: 'Hello this is my second todo item and it helps me test what I need to.',
+  //   },
+  //   {
+  //     actions: 'Outlook',
+  //     activeTimer: true,
+  //     added: '12/1/2020 ',
+  //     dueDate: '12/31/2020',
+  //     dueTime: '6:30:21 PM',
+  //     highPriority: true,
+  //     id: 'JgKzuOYwlPW1ViP-L26q9',
+  //     isRepeating: true,
+  //     key: 'ufR9N2I28ceGkbcPfFvoC',
+  //     notes: 'These are my notes for my first todo item in order to help me test.',
+  //     priority: 'High',
+  //     reminders: '1 hour before',
+  //     repeat: 'Everyday',
+  //     timer: '60:00',
+  //     title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
+  //   },
+  // ]);
 
-  useEffect(() => {
-    setItemList(itemList);
-  }, [itemList]);
+  // useEffect(() => {
+  //   setItemList(itemList);
+  // }, [itemList]);
 
   // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE ID:', id);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE KEY:', key);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Title:', title);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Priority:', priority);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Repeat:', repeat);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Date Due:', dueDate);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Time Due:', dueTime);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Notes:', notes);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Timer:', timer);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Actions:', actions);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Reminders:', reminders);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Added:', added);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Action Chips:', actionChips);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE State:', boolean);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE Show Input:', showInput);
-  // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE itemList:', itemList);
+  console.log('WORKFLOW STATE State:', state);
 
-  const handleTitle = (event) => {
-    setTitle(event.target.value);
+  const handleSwitch = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+  const handleValue = (event) => {
+    setState({ ...state, [event.target.name]: event.target.value });
+  };
+  const handleCollapse = (event) => {
+    setState({ ...state, [event.target.name]: event.target.open });
   };
   const handleHighPriority = () => {
+    const [priority] = state.priority;
     if (priority === 'High') {
-      setHighPriority(true);
+      // setState({ ...state, [event.target.name]: event.target.value });
+      setState(priority.true);
     } else {
-      setHighPriority(false);
+      setState(priority.false);
     }
-  };
-  const handlePriority = (event) => {
-    const notApp = 'N/A';
-    const input = event.target.value;
-    if (! priority) {
-      setPriority(input);
-    } else {
-      setPriority(notApp);
-    }
-  };
-  const handleIsRepeating = () => {
-    if (! repeat) {
-      setIsRepeating(false);
-    } else {
-      setIsRepeating(true);
-    }
-  };
-  const handleRepeat = (event) => {
-    const input = event.target.value;
-    setRepeat(input);
   };
   const handleAdded = () => {
     setAdded(todaysDate);
-  };
-  const handleActiveTimer = () => {
-    if (! timer) {
-      setActiveTimer(false);
-    } else {
-      setActiveTimer(true);
-    }
   };
   const handleDueDate = (date) => {
     const dateToString = date.toLocaleString();
@@ -357,11 +346,29 @@ const WorkFlow = () => {
     const newDueTime = timeToString.slice(11, 23);
     setDueTime(newDueTime);
   };
-  const handleNotes = (event) => {
-    setNotes(event.target.value);
+
+  const handleIsRepeating = () => {
+    if (! repeat) {
+      setState(repeat.false);
+    } else {
+      setState(repeat.true);
+    }
   };
-  const handleActions = (event) => {
-    setActions(event.target.value);
+  const handleActiveTimer = () => {
+    if (! timer) {
+      setActiveTimer(false);
+    } else {
+      setActiveTimer(true);
+    }
+  };
+  const handleExpandClick = () => {
+    setExpanded(! expanded);
+  };
+  const handleShowInput = () => {
+    setShowInput(! showInput);
+  };
+  const handleDrag = () => {
+    setDrag(! drag);
   };
   const handleActionChips = () => {
     switch (actions) {
@@ -442,36 +449,6 @@ const WorkFlow = () => {
     }
     }
   };
-  const handleTimer = (event) => {
-    setTimer(event.target.value);
-  };
-  const handleChecked = (event) => {
-    setChecked(event.target.value);
-  };
-  const handleReminders = (event) => {
-    setReminders(event.target.value);
-  };
-  const handleEditing = () => {
-    setEditing(! editing);
-  };
-  const handleCompleted = () => {
-    setCompleted(! completed);
-  };
-  const handleExpandClick = () => {
-    setExpanded(! expanded);
-  };
-  const handleShowInput = () => {
-    setShowInput(! showInput);
-  };
-  const handleSwitch = (event) => {
-    setBoolean({ ...boolean, [event.target.name]: event.target.checked });
-  };
-  // const handleNotesInput = () => {
-  //   setShowNotes(! showNotes);
-  // };
-  const handleDrag = () => {
-    setDrag(! drag);
-  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -529,24 +506,24 @@ const WorkFlow = () => {
     handleActiveTimer();
     handleActionChips();
     const newTodoItem = [
-      ...itemList,
+      ...state.itemList,
       {
-        key,
-        id,
-        title,
-        priority,
-        highPriority,
-        repeat,
-        isRepeating,
-        added,
-        dueDate,
-        dueTime,
-        notes,
-        actions,
-        timer,
-        reminders,
-        activeTimer,
-        actionChips,
+        state.key,
+        state.id,
+        state.title,
+        state.priority,
+        state.highPriority,
+        state.repeat,
+        state.isRepeating,
+        state.added,
+        state.dueDate,
+        state.dueTime,
+        state.notes,
+        state.actions,
+        state.timer,
+        state.reminders,
+        state.activeTimer,
+        state.actionChips,
       }
     ];
     setItemList(newTodoItem);
@@ -555,40 +532,12 @@ const WorkFlow = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     addTodoItem(key, id, title, priority, dueDate, dueTime, repeat, notes, actions, timer, checked, reminders);
-    setShowInput(! showInput);
-    setTitle('');
-    setNotes('');
-    setPriority('');
-    setRepeat('');
-    setActions('');
-    setTimer('');
-    setReminders('');
-    setDueDate('');
-    setDueTime('');
-    setAdded('');
-    setHighPriority();
-    setIsRepeating();
-    setChecked();
-    setActionChips([]);
+    setState();
   };
 
   const handleCancelInput = (event) => {
     event.preventDefault();
-    setShowInput(! showInput);
-    setTitle('');
-    setNotes('');
-    setPriority('');
-    setRepeat('');
-    setActions('');
-    setTimer('');
-    setReminders('');
-    setDueDate('');
-    setDueTime('');
-    setAdded('');
-    setHighPriority();
-    setIsRepeating();
-    setChecked();
-    setActionChips([]);
+
   };
 
   // const handleRepeatPopulation = (event) => {
@@ -596,70 +545,50 @@ const WorkFlow = () => {
   // };
   // const isSelected = (index) => selected.indexOf(index) !== - 1;
   // const isItemSelected = isSelected(todoItem.index);
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, itemList.length - page * rowsPerPage);
+  const emptyRows = state.rowsPerPage - Math.min(state.rowsPerPage, state.itemList.length - state.page * state.rowsPerPage);
   return (
     <div className={ classes.fragContainer }>
       <Paper className={ classes.tableWrap }>
         <InputForm
+          state={ state }
           todaysTime={ todaysTime }
           todaysDate={ todaysDate }
-          showInput={ showInput }
-          title={ title }
-          priority={ priority }
-          repeat={ repeat }
-          dueDate={ dueDate }
-          dueTime={ dueTime }
-          notes={ notes }
-          actions={ actions }
-          timer={ timer }
-          reminders={ reminders }
-          editing={ editing }
-          completed={ completed }
-          checked={ checked }
-          boolean={ boolean }
           handleCancelInput={ handleCancelInput }
           handleSubmit={ handleSubmit }
           addTodoItem={ addTodoItem }
-          handleTitle={ handleTitle }
-          handlePriority={ handlePriority }
-          handleRepeat={ handleRepeat }
           handleDueDate={ handleDueDate }
           handleDueTime={ handleDueTime }
-          handleNotes={ handleNotes }
-          handleActions={ handleActions }
-          handleTimer={ handleTimer }
-          handleReminders={ handleReminders }
           handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
-          handleChecked={ handleChecked }
           handleSwitch={ handleSwitch }
+          handleValue={ handleValue }
         />
         <EnhancedTableToolbar
-          numSelected={ selected.length }
-          showInput={ showInput }
+          numSelected={ state.selected.length }
+          showInput={ state.showInput }
           handleShowInput={ handleShowInput }
         />
         <TableContainer>
           <Table
             className={ classes.table }
             aria-labelledby='tableTitle'
-            size={ dense ? 'small' : 'medium' }
+            size={ state.dense ? 'small' : 'medium' }
             aria-label='enhanced table'
           >
             <EnhancedTableHead
               classes={ classes }
-              order={ order }
-              orderBy={ orderBy }
+              order={ state.order }
+              orderBy={ state.orderBy }
               onSelectAllClick={ handleSelectAllClick }
               onRequestSort={ handleRequestSort }
-              numSelected={ selected.length }
-              rowCount={ itemList.length }
+              numSelected={ state.selected.length }
+              rowCount={ state.itemList.length }
             />
             <>
-              {itemList.map((todoItem, index) => (
+              {state.itemList.map((todoItem, index) => (
                 <TableBody
-                  key={ key }
-                  id={ id }
+                  key={ state.key }
+                  id={ state.id }
                   index={ index }
                   tabIndex={ - 1 }
                   className={ classes.itemRow }
@@ -725,7 +654,6 @@ const WorkFlow = () => {
                         <IconButton
                           size='small'
                           aria-label='show set timer'
-                          aria-expanded={ drag }
                           onClick={ handleDrag }
                           style={ { color: todoItem.activeTimer ? '#00C853' : '' } }
                         >
@@ -733,7 +661,7 @@ const WorkFlow = () => {
                         </IconButton>
                       </Tooltip>
                       <Dialog
-                        open={ drag }
+                        open={ state.drag }
                         onClose={ handleDrag }
                         PaperComponent={ PaperComponent }
                         aria-labelledby='draggable-dialog-title'
@@ -759,11 +687,11 @@ const WorkFlow = () => {
                     <TableCell align='right' style={ { width: 64 } }>
                       <IconButton
                         aria-label='show more'
-                        aria-expanded={ expanded }
+                        aria-expanded={ state.expanded }
                         size='small'
                         onClick={ handleExpandClick }
                         className={ clsx(classes.expand, {
-                          [classes.expandOpen]: expanded,
+                          [classes.expandOpen]: state.expanded,
                         }) }
                       >
                         <ExpandMoreIcon />
@@ -782,7 +710,7 @@ const WorkFlow = () => {
                       }
                       colSpan={ 16 }
                     >
-                      <Collapse in={ expanded } timeout='auto' unmountOnExit>
+                      <Collapse in={ state.expanded } timeout='auto' unmountOnExit>
                         <Box margin={ 1 }>
                           <Typography variant='h6' style={ { fontStyle: 'italic' } } gutterBottom>
                             Details
@@ -830,7 +758,7 @@ const WorkFlow = () => {
             </>
             {emptyRows > 0 && (
               <TableBody>
-                <TableRow style={ { height: (dense ? 33 : 53) * emptyRows } }>
+                <TableRow style={ { height: (state.dense ? 33 : 53) * emptyRows } }>
                   <TableCell />
                 </TableRow>
               </TableBody>
@@ -840,15 +768,15 @@ const WorkFlow = () => {
         <TablePagination
           rowsPerPageOptions={ [10, 20, 50] }
           component='div'
-          count={ itemList.length }
-          rowsPerPage={ rowsPerPage }
-          page={ page }
+          count={ state.itemList.length }
+          rowsPerPage={ state.rowsPerPage }
+          page={ state.page }
           onChangePage={ handleChangePage }
           onChangeRowsPerPage={ handleChangeRowsPerPage }
         />
       </Paper>
       <FormControlLabel
-        control={ <Switch checked={ dense } onChange={ handleChangeDense } /> }
+        control={ <Switch checked={ state.dense } onChange={ handleChangeDense } /> }
         label='Condense'
       />
       <Paper>{todaysDate}</Paper>
