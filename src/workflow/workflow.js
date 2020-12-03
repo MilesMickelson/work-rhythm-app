@@ -200,10 +200,8 @@ const todaysTime = todayToString.slice(10, 18);
 
 const WorkFlow = () => {
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    showNotes: false,
-    showActions: false,
-    showReminders: false,
+  const [boolean, setBoolean] = React.useState({
+    showAdditional: false,
   });
   const [id, setId] = useState(0);
   const [key, setKey] = useState('');
@@ -302,7 +300,7 @@ const WorkFlow = () => {
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Action Chips:', actionChips);
   // eslint-disable-next-line no-console
-  console.log('WORKFLOW STATE State:', state);
+  console.log('WORKFLOW STATE State:', boolean);
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE Show Input:', showInput);
   // eslint-disable-next-line no-console
@@ -465,8 +463,8 @@ const WorkFlow = () => {
   const handleShowInput = () => {
     setShowInput(! showInput);
   };
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const handleSwitch = (event) => {
+    setBoolean({ ...boolean, [event.target.name]: event.target.checked });
   };
   // const handleNotesInput = () => {
   //   setShowNotes(! showNotes);
@@ -618,7 +616,7 @@ const WorkFlow = () => {
           editing={ editing }
           completed={ completed }
           checked={ checked }
-          state={ state }
+          boolean={ boolean }
           handleCancelInput={ handleCancelInput }
           handleSubmit={ handleSubmit }
           addTodoItem={ addTodoItem }
@@ -634,7 +632,7 @@ const WorkFlow = () => {
           handleEditing={ handleEditing }
           handleCompleted={ handleCompleted }
           handleChecked={ handleChecked }
-          handleChange={ handleChange }
+          handleSwitch={ handleSwitch }
         />
         <EnhancedTableToolbar
           numSelected={ selected.length }

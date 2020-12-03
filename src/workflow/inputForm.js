@@ -17,7 +17,6 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
-import Grow from '@material-ui/core/Grow';
 import Collapse from '@material-ui/core/Collapse';
 
 import CloseIcon from '@material-ui/icons/Close';
@@ -30,8 +29,9 @@ const CssTextField = withStyles(() => ({
     },
     '& .MuiFilledInput-root': {
       width: 440,
+      height: 56,
       borderRadius: 5,
-      fontSize: 16,
+      fontSize: 18,
       position: 'relative',
       '& fieldset': {
         border: '2px solid #005269',
@@ -56,29 +56,46 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     flexDirection: 'row',
   },
-  inputGroupA: {
-    margin: theme.spacing(1),
+  title: {
+    marginTop: theme.spacing(2),
+    marginLeft: theme.spacing(2),
   },
-  selectGroupB: {
-    margin: theme.spacing(1),
-    marginTop: 6,
-    width: 212,
+  dateAndTime: {
+    marginLeft: theme.spacing(2.5),
+    width: 220,
     minWidth: 120,
     maxWidth: 300,
   },
-  timeAndDate: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+  inputGroup2: {
+    marginTop: - theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    width: 212,
+    height: 56,
+    minWidth: 120,
+    maxWidth: 300,
+  },
+  notes: {
+    // marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(2),
+
+  },
+  addGroup2: {
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(2),
+    height: 56,
+    width: 220,
+    minWidth: 120,
+    maxWidth: 300,
+  },
+  addtSwitch: {
     marginTop: - theme.spacing(1),
-    width: 212,
-    minWidth: 120,
-    maxWidth: 300,
+    marginLeft: theme.spacing(3),
+    // width: 220,
+    // minWidth: 120,
+    // maxWidth: 300,
   },
-  switchGroup: {
-    display: 'inline-flex',
-  },
-  buttonGroup: {
-    display: 'inline-flex',
+  buttonWrap: {
+    display: 'inline',
   },
   button: {
     margin: theme.spacing(1),
@@ -113,9 +130,8 @@ const InputForm = (props) => {
     handleSubmit,
     addTodoItem,
     handleCancelInput,
-    showNotes,
-    state,
-    handleChange,
+    boolean,
+    handleSwitch,
   } = props;
   const classes = useStyles();
   return (
@@ -130,8 +146,9 @@ const InputForm = (props) => {
         unmountOnExit
       >
         <div className={ classes.inputWrap }>
-          <FormControl className={ classes.inputGroupA }>
+          <FormControl>
             <CssTextField
+              className={ classes.title }
               label='Title'
               variant='filled'
               margin='dense'
@@ -141,40 +158,7 @@ const InputForm = (props) => {
               onChange={ handleTitle }
             />
           </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
-            <InputLabel htmlFor='priority'>Priority</InputLabel>
-            <Select
-              native
-              id='priority'
-              value={ priority || '' }
-              onChange={ handlePriority }
-            >
-              <option aria-label='none' value='' />
-              <option value='High'>High</option>
-              <option value='Medium'>Medium</option>
-              <option value='Low'>Low</option>
-            </Select>
-          </FormControl>
-          <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
-            <InputLabel htmlFor='repeat'>Repeat</InputLabel>
-            <Select
-              native
-              value={ repeat || '' }
-              onChange={ handleRepeat }
-            >
-              <option aria-label='none' value='' />
-              <option value='Everyday'>Everyday</option>
-              <option value='Weekdays'>Weekdays</option>
-              <option value='Weekends'>Weekends</option>
-              <option value='Weekly'>Weekly</option>
-              <option value='Bi-Weekly'>Bi-Weekly</option>
-              <option value='Monthly'>Monthly</option>
-              <option value='Tri-Monthly'>Tri-Monthly</option>
-              <option value='Bi-Annually'>Bi-Annually</option>
-              <option value='Annually'>Annually</option>
-            </Select>
-          </FormControl>
-          <FormControl className={ classes.timeAndDate }>
+          <FormControl className={ classes.dateAndTime }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <DatePicker
                 label='Date Due'
@@ -191,7 +175,7 @@ const InputForm = (props) => {
               />
             </MuiPickersUtilsProvider>
           </FormControl>
-          <FormControl className={ classes.timeAndDate }>
+          <FormControl className={ classes.dateAndTime }>
             <MuiPickersUtilsProvider utils={ DateFnsUtils }>
               <TimePicker
                 label='Time Due'
@@ -210,8 +194,84 @@ const InputForm = (props) => {
               />
             </MuiPickersUtilsProvider>
           </FormControl>
-          <Collapse in={ state.showActions } timeout='auto' collapsedHeight='0' unmountOnExit>
-            <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
+          <FormControl variant='filled' size='small' className={ classes.inputGroup2 }>
+            <InputLabel htmlFor='repeat'>Repeat</InputLabel>
+            <Select
+              native
+              value={ repeat || '' }
+              onChange={ handleRepeat }
+            >
+              <option aria-label='none' value='' />
+              <option value='Everyday'>Everyday</option>
+              <option value='Weekdays'>Weekdays</option>
+              <option value='Weekends'>Weekends</option>
+              <option value='Weekly'>Weekly</option>
+              <option value='Bi-Weekly'>Bi-Weekly</option>
+              <option value='Monthly'>Monthly</option>
+              <option value='Tri-Monthly'>Tri-Monthly</option>
+              <option value='Bi-Annually'>Bi-Annually</option>
+              <option value='Annually'>Annually</option>
+            </Select>
+          </FormControl>
+          <FormControl variant='filled' size='small' className={ classes.inputGroup2 }>
+            <InputLabel htmlFor='reminders'>Reminders</InputLabel>
+            <Select
+              native
+              value={ reminders || '' }
+              onChange={ handleReminders }
+            >
+              <option aria-label='None' value='' />
+              <option value='event time due'>Event time due</option>
+              <option value='5 minutes before'>5 minutes before</option>
+              <option value='10 minutes before'>10 minutes before</option>
+              <option value='15 minutes before'>15 minutes before</option>
+              <option value='20 minutes before'>20 minutes before</option>
+              <option value='30 minutes before'>30 minutes before</option>
+              <option value='1 hour before'>1 hour before</option>
+              <option value='2 hours before'>2 hours before</option>
+              <option value='1 hour before'>1 day before</option>
+              <option value='2 days before'>2 days before</option>
+              <option value='1 week before'>1 week before</option>
+              <option value='2 weeks before'>2 weeks before</option>
+              <option value='1 month before'>1 month before</option>
+              <option value='2 months before'>2 months before</option>
+              <option value='custom'>Custom</option>
+            </Select>
+          </FormControl>
+          <FormControl className={ classes.addtSwitch }>
+            <FormControlLabel
+              control={ <Switch checked={ boolean.showAdditional } onChange={ handleSwitch } /> }
+              name='showAdditional'
+              label='Additional'
+              labelPlacement='left'
+            />
+          </FormControl>
+          <Collapse in={ boolean.showAdditional } timeout='auto' collapsedHeight='0' unmountOnExit>
+            <FormControl className={ classes.notes }>
+              <CssTextField
+                label='Notes'
+                margin='dense'
+                variant='filled'
+                multiline={ true }
+                value={ notes || '' }
+                onChange={ handleNotes }
+              />
+            </FormControl>
+            <FormControl variant='filled' size='small' className={ classes.addGroup2 }>
+              <InputLabel htmlFor='priority'>Priority</InputLabel>
+              <Select
+                native
+                id='priority'
+                value={ priority || '' }
+                onChange={ handlePriority }
+              >
+                <option aria-label='none' value='' />
+                <option value='High'>High</option>
+                <option value='Medium'>Medium</option>
+                <option value='Low'>Low</option>
+              </Select>
+            </FormControl>
+            <FormControl variant='filled' size='small' className={ classes.addGroup2 }>
               <InputLabel htmlFor='actions'>Actions</InputLabel>
               <Select
                 native
@@ -228,67 +288,8 @@ const InputForm = (props) => {
               </Select>
             </FormControl>
           </Collapse>
-          <Collapse in={ state.showReminders } timeout='auto' collapsedHeight='0' unmountOnExit>
-            <FormControl variant='filled' size='small' className={ classes.selectGroupB }>
-              <InputLabel htmlFor='reminders'>Reminders</InputLabel>
-              <Select
-                native
-                value={ reminders || '' }
-                onChange={ handleReminders }
-              >
-                <option aria-label='None' value='' />
-                <option value='event time due'>Event time due</option>
-                <option value='5 minutes before'>5 minutes before</option>
-                <option value='10 minutes before'>10 minutes before</option>
-                <option value='15 minutes before'>15 minutes before</option>
-                <option value='20 minutes before'>20 minutes before</option>
-                <option value='30 minutes before'>30 minutes before</option>
-                <option value='1 hour before'>1 hour before</option>
-                <option value='2 hours before'>2 hours before</option>
-                <option value='1 hour before'>1 day before</option>
-                <option value='2 days before'>2 days before</option>
-                <option value='1 week before'>1 week before</option>
-                <option value='2 weeks before'>2 weeks before</option>
-                <option value='1 month before'>1 month before</option>
-                <option value='2 months before'>2 months before</option>
-                <option value='custom'>Custom</option>
-              </Select>
-            </FormControl>
-          </Collapse>
-          <Collapse in={ state.showNotes } timeout='auto' collapsedHeight='0' unmountOnExit>
-            <FormControl className={ classes.inputGroupA }>
-              <CssTextField
-                label='Notes'
-                margin='dense'
-                variant='filled'
-                multiline={ true }
-                value={ notes || '' }
-                onChange={ handleNotes }
-              />
-            </FormControl>
-          </Collapse>
           <br />
-          <FormGroup className={ classes.switchGroup }>
-            <FormControlLabel
-              control={ <Switch checked={ state.showNotes } onChange={ handleChange } /> }
-              name='showNotes'
-              label='Notes'
-              labelPlacement='top'
-            />
-            <FormControlLabel
-              control={ <Switch checked={ state.showActions } onChange={ handleChange } /> }
-              name='showActions'
-              label='Actions'
-              labelPlacement='top'
-            />
-            <FormControlLabel
-              control={ <Switch checked={ state.showReminders } onChange={ handleChange } /> }
-              name='showReminders'
-              label='Reminders'
-              labelPlacement='top'
-            />
-          </FormGroup>
-          <FormGroup className={ classes.buttonGroup }>
+          <FormGroup className={ classes.buttonWrap }>
             <Button
               type='submit'
               variant='contained'
