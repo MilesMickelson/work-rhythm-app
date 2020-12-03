@@ -11,6 +11,7 @@ import SendIcon from '@material-ui/icons/Send';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
 import BookIcon from '@material-ui/icons/Book';
 import SearchIcon from '@material-ui/icons/Search';
+import InfoIcon from '@material-ui/icons/Info';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -166,6 +167,9 @@ const useStyles = makeStyles((theme) => ({
   expandIcon: {
     width: 64,
   },
+  remindCol: {
+    width: 160,
+  },
   itemDateCol: {
     width: 90,
     paddingRight: 0,
@@ -225,40 +229,40 @@ const WorkFlow = () => {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [itemList, setItemList] = useState([
-    // {
-    //   actions: 'Gmail',
-    //   activeTimer: true,
-    //   added: '12/1/2020 ',
-    //   dueDate: '12/31/2020',
-    //   dueTime: '6:45:00 PM',
-    //   highPriority: true,
-    //   id: 'JgKzuOY1ViP-L2678678',
-    //   isRepeating: true,
-    //   key: 'ufR9N2I28ceGkb678679',
-    //   notes: 'These are my notes for my second todo item in order to help me test.',
-    //   priority: 'High',
-    //   reminders: '1 hour before',
-    //   repeat: 'Everyday',
-    //   timer: '60:00',
-    //   title: 'Hello this is my second todo item and it helps me test what I need to.',
-    // },
-    // {
-    //   actions: 'Outlook',
-    //   activeTimer: true,
-    //   added: '12/1/2020 ',
-    //   dueDate: '12/31/2020',
-    //   dueTime: '6:30:21 PM',
-    //   highPriority: true,
-    //   id: 'JgKzuOYwlPW1ViP-L26q9',
-    //   isRepeating: true,
-    //   key: 'ufR9N2I28ceGkbcPfFvoC',
-    //   notes: 'These are my notes for my first todo item in order to help me test.',
-    //   priority: 'High',
-    //   reminders: '1 hour before',
-    //   repeat: 'Everyday',
-    //   timer: '60:00',
-    //   title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
-    // },
+    {
+      actions: 'Gmail',
+      activeTimer: true,
+      added: '12/1/2020 ',
+      dueDate: '12/31/2020',
+      dueTime: '6:45:00 PM',
+      highPriority: true,
+      id: 'JgKzuOY1ViP-L2678678',
+      isRepeating: true,
+      key: 'ufR9N2I28ceGkb678679',
+      notes: 'These are my notes for my second todo item in order to help me test.',
+      priority: 'High',
+      reminders: '1 hour before',
+      repeat: 'Everyday',
+      timer: '60:00',
+      title: 'Hello this is my second todo item and it helps me test what I need to.',
+    },
+    {
+      actions: 'Outlook',
+      activeTimer: true,
+      added: '12/1/2020 ',
+      dueDate: '12/31/2020',
+      dueTime: '6:30:21 PM',
+      highPriority: true,
+      id: 'JgKzuOYwlPW1ViP-L26q9',
+      isRepeating: true,
+      key: 'ufR9N2I28ceGkbcPfFvoC',
+      notes: 'These are my notes for my first todo item in order to help me test.',
+      priority: 'High',
+      reminders: '1 hour before',
+      repeat: 'Everyday',
+      timer: '60:00',
+      title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
+    },
   ]);
 
   useEffect(() => {
@@ -771,18 +775,25 @@ const WorkFlow = () => {
                             <TableHead>
                               <TableRow className={ classes.expandHeader }>
                                 <TableCell align='left'>Notes</TableCell>
-                                <TableCell align='right'>Actions</TableCell>
-                                <TableCell align='right'>Reminders</TableCell>
-                                <TableCell align='right'>Added</TableCell>
-                                <TableCell align='right'>Edit</TableCell>
+                                <TableCell align='right' className={ classes.remindCol }>Reminders</TableCell>
+                                <TableCell align='right' className={ classes.expandIcon }>Actions</TableCell>
+                                <TableCell align='right' className={ classes.expandIcon }>Info</TableCell>
+                                <TableCell align='right' className={ classes.expandIcon }>Edit</TableCell>
                               </TableRow>
                             </TableHead>
                             <TableBody>
                               <TableRow className={ classes.expandRow }>
                                 <TableCell align='left'>{todoItem.notes}</TableCell>
-                                <TableCell align='right'>{todoItem.actionChips}</TableCell>
                                 <TableCell align='right'>{todoItem.reminders}</TableCell>
-                                <TableCell align='right'>{todoItem.added}</TableCell>
+                                <TableCell align='right'>{todoItem.actionChips}</TableCell>
+                                <TableCell align='right'>
+                                  <IconButton
+                                    aria-label='extra item info'
+                                    size='small'
+                                  >
+                                    <InfoIcon />
+                                  </IconButton>
+                                </TableCell>
                                 <TableCell align='right'>
                                   <IconButton
                                     aria-label='edit item'
