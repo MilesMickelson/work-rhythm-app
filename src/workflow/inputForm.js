@@ -112,10 +112,17 @@ const InputForm = (props) => {
     handleSwitch,
     handleValue,
     todaysDate,
-    showInput,
     handleSubmit,
     addTodoItem,
     handleCancelInput,
+    handleDueDate,
+    handleDueTime,
+    handleTitle,
+    handleRepeat,
+    handleReminders,
+    handleNotes,
+    handlePriority,
+    handleActions,
   } = props;
   const classes = useStyles();
   return (
@@ -124,8 +131,8 @@ const InputForm = (props) => {
     >
       <Collapse
         aria-label='show more'
-        aria-expanded={ showInput }
-        in={ showInput }
+        aria-expanded={ state.showInput }
+        in={ state.showInput }
         timeout='auto'
         unmountOnExit
       >
@@ -137,10 +144,10 @@ const InputForm = (props) => {
               name='title'
               variant='filled'
               margin='dense'
-              multiline={ true }
-              // required={ true }
               value={ state.title || '' }
-              onChange={ handleValue }
+              onChange={ handleTitle }
+              multiline
+              required
             />
           </FormControl>
           <FormControl className={ classes.dateAndTime }>
@@ -153,7 +160,7 @@ const InputForm = (props) => {
                 margin='normal'
                 disablePast='true'
                 value={ state.dueDate || '' }
-                onChange={ handleValue }
+                onChange={ handleDueDate }
                 placeholder={ todaysDate }
                 InputLabelProps={ { shrink: true } }
                 native
@@ -173,21 +180,21 @@ const InputForm = (props) => {
                 format='HH:mm'
                 placeholder='––:––'
                 minutesStep={ 5 }
+                value={ state.dueTime || '' }
+                onChange={ handleDueTime }
+                InputLabelProps={ { shrink: true } }
                 native
                 autoOk
-                value={ state.dueTime || '' }
-                onChange={ handleValue }
-                InputLabelProps={ { shrink: true } }
               />
             </MuiPickersUtilsProvider>
           </FormControl>
           <FormControl variant='filled' size='small' className={ classes.inputGroup2 }>
             <InputLabel htmlFor='repeat'>Repeat</InputLabel>
             <Select
-              native
               name='repeat'
               value={ state.repeat || '' }
-              onChange={ handleValue }
+              onChange={ handleRepeat }
+              native
             >
               <option aria-label='none' value='' />
               <option value='Everyday'>Everyday</option>
@@ -204,10 +211,10 @@ const InputForm = (props) => {
           <FormControl variant='filled' size='small' className={ classes.inputGroup2 }>
             <InputLabel htmlFor='reminders'>Reminders</InputLabel>
             <Select
-              native
               name='reminders'
               value={ state.reminders || '' }
-              onChange={ handleValue }
+              onChange={ handleReminders }
+              native
             >
               <option aria-label='None' value='' />
               <option value='event time due'>Event time due</option>
@@ -232,7 +239,7 @@ const InputForm = (props) => {
               control={ <Switch checked={ state.showAdditional } onChange={ handleSwitch } /> }
               name='showAdditional'
               label='Additional'
-              labelPlacement='left'
+              labelPlacement='start'
             />
           </FormControl>
           <Collapse in={ state.showAdditional } timeout='auto' collapsedHeight='0' unmountOnExit>
@@ -244,7 +251,7 @@ const InputForm = (props) => {
                 variant='filled'
                 multiline={ true }
                 value={ state.notes || '' }
-                onChange={ handleValue }
+                onChange={ handleNotes }
               />
             </FormControl>
             <FormControl variant='filled' size='small' className={ classes.addGroup2 }>
@@ -253,7 +260,7 @@ const InputForm = (props) => {
                 name='priority'
                 id='priority'
                 value={ state.priority || '' }
-                onChange={ handleValue }
+                onChange={ handlePriority }
                 native
               >
                 <option aria-label='none' value='' />
@@ -265,9 +272,10 @@ const InputForm = (props) => {
             <FormControl variant='filled' size='small' className={ classes.addGroup2 }>
               <InputLabel htmlFor='actions'>Actions</InputLabel>
               <Select
-                name='priority'
+                name='actions'
+                id='actions'
                 value={ state.actions || '' }
-                onChange={ handleValue }
+                onChange={ handleActions }
                 native
               >
                 <option aria-label='None' value='' />

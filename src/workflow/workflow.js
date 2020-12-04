@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
 
@@ -29,17 +29,9 @@ import IconButton from '@material-ui/core/IconButton';
 import TableHead from '@material-ui/core/TableHead';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Chip from '@material-ui/core/Chip';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fade from '@material-ui/core/Fade';
-
-import Draggable from 'react-draggable';
 
 import InputForm from './inputForm';
 import EnhancedTableToolbar from './tableToolbar';
@@ -70,14 +62,6 @@ import EnhancedTableHead from './tableHead';
 //   });
 //   return stabilizedThis.map((el) => el[0]);
 // }
-
-function PaperComponent(props) {
-  return (
-    <Draggable handle='#draggable-dialog-title' cancel={ '[class*="MuiDialogContent-root"]' }>
-      <Paper { ...props } />
-    </Draggable>
-  );
-}
 
 const useStyles = makeStyles((theme) => ({
   fragContainer: {
@@ -203,30 +187,29 @@ const WorkFlow = () => {
   const [state, setState] = React.useState({
     showAdditional: false,
     key: '',
-    actions: 'Gmail',
+    actions: '',
     actionChips: [],
-    activeTimer: true,
-    added: '12/1/2020 ',
+    activeTimer: false,
+    added: '',
     checked: [],
-    dueDate: '12/31/2020',
-    dueTime: '6:45:00 PM',
-    drag: false,
+    dense: false,
+    dueDate: '',
+    dueTime: '',
     expanded: false,
-    highPriority: true,
-    id: '',
-    isRepeating: true,
+    highPriority: false,
+    id: 0,
+    isRepeating: false,
     notes: '',
+    order: 'asc',
+    orderBy: '',
     priority: '',
     reminders: '',
     repeat: '',
-    title: '',
+    page: 0,
     selected: '',
     stopwatch: '',
     showInput: false,
-    order: 'asc',
-    orderBy: '',
-    pade: 0,
-    dense: false,
+    title: '',
     rowsPerPage: 10,
     itemList: [
       {
@@ -265,113 +248,119 @@ const WorkFlow = () => {
       },
     ]
   });
-  // const [order, setOrder] = useState('asc');
-  // const [orderBy, setOrderBy] = useState('');
-  // const [page, setPage] = useState(0);
-  // const [dense, setDense] = useState(false);
-  // const [rowsPerPage, setRowsPerPage] = useState(10);
-  // const [itemList, setItemList] = useState([
-  //   {
-  //     actions: 'Gmail',
-  //     activeTimer: true,
-  //     added: '12/1/2020 ',
-  //     dueDate: '12/31/2020',
-  //     dueTime: '6:45:00 PM',
-  //     highPriority: true,
-  //     id: 'JgKzuOY1ViP-L2678678',
-  //     isRepeating: true,
-  //     key: 'ufR9N2I28ceGkb678679',
-  //     notes: 'These are my notes for my second todo item in order to help me test.',
-  //     priority: 'High',
-  //     reminders: '1 hour before',
-  //     repeat: 'Everyday',
-  //     timer: '60:00',
-  //     title: 'Hello this is my second todo item and it helps me test what I need to.',
-  //   },
-  //   {
-  //     actions: 'Outlook',
-  //     activeTimer: true,
-  //     added: '12/1/2020 ',
-  //     dueDate: '12/31/2020',
-  //     dueTime: '6:30:21 PM',
-  //     highPriority: true,
-  //     id: 'JgKzuOYwlPW1ViP-L26q9',
-  //     isRepeating: true,
-  //     key: 'ufR9N2I28ceGkbcPfFvoC',
-  //     notes: 'These are my notes for my first todo item in order to help me test.',
-  //     priority: 'High',
-  //     reminders: '1 hour before',
-  //     repeat: 'Everyday',
-  //     timer: '60:00',
-  //     title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
-  //   },
-  // ]);
-
-  // useEffect(() => {
-  //   setItemList(itemList);
-  // }, [itemList]);
-
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE State:', state);
 
-  const handleSwitch = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+  const handleTitle = (event) => {
+    setState({ ...state, title: event.target.value });
+  };
+  const handleRepeat = (event) => {
+    setState({ ...state, repeat: event.target.value });
+  };
+  const handleReminders = (event) => {
+    setState({ ...state, reminders: event.target.value });
+  };
+  const handleNotes = (event) => {
+    setState({ ...state, notes: event.target.value });
+  };
+  const handlePriority = (event) => {
+    setState({ ...state, priority: event.target.value });
+  };
+  const handleActions = (event) => {
+    setState({ ...state, actions: event.target.value });
   };
   const handleValue = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
-  const handleCollapse = (event) => {
-    setState({ ...state, [event.target.name]: event.target.open });
+  const handleExpandClick = () => {
+    setState({ ...state, expanded: ! state.expanded });
   };
-  const handleHighPriority = () => {
-    const [priority] = state.priority;
-    if (priority === 'High') {
-      // setState({ ...state, [event.target.name]: event.target.value });
-      setState(priority.true);
-    } else {
-      setState(priority.false);
-    }
+  const handleShowInput = () => {
+    setState({ ...state, showInput: ! state.showInput });
   };
-  const handleAdded = () => {
-    setAdded(todaysDate);
+  const handleSwitch = () => {
+    setState({ ...state, showAdditional: ! state.showAdditional });
   };
   const handleDueDate = (date) => {
     const dateToString = date.toLocaleString();
     const newDueDate = dateToString.slice(0, 10);
-    setDueDate(newDueDate);
+    setState({ ...state, dueDate: newDueDate });
   };
-  // todo (date) => Fri Nov 27 2020 14:30:51 GMT-0500 (Eastern Standard Time)
+  // todo 'Date Object Ex.' = (date) => Fri Nov 27 2020 14:30:51 GMT-0500 (Eastern Standard Time)
   const handleDueTime = (date) => {
     const timeToString = date.toLocaleString();
     const newDueTime = timeToString.slice(11, 23);
-    setDueTime(newDueTime);
+    setState({ ...state, dueTime: newDueTime });
   };
 
+  // ! Material-UI Sorting Functions
+  const handleRequestSort = (event, property) => {
+    const isAsc = state.orderBy === property && state.order === 'asc';
+    setState({ ...state, order: isAsc ? 'desc' : 'asc' });
+    // setOrder(isAsc ? 'desc' : 'asc');
+    setState({ ...state, orderBy: property });
+    // setOrderBy(property);
+  };
+  const handleChangePage = (event, newPage) => {
+    setState({ ...state, setPage: newPage });
+    // setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (event) => {
+    setState({ ...state, rowsPerPage: parseInt(event.target.value, 10) });
+    // setRowsPerPage(parseInt(event.target.value, 10));
+    setState({ ...state, page: 0 });
+    // setPage(0);
+  };
+  const handleChangeDense = (event) => {
+    setState({ ...state, dense: event.target.checked });
+    // setDense(event.target.checked);
+  };
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = state.itemList.map((n) => n.id);
+      setState({ ...state, selected: newSelecteds });
+      // setSelected(newSelecteds);
+      return;
+    }
+    setState({ ...state, selected: [] });
+    // setSelected([]);
+  };
+  // const handleClick = (event, index) => {
+  //   const selectedIndex = state.selected.indexOf(index);
+  //   let newSelected = [];
+  //   if (selectedIndex === - 1) {
+  //     newSelected = newSelected.concat(state.selected, index);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(state.selected.slice(1));
+  //   } else if (selectedIndex === state.selected.length - 1) {
+  //     newSelected = newSelected.concat(state.selected.slice(0, - 1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       state.selected.slice(0, selectedIndex),
+  //       state.selected.slice(selectedIndex + 1),
+  //     );
+  //   }
+  //   setState({ ...state, selected: newSelected });
+  //   // setSelected(newSelected);
+  // };
+
+  const handleHighPriority = () => {
+    if (state.priority === 'High') {
+      setState({ ...state, highPriority: ! state.highPriority });
+    }
+  };
   const handleIsRepeating = () => {
-    if (! repeat) {
-      setState(repeat.false);
-    } else {
-      setState(repeat.true);
+    if (! state.repeat) {
+      setState({ ...state, isRepeating: ! state.isRepeating });
     }
   };
-  const handleActiveTimer = () => {
-    if (! timer) {
-      setActiveTimer(false);
-    } else {
-      setActiveTimer(true);
+  const handleStopwatch = () => {
+    if (! state.stopwatch) {
+      setState({ ...state, activeTimer: ! state.activeTimer });
     }
-  };
-  const handleExpandClick = () => {
-    setExpanded(! expanded);
-  };
-  const handleShowInput = () => {
-    setShowInput(! showInput);
-  };
-  const handleDrag = () => {
-    setDrag(! drag);
   };
   const handleActionChips = () => {
-    switch (actions) {
+    switch (state.actions) {
     default: {
       break;
     }
@@ -384,7 +373,7 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips(gmail);
+      setState({ ...state, actionChips: gmail });
       break;
     }
     case 'outlook': {
@@ -396,7 +385,7 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips(outlook);
+      setState({ ...state, actionChips: outlook });
       break;
     }
     case 'research': {
@@ -408,7 +397,7 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips(research);
+      setState({ ...state, actionChips: research });
       break;
     }
     case 'message': {
@@ -420,7 +409,7 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips(message);
+      setState({ ...state, actionChips: message });
       break;
     }
     case 'read': {
@@ -432,7 +421,7 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips(read);
+      setState({ ...state, actionChips: read });
       break;
     }
     case 'zoom': {
@@ -444,102 +433,66 @@ const WorkFlow = () => {
           clickable={ true }
         />
       );
-      setActionChips(zoom);
+      setState({ ...state, actionChips: zoom });
       break;
     }
     }
   };
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = itemList.map((n) => n.id);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-  // const handleClick = (event, index) => {
-  //   const selectedIndex = selected.indexOf(index);
-  //   let newSelected = [];
-  //   if (selectedIndex === - 1) {
-  //     newSelected = newSelected.concat(selected, index);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, - 1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1),
-  //     );
-  //   }
-  //   setSelected(newSelected);
-  // };
-  const handleSetKey = () => {
-    const iKey = nanoid();
-    setKey(iKey);
-  };
-  const handleSetId = () => {
-    const iD = nanoid();
-    setId(iD);
-  };
   const addTodoItem = () => {
-    handleSetKey();
-    handleSetId();
-    handleAdded();
+    const nanoKey = nanoid();
+    setState({ ...state, key: nanoKey });
+    setState({ ...state, id: nanoKey });
+    setState({ ...state, added: todaysDate });
     handleHighPriority();
     handleIsRepeating();
-    handleActiveTimer();
+    handleStopwatch();
     handleActionChips();
     const newTodoItem = [
       ...state.itemList,
       {
-        state.key,
-        state.id,
-        state.title,
-        state.priority,
-        state.highPriority,
-        state.repeat,
-        state.isRepeating,
-        state.added,
-        state.dueDate,
-        state.dueTime,
-        state.notes,
-        state.actions,
-        state.timer,
-        state.reminders,
-        state.activeTimer,
-        state.actionChips,
-      }
+        ...state.key,
+        ...state.id,
+        ...state.title,
+        ...state.priority,
+        ...state.highPriority,
+        ...state.repeat,
+        ...state.isRepeating,
+        ...state.added,
+        ...state.dueDate,
+        ...state.dueTime,
+        ...state.notes,
+        ...state.actions,
+        ...state.timer,
+        ...state.reminders,
+        ...state.activeTimer,
+        ...state.actionChips,
+        ...state.checked,
+      },
     ];
-    setItemList(newTodoItem);
+    setState({ ...state, itemList: newTodoItem });
   };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    addTodoItem(key, id, title, priority, dueDate, dueTime, repeat, notes, actions, timer, checked, reminders);
-    setState();
+    if (! state.title) {
+      // eslint-disable-next-line no-alert
+      alert('Title required');
+      return;
+    }
+    addTodoItem(state.key, state.id, state.title, state.priority, state.dueDate, state.dueTime, state.repeat, state.notes, state.actions, state.timer, state.checked, state.reminders);
+    setState(
+      {
+        ...state, key: '', id: '', title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', timer: '', checked: '', reminders: '', showInput: false
+      }
+    );
   };
-
   const handleCancelInput = (event) => {
     event.preventDefault();
-
+    setState(
+      {
+        ...state, key: '', id: '', title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', timer: '', checked: '', reminders: '', showInput: false
+      }
+    );
   };
-
   // const handleRepeatPopulation = (event) => {
   //   event.preventDefault();
   // };
@@ -551,19 +504,24 @@ const WorkFlow = () => {
       <Paper className={ classes.tableWrap }>
         <InputForm
           state={ state }
-          todaysTime={ todaysTime }
           todaysDate={ todaysDate }
+          todaysTime={ todaysTime }
           handleCancelInput={ handleCancelInput }
           handleSubmit={ handleSubmit }
           addTodoItem={ addTodoItem }
           handleDueDate={ handleDueDate }
           handleDueTime={ handleDueTime }
-          handleEditing={ handleEditing }
-          handleCompleted={ handleCompleted }
           handleSwitch={ handleSwitch }
           handleValue={ handleValue }
+          handleTitle={ handleTitle }
+          handleRepeat={ handleRepeat }
+          handleReminders={ handleReminders }
+          handleNotes={ handleNotes }
+          handlePriority={ handlePriority }
+          handleActions={ handleActions }
         />
         <EnhancedTableToolbar
+          state={ state }
           numSelected={ state.selected.length }
           showInput={ state.showInput }
           handleShowInput={ handleShowInput }
@@ -577,12 +535,13 @@ const WorkFlow = () => {
           >
             <EnhancedTableHead
               classes={ classes }
+              state={ state }
               order={ state.order }
               orderBy={ state.orderBy }
-              onSelectAllClick={ handleSelectAllClick }
-              onRequestSort={ handleRequestSort }
               numSelected={ state.selected.length }
               rowCount={ state.itemList.length }
+              onSelectAllClick={ handleSelectAllClick }
+              onRequestSort={ handleRequestSort }
             />
             <>
               {state.itemList.map((todoItem, index) => (
@@ -642,8 +601,6 @@ const WorkFlow = () => {
                           size='small'
                           aria-label='show set repeat'
                           style={ { color: todoItem.isRepeating ? '#00C853' : '' } }
-                          // aria-expanded={ drag }
-                          // onClick={ handleDrag }
                         >
                           <LoopIcon />
                         </IconButton>
@@ -654,35 +611,12 @@ const WorkFlow = () => {
                         <IconButton
                           size='small'
                           aria-label='show set timer'
-                          onClick={ handleDrag }
+                          onClick={ handleStopwatch }
                           style={ { color: todoItem.activeTimer ? '#00C853' : '' } }
                         >
                           <AlarmIcon />
                         </IconButton>
                       </Tooltip>
-                      <Dialog
-                        open={ state.drag }
-                        onClose={ handleDrag }
-                        PaperComponent={ PaperComponent }
-                        aria-labelledby='draggable-dialog-title'
-                      >
-                        <DialogTitle style={ { cursor: 'move' } } id='draggable-dialog-title'>
-                          Task Timer
-                        </DialogTitle>
-                        <DialogContent>
-                          <DialogContentText>
-                            To start a timer please upon adding task please enter your inputs and info here.
-                          </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button autoFocus onClick={ handleDrag } color='primary'>
-                            Save
-                          </Button>
-                          <Button onClick={ handleDrag } color='primary'>
-                            Cancel
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
                     </TableCell>
                     <TableCell align='right' style={ { width: 64 } }>
                       <IconButton

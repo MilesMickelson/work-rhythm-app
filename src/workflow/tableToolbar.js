@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, showInput, handleShowInput } = props;
+  const { numSelected, handleShowInput, state } = props;
   const classes = useStyles();
 
   return (
@@ -98,10 +98,10 @@ const EnhancedTableToolbar = (props) => {
           </Tooltip>
           <IconButton
             aria-label='show input'
-            aria-expanded={ showInput }
+            aria-expanded={ state.showInput }
             onClick={ handleShowInput }
           >
-            { showInput ? <Tooltip title='Cancel Item Input'><RemoveCircleIcon className={ classes.showCloseIcon } fontSize='large' /></Tooltip> : <Tooltip title='Add Todo Item'><AddCircleIcon className={ classes.showAddIcon } fontSize='large' /></Tooltip>}
+            { state.showInput ? <Tooltip title='Cancel Item Input'><RemoveCircleIcon className={ classes.showCloseIcon } fontSize='large' /></Tooltip> : <Tooltip title='Add Todo Item'><AddCircleIcon className={ classes.showAddIcon } fontSize='large' /></Tooltip>}
           </IconButton>
         </>
       )}
