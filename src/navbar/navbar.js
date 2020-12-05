@@ -21,13 +21,13 @@ import {
 // import InfoIcon from '@material-ui/icons/Info';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-import Workflow from './workflow/workflow';
-import Vision from './vision';
-import Posture from './posture';
-import Statistics from './stats';
-import Custom from './custom';
-import Settings from './settings';
-import Account from './account';
+import Workflow from '../workflow/workflow';
+import Vision from '../vision/vision';
+import Posture from '../posture/posture';
+import Statistics from '../stats/stats';
+import Custom from '../custom/custom';
+import Settings from '../settings/settings';
+import Account from '../account/account';
 
 function TabPanel(props) {
   const {

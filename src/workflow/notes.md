@@ -1,3 +1,25 @@
+# Workflow Notes and Temp Saving
+
+actionChips: []
+actions: "gmail"
+added: ""
+checked: []
+dueDate: "12/17/2020"
+dueTime: "6:59:48 PM"
+highPriority: false
+id: 0
+isRepeating: false
+key: ""
+notes: "sdvsdv"
+priority: "High"
+reminders: "30 minutes before"
+repeat: "Weekdays"
+stopwatchActive: ""
+title: "sdvsdvsdv"
+
+last todo item return result
+
+
 // Code from old todo app project to use for logic and method reference
 
 // addItem(key) {
@@ -59,30 +81,10 @@
 
 //   render () {
 //     return (
-//       <div className='container-fluid'>
-//         <h1 className='mainHeader'>Very Simple To Do App</h1>
-//         <h5 className='mainSubHeader'>Track all of the things</h5>
-//         <hr className='lineBreak'></hr>
-//         <div className='row'>
 //           <div className='col-sm-4'>
 //             <InputField toDoItems={this.state.toDoItems[this.state.toDoItems.length-1]}
 //             onClick={ () => this.addItem(this.state.currentKey)} />
 //           </div>
-//           <div className='col-sm-8'>
-//             <div className='card'>
-//               <div className='card-header'>View To-Do's</div>
-//                 <div className={`${ 'card-body' } ${ 'itemsCard' }`}>
-// 									<ItemsList toDoItems={this.state.toDoItems.slice(0, this.state.toDoItems.length-1)}
-// 									addItem={this.addItem} handleEdit={this.handleEdit}
-// 									handleDelete={this.handleDelete}/>
-//                 </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
 
 // // ! Input field
 //   render() {

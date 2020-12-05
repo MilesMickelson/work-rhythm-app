@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useReducer
+} from 'react';
 import clsx from 'clsx';
 import { nanoid } from 'nanoid';
 
@@ -184,12 +189,11 @@ const todaysTime = todayToString.slice(10, 18);
 
 const WorkFlow = () => {
   const classes = useStyles();
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     showAdditional: false,
     key: '',
     actions: '',
     actionChips: [],
-    activeTimer: false,
     added: '',
     checked: [],
     dense: false,
@@ -207,14 +211,14 @@ const WorkFlow = () => {
     repeat: '',
     page: 0,
     selected: '',
-    stopwatch: '',
+    stopwatchActive: '',
     showInput: false,
     title: '',
     rowsPerPage: 10,
     itemList: [
       {
         actions: 'Gmail',
-        activeTimer: true,
+        stopwatchActive: true,
         added: '12/1/2020 ',
         dueDate: '12/31/2020',
         dueTime: '6:45:00 PM',
@@ -226,12 +230,11 @@ const WorkFlow = () => {
         priority: 'High',
         reminders: '1 hour before',
         repeat: 'Everyday',
-        timer: '60:00',
         title: 'Hello this is my second todo item and it helps me test what I need to.',
       },
       {
         actions: 'Outlook',
-        activeTimer: true,
+        stopwatchActive: true,
         added: '12/1/2020 ',
         dueDate: '12/31/2020',
         dueTime: '6:30:21 PM',
@@ -243,32 +246,13 @@ const WorkFlow = () => {
         priority: 'High',
         reminders: '1 hour before',
         repeat: 'Everyday',
-        timer: '60:00',
-        title: 'Hello this is my first todo item and it helps me test what I need to. It also does many other things, like telling me two lines here is should be max',
+        title: 'Hello this is my first todo item and it helps me test: One Line Max!',
       },
     ]
   });
   // eslint-disable-next-line no-console
   console.log('WORKFLOW STATE State:', state);
 
-  const handleTitle = (event) => {
-    setState({ ...state, title: event.target.value });
-  };
-  const handleRepeat = (event) => {
-    setState({ ...state, repeat: event.target.value });
-  };
-  const handleReminders = (event) => {
-    setState({ ...state, reminders: event.target.value });
-  };
-  const handleNotes = (event) => {
-    setState({ ...state, notes: event.target.value });
-  };
-  const handlePriority = (event) => {
-    setState({ ...state, priority: event.target.value });
-  };
-  const handleActions = (event) => {
-    setState({ ...state, actions: event.target.value });
-  };
   const handleValue = (event) => {
     setState({ ...state, [event.target.name]: event.target.value });
   };
@@ -344,21 +328,6 @@ const WorkFlow = () => {
   //   // setSelected(newSelected);
   // };
 
-  const handleHighPriority = () => {
-    if (state.priority === 'High') {
-      setState({ ...state, highPriority: ! state.highPriority });
-    }
-  };
-  const handleIsRepeating = () => {
-    if (! state.repeat) {
-      setState({ ...state, isRepeating: ! state.isRepeating });
-    }
-  };
-  const handleStopwatch = () => {
-    if (! state.stopwatch) {
-      setState({ ...state, activeTimer: ! state.activeTimer });
-    }
-  };
   const handleActionChips = () => {
     switch (state.actions) {
     default: {
@@ -438,11 +407,35 @@ const WorkFlow = () => {
     }
     }
   };
-  const addTodoItem = () => {
-    const nanoKey = nanoid();
-    setState({ ...state, key: nanoKey });
-    setState({ ...state, id: nanoKey });
+  const handleKey = () => {
+    const newKey = nanoid();
+    setState({ ...state, key: newKey });
+  };
+  const handleId = () => {
+    setState({ ...state, id: state.id + 1 });
+  };
+  const handleAdded = () => {
     setState({ ...state, added: todaysDate });
+  };
+  const handleHighPriority = () => {
+    if (state.priority === 'High') {
+      setState({ ...state, highPriority: true });
+    }
+  };
+  const handleIsRepeating = () => {
+    if (state.repeat !== '') {
+      setState({ ...state, isRepeating: true });
+    }
+  };
+  const handleStopwatch = () => {
+    if (! state.stopwatchActive) {
+      setState({ ...state, stopwatchActive: true });
+    }
+  };
+  const addTodoItem = () => {
+    handleKey();
+    handleId();
+    handleAdded();
     handleHighPriority();
     handleIsRepeating();
     handleStopwatch();
@@ -450,23 +443,22 @@ const WorkFlow = () => {
     const newTodoItem = [
       ...state.itemList,
       {
-        ...state.key,
-        ...state.id,
-        ...state.title,
-        ...state.priority,
-        ...state.highPriority,
-        ...state.repeat,
-        ...state.isRepeating,
-        ...state.added,
-        ...state.dueDate,
-        ...state.dueTime,
-        ...state.notes,
-        ...state.actions,
-        ...state.timer,
-        ...state.reminders,
-        ...state.activeTimer,
-        ...state.actionChips,
-        ...state.checked,
+        key: state.key,
+        id: state.id,
+        title: state.title,
+        priority: state.priority,
+        highPriority: state.highPriority,
+        repeat: state.repeat,
+        isRepeating: state.isRepeating,
+        added: state.added,
+        dueDate: state.dueDate,
+        dueTime: state.dueTime,
+        notes: state.notes,
+        actions: state.actions,
+        stopwatchActive: state.stopwatchActive,
+        reminders: state.reminders,
+        actionChips: state.actionChips,
+        checked: state.checked,
       },
     ];
     setState({ ...state, itemList: newTodoItem });
@@ -478,10 +470,10 @@ const WorkFlow = () => {
       alert('Title required');
       return;
     }
-    addTodoItem(state.key, state.id, state.title, state.priority, state.dueDate, state.dueTime, state.repeat, state.notes, state.actions, state.timer, state.checked, state.reminders);
+    addTodoItem(state.key, state.id, state.title, state.priority, state.dueDate, state.dueTime, state.repeat, state.notes, state.actions, state.stopwatchActive, state.checked, state.reminders);
     setState(
       {
-        ...state, key: '', id: '', title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', timer: '', checked: '', reminders: '', showInput: false
+        ...state, key: '', id: '', title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', stopwatchActive: false, checked: '', reminders: '', showInput: false
       }
     );
   };
@@ -489,7 +481,7 @@ const WorkFlow = () => {
     event.preventDefault();
     setState(
       {
-        ...state, key: '', id: '', title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', timer: '', checked: '', reminders: '', showInput: false
+        ...state, key: '', id: '', title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', stopwatchActive: false, checked: '', reminders: '', showInput: false
       }
     );
   };
@@ -513,12 +505,6 @@ const WorkFlow = () => {
           handleDueTime={ handleDueTime }
           handleSwitch={ handleSwitch }
           handleValue={ handleValue }
-          handleTitle={ handleTitle }
-          handleRepeat={ handleRepeat }
-          handleReminders={ handleReminders }
-          handleNotes={ handleNotes }
-          handlePriority={ handlePriority }
-          handleActions={ handleActions }
         />
         <EnhancedTableToolbar
           state={ state }
@@ -546,8 +532,8 @@ const WorkFlow = () => {
             <>
               {state.itemList.map((todoItem, index) => (
                 <TableBody
-                  key={ state.key }
-                  id={ state.id }
+                  key={ todoItem.key }
+                  id={ todoItem.id }
                   index={ index }
                   tabIndex={ - 1 }
                   className={ classes.itemRow }
@@ -607,12 +593,12 @@ const WorkFlow = () => {
                       </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
-                      <Tooltip title={ `Timer: ${todoItem.timer}` } aria-label='todo timer status'>
+                      <Tooltip title='Activate Stopwatch On/Off' aria-label='todo stopwatch status'>
                         <IconButton
                           size='small'
-                          aria-label='show set timer'
+                          aria-label='show set stopwatch'
                           onClick={ handleStopwatch }
-                          style={ { color: todoItem.activeTimer ? '#00C853' : '' } }
+                          style={ { color: todoItem.stopwatchActive ? '#00C853' : '' } }
                         >
                           <AlarmIcon />
                         </IconButton>

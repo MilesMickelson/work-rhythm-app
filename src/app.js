@@ -8,7 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import theme from './theme';
 
-import NavBar from './navbar';
+import NavBar from './navbar/navbar';
 
 // setConfig({
 //   showReactDomPatchNotification: false

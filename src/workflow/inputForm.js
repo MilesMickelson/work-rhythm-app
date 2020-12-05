@@ -76,7 +76,6 @@ const useStyles = makeStyles((theme) => ({
   },
   notes: {
     marginLeft: theme.spacing(2),
-
   },
   addGroup2: {
     marginTop: theme.spacing(1),
@@ -86,15 +85,16 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
     maxWidth: 300,
   },
+  buttonWrap: {
+    display: 'inline',
+  },
   addtSwitch: {
     marginTop: - theme.spacing(1),
     marginLeft: theme.spacing(3),
-    // width: 220,
-    // minWidth: 120,
-    // maxWidth: 300,
-  },
-  buttonWrap: {
     display: 'inline',
+    width: 220,
+    minWidth: 120,
+    maxWidth: 300,
   },
   button: {
     margin: theme.spacing(1),
@@ -117,12 +117,6 @@ const InputForm = (props) => {
     handleCancelInput,
     handleDueDate,
     handleDueTime,
-    handleTitle,
-    handleRepeat,
-    handleReminders,
-    handleNotes,
-    handlePriority,
-    handleActions,
   } = props;
   const classes = useStyles();
   return (
@@ -144,10 +138,9 @@ const InputForm = (props) => {
               name='title'
               variant='filled'
               margin='dense'
-              value={ state.title || '' }
-              onChange={ handleTitle }
+              value={ state.title }
+              onChange={ handleValue }
               multiline
-              required
             />
           </FormControl>
           <FormControl className={ classes.dateAndTime }>
@@ -193,7 +186,7 @@ const InputForm = (props) => {
             <Select
               name='repeat'
               value={ state.repeat || '' }
-              onChange={ handleRepeat }
+              onChange={ handleValue }
               native
             >
               <option aria-label='none' value='' />
@@ -213,7 +206,7 @@ const InputForm = (props) => {
             <Select
               name='reminders'
               value={ state.reminders || '' }
-              onChange={ handleReminders }
+              onChange={ handleValue }
               native
             >
               <option aria-label='None' value='' />
@@ -234,33 +227,13 @@ const InputForm = (props) => {
               <option value='custom'>Custom</option>
             </Select>
           </FormControl>
-          <FormControl className={ classes.addtSwitch }>
-            <FormControlLabel
-              control={ <Switch checked={ state.showAdditional } onChange={ handleSwitch } /> }
-              name='showAdditional'
-              label='Additional'
-              labelPlacement='start'
-            />
-          </FormControl>
           <Collapse in={ state.showAdditional } timeout='auto' collapsedHeight='0' unmountOnExit>
-            <FormControl className={ classes.notes }>
-              <CssTextField
-                label='Notes'
-                name='notes'
-                margin='dense'
-                variant='filled'
-                multiline={ true }
-                value={ state.notes || '' }
-                onChange={ handleNotes }
-              />
-            </FormControl>
             <FormControl variant='filled' size='small' className={ classes.addGroup2 }>
               <InputLabel htmlFor='priority'>Priority</InputLabel>
               <Select
                 name='priority'
-                id='priority'
                 value={ state.priority || '' }
-                onChange={ handlePriority }
+                onChange={ handleValue }
                 native
               >
                 <option aria-label='none' value='' />
@@ -273,9 +246,8 @@ const InputForm = (props) => {
               <InputLabel htmlFor='actions'>Actions</InputLabel>
               <Select
                 name='actions'
-                id='actions'
                 value={ state.actions || '' }
-                onChange={ handleActions }
+                onChange={ handleValue }
                 native
               >
                 <option aria-label='None' value='' />
@@ -286,6 +258,25 @@ const InputForm = (props) => {
                 <option value='read'>Read</option>
                 <option value='research'>Research</option>
               </Select>
+            </FormControl>
+            <FormControl className={ classes.notes }>
+              <CssTextField
+                label='Notes'
+                name='notes'
+                margin='dense'
+                variant='filled'
+                multiline={ true }
+                value={ state.notes || '' }
+                onChange={ handleValue }
+              />
+            </FormControl>
+            <FormControl className={ classes.addtSwitch }>
+              <FormControlLabel
+                label='Activate stopwatch'
+                labelPlacement='end'
+                name='stopwatchActive'
+                control={ <Switch checked={ ! state.stopwatchActive } onChange={ handleValue } /> }
+              />
             </FormControl>
           </Collapse>
           <br />
@@ -312,6 +303,14 @@ const InputForm = (props) => {
             >
               Cancel
             </Button>
+            <FormControl className={ classes.addtSwitch }>
+              <FormControlLabel
+                control={ <Switch checked={ state.showAdditional } onChange={ handleSwitch } /> }
+                name='showAdditional'
+                label='Additional'
+                labelPlacement='end'
+              />
+            </FormControl>
           </FormGroup>
         </div>
       </Collapse>

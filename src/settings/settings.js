@@ -9,7 +9,7 @@ import {
   FormGroup,
   FormControlLabel
 } from '@material-ui/core';
-import theme from './theme';
+import theme from '../theme';
 
 const SettingSwitch = withStyles({
   switchBase: {
