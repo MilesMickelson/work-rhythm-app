@@ -211,7 +211,7 @@ const WorkFlow = () => {
     repeat: '',
     page: 0,
     selected: '',
-    stopwatchActive: '',
+    stopwatchActive: false,
     showInput: false,
     title: '',
     rowsPerPage: 10,
@@ -264,6 +264,9 @@ const WorkFlow = () => {
   };
   const handleSwitch = () => {
     setState({ ...state, showAdditional: ! state.showAdditional });
+  };
+  const handleStopwatch = () => {
+    setState({ ...state, stopwatchActive: ! state.stopwatchActive });
   };
   const handleDueDate = (date) => {
     const dateToString = date.toLocaleString();
@@ -419,17 +422,12 @@ const WorkFlow = () => {
   };
   const handleHighPriority = () => {
     if (state.priority === 'High') {
-      setState({ ...state, highPriority: true });
+      setState({ ...state, highPriority: ! state.highPriority });
     }
   };
   const handleIsRepeating = () => {
     if (state.repeat !== '') {
-      setState({ ...state, isRepeating: true });
-    }
-  };
-  const handleStopwatch = () => {
-    if (! state.stopwatchActive) {
-      setState({ ...state, stopwatchActive: true });
+      setState({ ...state, isRepeating: ! state.isRepeating });
     }
   };
   const addTodoItem = () => {
@@ -438,7 +436,6 @@ const WorkFlow = () => {
     handleAdded();
     handleHighPriority();
     handleIsRepeating();
-    handleStopwatch();
     handleActionChips();
     const newTodoItem = [
       ...state.itemList,
@@ -459,6 +456,7 @@ const WorkFlow = () => {
         reminders: state.reminders,
         actionChips: state.actionChips,
         checked: state.checked,
+        expanded: false,
       },
     ];
     setState({ ...state, itemList: newTodoItem });
@@ -467,13 +465,12 @@ const WorkFlow = () => {
     event.preventDefault();
     if (! state.title) {
       // eslint-disable-next-line no-alert
-      alert('Title required');
+      alert('Please enter a title');
       return;
     }
-    addTodoItem(state.key, state.id, state.title, state.priority, state.dueDate, state.dueTime, state.repeat, state.notes, state.actions, state.stopwatchActive, state.checked, state.reminders);
     setState(
       {
-        ...state, key: '', id: '', title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', stopwatchActive: false, checked: '', reminders: '', showInput: false
+        ...state, title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', stopwatchActive: false, checked: '', reminders: '', showInput: false
       }
     );
   };
@@ -481,7 +478,7 @@ const WorkFlow = () => {
     event.preventDefault();
     setState(
       {
-        ...state, key: '', id: '', title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', stopwatchActive: false, checked: '', reminders: '', showInput: false
+        ...state, title: '', priority: '', dueDate: '', dueTime: '', repeat: '', notes: '', actions: '', stopwatchActive: false, checked: '', reminders: '', showInput: false
       }
     );
   };
@@ -498,13 +495,14 @@ const WorkFlow = () => {
           state={ state }
           todaysDate={ todaysDate }
           todaysTime={ todaysTime }
+          addTodoItem={ addTodoItem }
           handleCancelInput={ handleCancelInput }
           handleSubmit={ handleSubmit }
-          addTodoItem={ addTodoItem }
           handleDueDate={ handleDueDate }
           handleDueTime={ handleDueTime }
           handleSwitch={ handleSwitch }
           handleValue={ handleValue }
+          handleStopwatch={ handleStopwatch }
         />
         <EnhancedTableToolbar
           state={ state }
@@ -530,10 +528,10 @@ const WorkFlow = () => {
               onRequestSort={ handleRequestSort }
             />
             <>
-              {state.itemList.map((todoItem, index) => (
+              {state.itemList.map((item, index) => (
                 <TableBody
-                  key={ todoItem.key }
-                  id={ todoItem.id }
+                  key={ item.key }
+                  id={ item.id }
                   index={ index }
                   tabIndex={ - 1 }
                   className={ classes.itemRow }
@@ -546,59 +544,59 @@ const WorkFlow = () => {
                     <TableCell padding='checkbox'>
                       <Checkbox
                         role='checkbox'
-                        // onClick={ (event) => handleClick(event, todoItem.id) }
+                        // onClick={ (event) => handleClick(event, item.id) }
                         // checked={ isItemSelected }
                       />
                     </TableCell>
                     <TableCell
-                      style={ { textDecoration: todoItem.isCompleted ? 'line-through' : '' } }
+                      style={ { textDecoration: item.isCompleted ? 'line-through' : '' } }
                       align='left'
                       component='th'
                       scope='row'
                       padding='none'
                     >
-                      <Tooltip title={ `Title: ${todoItem.title}` } aria-label='title' placement='bottom-start' TransitionComponent={ Fade }>
+                      <Tooltip title={ `Title: ${item.title}` } aria-label='title' placement='bottom-start' TransitionComponent={ Fade }>
                         <div>
-                          {todoItem.title}
+                          {item.title}
                         </div>
                       </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.itemDateCol } align='right' style={ { width: 64 } }>
-                      <Tooltip title={ `Due:${todoItem.dueDate} At:${todoItem.dueTime}` } aria-label='todo time due status'>
+                      <Tooltip title={ `Due:${item.dueDate} At:${item.dueTime}` } aria-label='todo time due status'>
                         <div>
-                          {todoItem.dueDate}
+                          {item.dueDate}
                         </div>
                       </Tooltip>
                     </TableCell>
                     <TableCell
                       className={ classes.itemPriorityCol }
-                      style={ { color: todoItem.highPriority ? '#B71C1C' : '' } }
+                      style={ { color: item.highPriority ? '#B71C1C' : '' } }
                       align='right'
                     >
-                      <Tooltip title={ `Priority: ${todoItem.priority}` } aria-label='priority' placement='bottom'>
+                      <Tooltip title={ `Priority: ${item.priority}` } aria-label='priority' placement='bottom'>
                         <div>
-                          {todoItem.priority}
+                          {item.priority}
                         </div>
                       </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
-                      <Tooltip title={ `Repeat: ${todoItem.repeat}` } aria-label='todo repeat status'>
+                      <Tooltip title={ `Repeat: ${item.repeat}` } aria-label='todo repeat status'>
                         <IconButton
                           size='small'
                           aria-label='show set repeat'
-                          style={ { color: todoItem.isRepeating ? '#00C853' : '' } }
+                          style={ { color: item.isRepeating ? '#00C853' : '' } }
                         >
                           <LoopIcon />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
                     <TableCell className={ classes.iconTrio } align='right' style={ { width: 64 } }>
-                      <Tooltip title='Activate Stopwatch On/Off' aria-label='todo stopwatch status'>
+                      <Tooltip title='Activate Stopwatch' aria-label='todo stopwatch status'>
                         <IconButton
                           size='small'
                           aria-label='show set stopwatch'
                           onClick={ handleStopwatch }
-                          style={ { color: todoItem.stopwatchActive ? '#00C853' : '' } }
+                          style={ { color: item.stopwatchActive ? '#00C853' : '' } }
                         >
                           <AlarmIcon />
                         </IconButton>
@@ -647,9 +645,9 @@ const WorkFlow = () => {
                             </TableHead>
                             <TableBody>
                               <TableRow className={ classes.expandRow }>
-                                <TableCell align='left'>{todoItem.notes}</TableCell>
-                                <TableCell align='right'>{todoItem.reminders}</TableCell>
-                                <TableCell align='right'>{todoItem.actionChips}</TableCell>
+                                <TableCell align='left'>{item.notes}</TableCell>
+                                <TableCell align='right'>{item.reminders}</TableCell>
+                                <TableCell align='right'>{item.actionChips}</TableCell>
                                 <TableCell align='right'>
                                   <IconButton
                                     aria-label='extra item info'

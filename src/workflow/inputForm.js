@@ -117,6 +117,7 @@ const InputForm = (props) => {
     handleCancelInput,
     handleDueDate,
     handleDueTime,
+    handleStopwatch
   } = props;
   const classes = useStyles();
   return (
@@ -228,6 +229,17 @@ const InputForm = (props) => {
             </Select>
           </FormControl>
           <Collapse in={ state.showAdditional } timeout='auto' collapsedHeight='0' unmountOnExit>
+            <FormControl className={ classes.notes }>
+              <CssTextField
+                label='Notes'
+                name='notes'
+                margin='dense'
+                variant='filled'
+                multiline={ true }
+                value={ state.notes || '' }
+                onChange={ handleValue }
+              />
+            </FormControl>
             <FormControl variant='filled' size='small' className={ classes.addGroup2 }>
               <InputLabel htmlFor='priority'>Priority</InputLabel>
               <Select
@@ -259,23 +271,12 @@ const InputForm = (props) => {
                 <option value='research'>Research</option>
               </Select>
             </FormControl>
-            <FormControl className={ classes.notes }>
-              <CssTextField
-                label='Notes'
-                name='notes'
-                margin='dense'
-                variant='filled'
-                multiline={ true }
-                value={ state.notes || '' }
-                onChange={ handleValue }
-              />
-            </FormControl>
             <FormControl className={ classes.addtSwitch }>
               <FormControlLabel
                 label='Activate stopwatch'
                 labelPlacement='end'
                 name='stopwatchActive'
-                control={ <Switch checked={ ! state.stopwatchActive } onChange={ handleValue } /> }
+                control={ <Switch checked={ state.stopwatchActive } onChange={ handleStopwatch } /> }
               />
             </FormControl>
           </Collapse>
